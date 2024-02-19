@@ -5,7 +5,7 @@ import { QnaDocuments } from "./qna.documents.model";
 export class QnaDocumentGroups extends BaseEntity {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    id: string;
 
     @Column({ type: 'varchar', length: 32, nullable: false})
     Name: string;

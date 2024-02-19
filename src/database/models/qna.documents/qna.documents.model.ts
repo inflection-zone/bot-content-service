@@ -32,7 +32,7 @@ ParentDocument: string;
 @Column(({ type: 'varchar', length: 256, nullable: true }))
 ParentDocumentVersion: integer;
 
-@Column({type : "enum",enum: ChunkingStrategy })
+@Column({ type: "enum",enum: ChunkingStrategy })
 ChunkingStrategy: string;
 
 @Column()

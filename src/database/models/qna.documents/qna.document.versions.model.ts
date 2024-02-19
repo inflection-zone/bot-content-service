@@ -1,6 +1,5 @@
-import { integer } from "../../../domain.types/miscellaneous/system.types";
 // import { uuid } from "../../../domain.types/miscellaneous/system.types";
-import {Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn, ManyToMany, JoinTable} from "typeorm";
+import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn, ManyToMany, JoinTable} from "typeorm";
 import { QnaDocuments } from "./qna.documents.model";
 
 @Entity('qna_document_versions')
