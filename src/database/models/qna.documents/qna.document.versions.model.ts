@@ -22,7 +22,7 @@ DownloadUrl: string;
 FileResourceId: string;
 
 @Column(({ nullable: false }))
-Keywords: string;
+Keywords: string[];
 
 @CreateDateColumn()
 CreatedAt: Date;

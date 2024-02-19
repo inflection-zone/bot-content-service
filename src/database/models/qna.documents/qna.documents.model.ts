@@ -57,18 +57,20 @@ UpdatedAt: Date;
 DeletedAt: Date;
 
 @ManyToMany(() => QnaDocumentGroups)
-    @JoinTable({
-        name       : "qna_group_documents",
-        joinColumn : {
-            name                 : "GroupId",
-            referencedColumnName : "id"
-        },
-        inverseJoinColumn : {
-            name                 : "DocumentId",
-            referencedColumnName : "id"
-        }
-    })
-    qna_document_groups: QnaDocumentGroups[];
+@JoinTable()
+qna_group_documents:QnaDocumentGroups[];
+    // @JoinTable({
+        // name       : "qna_group_documents",
+    //     joinColumn : {
+    //         name                 : "GroupId",
+    //         referencedColumnName : "id"
+    //     },
+    //     inverseJoinColumn : {
+    //         name                 : "DocumentId",
+    //         referencedColumnName : "id"
+    //     }
+    // })
+    // qna_document_groups: QnaDocumentGroups[];
 
 @OneToMany(() => QnaDocumentVersions,
     qna_document_versions => qna_document_versions.qna_documents)

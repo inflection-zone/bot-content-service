@@ -1,5 +1,5 @@
-import { decimal, integer } from "../../../domain.types/miscellaneous/system.types";
-import {Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn, ManyToMany, JoinTable, OneToMany} from "typeorm";
+import { decimal } from "../../../domain.types/miscellaneous/system.types";
+import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn, ManyToMany, JoinTable, OneToMany} from "typeorm";
 import { LlmPromptGroups } from "./llm.prompt.groups.model";
 import { LlmPromptVersions } from "./llm.prompt.versions.model";
 import { PromptUsecase } from "../../../domain.types/usecase.domain.types";
@@ -16,16 +16,16 @@ Name: string;
 @Column({ type: 'varchar', length: 256, nullable: false })
 Description: string;
 
-@Column({type : "enum",enum: PromptUsecase })
-UseCaseType: string;
+@Column({ type: "enum",enum: PromptUsecase })
+UseCaseType: string[];
 
 @Column(({ type: 'varchar', length: 256, nullable: false }))
 ModelName: string;
 
 @Column(({ nullable: false}))
-ModelVersion: integer;
+ModelVersion: string;
 
-@Column(({nullable: false }))
+@Column(({ nullable: false }))
 UserId: string;
 
 @Column(({ nullable: false }))
@@ -53,18 +53,20 @@ UpdatedAt: Date;
 DeletedAt: Date;
 
 @ManyToMany(() => LlmPromptGroups)
-    @JoinTable({
-        name       : "llm_group_prompts",
-        joinColumn : {
-            name                 : "GroupId",
-            referencedColumnName : "id"
-        },
-        inverseJoinColumn : {
-            name                 : "PromptId",
-            referencedColumnName : "id"
-        }
-    })
-    llm_prompt_groups: LlmPromptGroups[];
+@JoinTable()
+llm_group_prompts: LlmPromptGroups[];
+    // @JoinTable({
+    //     name       : "llm_group_prompts",
+    //     joinColumn : {
+    //         name                 : "GroupId",
+    //         referencedColumnName : "id"
+    //     },
+    //     inverseJoinColumn : {
+    //         name                 : "PromptId",
+    //         referencedColumnName : "id"
+    //     }
+    // })
+    // llm_prompt_groups: LlmPromptGroups[];
 
     @OneToMany(() => LlmPromptVersions,
         llm_prompt_versions => llm_prompt_versions.llm_prompts)
