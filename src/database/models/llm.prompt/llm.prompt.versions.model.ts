@@ -9,7 +9,7 @@ export class LlmPromptVersions extends BaseEntity{
 id: string;
   
 @Column(({ unique: true, nullable: false }))
-VersionNumber: integer;
+VersionNumber: string;
 
 @Column({ type: 'varchar', length: 256, nullable: false })
 Prompt: string;
