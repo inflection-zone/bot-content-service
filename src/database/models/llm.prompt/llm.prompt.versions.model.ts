@@ -40,11 +40,4 @@ DeletedAt: Date;
     name : 'PromptId'
 })
 llm_prompts: LlmPrompts;
-    static id: string;
-    static VersionNumber: string;
-    static Prompt: string;
-    static Variables: string;
-    static Score: number;
-    static PublishedAt: Date;
-
 }

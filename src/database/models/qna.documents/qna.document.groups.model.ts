@@ -4,10 +4,10 @@ import { QnaDocuments } from "./qna.documents.model";
 @Entity({ name: 'qna_document_groups' })
 export class QnaDocumentGroups extends BaseEntity {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ type: 'varchar', length: 32, nullable: false})
+    @Column({ type: 'varchar', length: 32, nullable: false })
     Name: string;
 
     @Column({ type: 'varchar', length: 1024, nullable: true })
@@ -38,8 +38,4 @@ UpdatedAt: Date;
 
 @DeleteDateColumn()
 DeletedAt: Date;
-    static id: string;
-    static Name: string;
-    static Description: string;
-
 }

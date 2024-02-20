@@ -8,9 +8,9 @@ export class QnaDocumentGroupsMapper {
             return null;
         }
         const dto: QnaDocumentGroupsDto = {
-            id          : QnaDocumentGroups.id,
-            Name        : QnaDocumentGroups.Name,
-            Description : QnaDocumentGroups.Description
+            id          : qnadocumentgroup.id,
+            Name        : qnadocumentgroup.Name,
+            Description : qnadocumentgroup.Description
             
         };
         return dto;

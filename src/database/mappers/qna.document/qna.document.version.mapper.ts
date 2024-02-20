@@ -8,12 +8,12 @@ export class QnaDocumentVersionsMapper {
             return null;
         }
         const dto: QnaDocumentVersionsDto = {
-            id             : QnaDocumentVersions.id,
-            VersionNumber  : QnaDocumentVersions.VersionNumber,
-            StorageUrl     : QnaDocumentVersions.StorageUrl,
-            DownloadUrl    : QnaDocumentVersions.DownloadUrl,
-            FileResourceId : QnaDocumentVersions.FileResourceId,
-            Keywords       : QnaDocumentVersions.Keywords,
+            id             : qnadocumentversion.id,
+            VersionNumber  : qnadocumentversion.VersionNumber,
+            StorageUrl     : qnadocumentversion.StorageUrl,
+            DownloadUrl    : qnadocumentversion.DownloadUrl,
+            FileResourceId : qnadocumentversion.FileResourceId,
+            Keywords       : qnadocumentversion.Keywords,
         };
         return dto;
     };

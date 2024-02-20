@@ -7,9 +7,9 @@ export class LlmPromptGroupsMapper {
             return null;
         }
         const dto: LlmPromptGroupsDto = {
-            id          : LlmPromptGroups.id,
-            Name        : LlmPromptGroups.Name,
-            Description : LlmPromptGroups.Description
+            id          : llmpromptgroup.id,
+            Name        : llmpromptgroup.Name,
+            Description : llmpromptgroup.Description
             
         };
         return dto;

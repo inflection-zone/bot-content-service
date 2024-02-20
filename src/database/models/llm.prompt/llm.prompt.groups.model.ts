@@ -4,7 +4,7 @@ import { LlmPrompts } from "./llm.prompts.model";
 @Entity({ name: 'llm_prompt_groups' })
 export class LlmPromptGroups extends BaseEntity {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id: string;
 
     @Column({ type: 'varchar', length: 32, nullable: false,})
@@ -38,8 +38,5 @@ UpdatedAt: Date;
 
 @DeleteDateColumn()
 DeletedAt: Date;
-    static id: string;
-    static Name: string;
-    static Description: string;
-
+   
 }

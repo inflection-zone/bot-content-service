@@ -1,6 +1,6 @@
 export enum ChunkingStrategy{
-        RECURSIVE_STRUCTURE_AWARE_SPLITTING = 'recursive_structure_aware_splitting',
-        STRUCTURE_AWARE_SPLITTING = 'structure_aware_splitting',
-        CONTENT_AWARE_SPLITTING = 'content_aware_splitting',
-        NPL_CHUNKING = 'NPL_chunking'
+        recursive_structue_aware_splitting = 'Recursive Structure Aaware Splitting',
+        structure_aware_splitting = 'Structure Aware Splitting',
+        contyent_aware_splitting = 'Content Aware Splitting',
+        NPL_chunking = 'NPL chunking'
 }

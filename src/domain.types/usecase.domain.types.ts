@@ -1,7 +1,7 @@
 export enum PromptUsecase{
-    CHAT = 'chat',
-    CLASSIFICATION = 'classification',
-    EXTRACTION = 'extraction',
-    SUMMARIZATION = 'summarization',
-    GENERATION = 'generation'
+    chat = 'Chat',
+    classification = 'Classification',
+    exraction = 'Extraction',
+    summarization= 'Summarization',
+    generation = 'Generation'
 }

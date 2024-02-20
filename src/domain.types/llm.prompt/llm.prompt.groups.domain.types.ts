@@ -5,3 +5,13 @@ export interface  LlmPromptGroupsDto {
     Name       : string;
     Description: string;
 }
+
+export interface  LlmPromptGroupsCreateModel {
+    Name        : string;
+    Description?: string
+}
+
+export interface  LlmPromptGroupsUpdateModel {
+    Name?       : string;
+    Description?: string
+    }

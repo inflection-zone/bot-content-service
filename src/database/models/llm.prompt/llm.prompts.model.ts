@@ -13,7 +13,7 @@ id: string;
 @Column(({ type: 'varchar', length: 256, nullable: false }))
 Name: string;
 
-@Column({ type: 'varchar', length: 256, nullable: false })
+@Column({ type: 'varchar', length: 256, nullable: true })
 Description: string;
 
 @Column({ type: "enum",enum: PromptUsecase })
@@ -71,17 +71,4 @@ llm_group_prompts: LlmPromptGroups[];
     @OneToMany(() => LlmPromptVersions,
         llm_prompt_versions => llm_prompt_versions.llm_prompts)
         llm_prompt_versions: LlmPromptVersions[];
-    static id: string;
-    static Name: string;
-    static Description: string;
-    static UseCaseType: string[];
-    static ModelName: string;
-    static ModelVersion: string;
-    static UserId: string;
-    static Temperature: number;
-    static FrequencyPenality: number;
-    static TopP: number;
-    static PresencePenalty: number;
-    static IsActive: boolean;
-
-}
+  }

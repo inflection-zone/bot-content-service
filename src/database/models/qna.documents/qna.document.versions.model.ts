@@ -11,7 +11,7 @@ id: string;
 @Column(({ unique: true, nullable: false }))
 VersionNumber: string;
 
-@Column({ type: 'varchar', length: 256, nullable: false })
+@Column({ type: 'varchar', length: 1024, nullable: true })
 StorageUrl: string;
 
 @Column({ type: 'varchar', length: 256, nullable: false })
@@ -40,11 +40,4 @@ DeletedAt: Date;
     name : 'DocumentId'
 })
 qna_documents : QnaDocuments;
-    static id: string;
-    static VersionNumber: string;
-    static StorageUrl: string;
-    static DownloadUrl: string;
-    static FileResourceId: string;
-    static Keywords: string[];
-
 }

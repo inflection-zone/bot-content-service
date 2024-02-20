@@ -8,12 +8,12 @@ export class LlmPromptVersionsMapper {
             return null;
         }
         const dto: LlmPromptVersionsDto = {
-            id            : LlmPromptVersions.id,
-            VersionNumber : LlmPromptVersions.VersionNumber,
-            Prompt        : LlmPromptVersions.Prompt,
-            Variables     : LlmPromptVersions.Variables,
-            Score         : LlmPromptVersions.Score,
-            PublishedAt   : LlmPromptVersions.PublishedAt
+            id            : llmpromptversion.id,
+            VersionNumber : llmpromptversion.VersionNumber,
+            Prompt        : llmpromptversion.Prompt,
+            Variables     : llmpromptversion.Variables,
+            Score         : llmpromptversion.Score,
+            PublishedAt   : llmpromptversion.PublishedAt
         };
         return dto;
     };

@@ -1,10 +1,27 @@
-import { decimal } from "../miscellaneous/system.types";
+import { decimal, uuid } from "../miscellaneous/system.types";
 
 export interface  LlmPromptVersionsDto {
-    id: string;
-    VersionNumber: string;
-    Prompt: string;
-    Variables: string;
-    Score: decimal;
-    PublishedAt: Date;
+    id              : uuid;
+    VersionNumber   : string;
+    PromptId        : uuid;
+    Prompt          : string;
+    Variables       : string;
+    Score           : decimal;
+    PublishedAt     : Date;
+}
+export interface  LlmPromptVersionsCreateModel {
+    VersionNumber   : string;
+    PromptId        : uuid;
+    Prompt          : string;
+    Variables       : string;
+    Score           : decimal;
+    PublishedAt     : Date
+}
+export interface  LlmPromptVersionsUpdateModel {
+    VersionNumber?  : string;
+    PromptId        : uuid;
+    Prompt?         : string;
+    Variables?      : string;
+    Score?          : decimal;
+    PublishedAt?    : Date
 }

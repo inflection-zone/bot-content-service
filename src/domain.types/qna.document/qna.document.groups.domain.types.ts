@@ -5,3 +5,11 @@ export interface  QnaDocumentGroupsDto {
     Name       : string;
     Description: string;
 }
+export interface  QnaDocumentGroupsCreateModel {
+    Name        : string;
+    Description?: string;
+}
+export interface  QnaDocumentGroupsUpdateModel {
+    Name?       : string;
+    Description?: string;
+}
