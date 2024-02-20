@@ -1,4 +1,4 @@
-import { decimal, integer } from "../../../domain.types/miscellaneous/system.types";
+import { decimal } from "../../../domain.types/miscellaneous/system.types";
 import {Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn, ManyToMany, JoinTable} from "typeorm";
 import { LlmPrompts } from "./llm.prompts.model";
 
@@ -9,7 +9,7 @@ export class LlmPromptVersions extends BaseEntity{
 id: string;
   
 @Column(({ unique: true, nullable: false }))
-VersionNumber: integer;
+VersionNumber: string;
 
 @Column({ type: 'varchar', length: 256, nullable: false })
 Prompt: string;

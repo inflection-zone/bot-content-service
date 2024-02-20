@@ -2,6 +2,7 @@ import { logger } from '../logger/logger';
 import { Logger, QueryRunner } from "typeorm";
 
 export class DBLogger implements Logger {
+    static error: any;
 
     logQuery(query: string, parameters?: any[], queryRunner?: QueryRunner) {
         logger.info(`query: ${query}, params: ${JSON.stringify(parameters)}`);
