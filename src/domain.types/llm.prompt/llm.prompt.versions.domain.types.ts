@@ -3,7 +3,7 @@ import { decimal, uuid } from "../miscellaneous/system.types";
 export interface  LlmPromptVersionsDto {
     id              : uuid;
     VersionNumber   : string;
-    PromptId        : uuid;
+    // PromptId        : string;
     Prompt          : string;
     Variables       : string;
     Score           : decimal;

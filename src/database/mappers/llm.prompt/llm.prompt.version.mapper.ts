@@ -10,10 +10,12 @@ export class LlmPromptVersionsMapper {
         const dto: LlmPromptVersionsDto = {
             id            : llmpromptversion.id,
             VersionNumber : llmpromptversion.VersionNumber,
+            // PromptId      : llmpromptversion.PromptId,
             Prompt        : llmpromptversion.Prompt,
             Variables     : llmpromptversion.Variables,
             Score         : llmpromptversion.Score,
-            PublishedAt   : llmpromptversion.PublishedAt
+            PublishedAt   : llmpromptversion.PublishedAt,
+            
         };
         return dto;
     };

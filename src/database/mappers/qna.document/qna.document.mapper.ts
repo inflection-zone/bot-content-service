@@ -1,3 +1,6 @@
+import { QnaDocuments } from "../../../database/models/qna.documents/qna.documents.model";
+import { QnaDocumentsDto } from "../../../domain.types/qna.document/qna.document.domain.types";
+
 export class QnaDocumentVersionsMapper {
 
     static toResponseDto = (qnadocument:QnaDocuments): QnaDocumentsDto => {
@@ -5,19 +8,19 @@ export class QnaDocumentVersionsMapper {
             return null;
         }
         const dto: QnaDocumentsDto = {
-            id                   : qnadocument.id,
-            Name                 : qnadocument.Name,
-            Description          : qnadocument.Description,
-            Filename             : qnadocument.Filename,
-            Source               : qnadocument.Source,
-            CreatedBy            : qnadocument.CreatedBy,
-            ParentDocument       :qnadocument.ParentDocument,
-            ParentDocumentVersion:qnadocument.ParentDocumentVersion,
-            ChunkingStrategy     :qnadocument.ChunkingStrategy,
-            ChunkingLenght       :qnadocument.ChunkingLenght,
-            ChunkOverlap         :qnadocument.ChunkOverlap,
-            Splitter             :qnadocument.Splitter,
-            IsActive             :qnadocument.IsActive
+            id                    : qnadocument.id,
+            Name                  : qnadocument.Name,
+            Description           : qnadocument.Description,
+            Filename              : qnadocument.Filename,
+            Source                : qnadocument.Source,
+            CreatedBy             : qnadocument.CreatedBy,
+            ParentDocument        : qnadocument.ParentDocument,
+            ParentDocumentVersion : qnadocument.ParentDocumentVersion,
+            ChunkingStrategy      : qnadocument.ChunkingStrategy,
+            ChunkingLenght        : qnadocument.ChunkingLenght,
+            ChunkOverlap          : qnadocument.ChunkOverlap,
+            Splitter              : qnadocument.Splitter,
+            IsActive              : qnadocument.IsActive
 
 
         };
