@@ -38,5 +38,8 @@ UpdatedAt: Date;
 
 @DeleteDateColumn()
 DeletedAt: Date;
+    static id: string;
+    static Name: string;
+    static Description: string;
 
 }

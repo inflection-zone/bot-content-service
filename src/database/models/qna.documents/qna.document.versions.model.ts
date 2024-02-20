@@ -40,5 +40,11 @@ DeletedAt: Date;
     name : 'DocumentId'
 })
 qna_documents : QnaDocuments;
+    static id: string;
+    static VersionNumber: string;
+    static StorageUrl: string;
+    static DownloadUrl: string;
+    static FileResourceId: string;
+    static Keywords: string[];
 
 }
