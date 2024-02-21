@@ -6,7 +6,7 @@ import { DataSource } from "typeorm";
 import path from "path";
 import fs from 'fs';
 import { QnaDocumentGroups } from "./models/qna.documents/qna.document.groups.model";
-import { QnaDocuments } from "./models/qna.documents/qna.documents.model";
+import { QnaDocuments } from "./models/qna.documents/qna.document.model";
 import { QnaDocumentVersions } from "./models/qna.documents/qna.document.versions.model";
 import { DBLogger } from "./database.logger";
 import { LlmPromptVersions } from "./models/llm.prompt/llm.prompt.versions.model";

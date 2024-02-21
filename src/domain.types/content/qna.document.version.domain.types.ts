@@ -1,28 +1,22 @@
-import {
-    integer,
-    uuid
-} from "../miscellaneous/system.types";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { integer } from '../miscellaneous/system.types';
 
 //////////////////////////////////////////////////////////////
 
 export interface QnaDocumentGroupCreateModel {
-    
     VersionNumber: integer;
     StorageUrl: string;
     DownloadUrl: string;
     FileResourceId: string;
     Keywords: string;
-    
 }
 
 export interface QnaDocumentGroupUpdateModel {
-   
     VersionNumber?: integer;
     StorageUrl?: string;
     DownloadUrl?: string;
     FileResourceId?: string;
     Keywords?: string;
-    
 }
 
 export interface QnaDocumentGroupResponseDto {
@@ -32,7 +26,6 @@ export interface QnaDocumentGroupResponseDto {
     DownloadUrl: string;
     FileResourceId: string;
     Keywords: string;
-    CreatedAt: Date
+    CreatedAt: Date;
     UpdatedAt: Date;
-    
 }

@@ -2,48 +2,44 @@ import { integer, uuid } from '../miscellaneous/system.types';
 
 //////////////////////////////////////////////////////////////
 
-export interface QnaDocumentGroupCreateModel {
-   
+export interface QnaDocumentCreateModel {
     Name: string;
     Description: string;
     Filename: string;
     Source: string;
     ParentDocument?: string;
-    ParentDocumentVersion?: string;
+    ParentDocumentVersion?: integer;
     ChunkingStrategy?: string;
     ChunkingLenght?: integer;
     ChunkOverlap?: integer;
     Splitter?: string;
     IsActive?: boolean;
     CreatedBy: string;
-   
 }
 
-export interface QnaDocumentGroupUpdateModel {
-    
+export interface QnaDocumentUpdateModel {
     Name?: string;
     Description?: string;
     Filename?: string;
     Source?: string;
     ParentDocument?: string;
-    ParentDocumentVersion?: string;
+    ParentDocumentVersion?: integer;
     ChunkingStrategy?: string;
     ChunkingLenght?: integer;
     ChunkOverlap?: integer;
     Splitter?: string;
     IsActive?: boolean;
     CreatedBy?: string;
-    
 }
 
-export interface QnaDocumentGroupResponseDto {
+export interface QnaDocumentResponseDto {
     id: uuid;
     Name: string;
     Description: string;
     Filename: string;
     Source: string;
     ParentDocument: string;
-    ParentDocumentVersion: string;
+    ParentDocumentVersion: integer;
     ChunkingStrategy: string;
     ChunkingLenght: integer;
     ChunkOverlap: integer;

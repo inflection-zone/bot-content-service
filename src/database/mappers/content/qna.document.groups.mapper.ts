@@ -1,3 +1,6 @@
+/* eslint-disable key-spacing */
+/* eslint-disable padded-blocks */
+/* eslint-disable linebreak-style */
 import { QnaDocumentGroupResponseDto } from '../../../domain.types/content/qna.document.groups.domain.types';
 import { QnaDocumentGroups } from '../../../database/models/qna.documents/qna.document.groups.model';
 

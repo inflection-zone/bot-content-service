@@ -1,6 +1,6 @@
 import express from 'express';
 import { ResponseDto } from '../../domain.types/miscellaneous/response.dto';
-import { ActivityRecordingHandler } from './activity.recording.handler';
+// import { ActivityRecordingHandler } from './activity.recording.handler';
 import { InputValidationError, ApiError } from './error.handler';
 import { logger } from '../../logger/logger';
 
@@ -50,7 +50,7 @@ export class ResponseHandler {
             logger.info(JSON.stringify(responseObject, null, 2));
         }
 
-        ActivityRecordingHandler.record(responseObject);
+        // ActivityRecordingHandler.record(responseObject);
 
         //Sanitize response: Don't send request and trace related info in response, only use it for logging
         delete responseObject.Request;
@@ -100,7 +100,7 @@ export class ResponseHandler {
             logger.info(JSON.stringify(responseObject, null, 2));
         }
 
-        ActivityRecordingHandler.record(responseObject);
+        // ActivityRecordingHandler.record(responseObject);
 
         //Sanitize response: Don't send request and trace related info in response, only use it for logging
         delete responseObject.Request;

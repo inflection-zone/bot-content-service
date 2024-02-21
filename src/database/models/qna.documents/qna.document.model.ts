@@ -1,12 +1,13 @@
+/* eslint-disable eol-last */
 import { integer } from "../../../domain.types/miscellaneous/system.types";
 // import { uuid } from "../../../domain.types/miscellaneous/system.types";
-import {Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn, ManyToMany, JoinTable, OneToMany} from "typeorm";
+import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, JoinTable, OneToMany } from "typeorm";
 import { QnaDocumentGroups } from "./qna.document.groups.model";
 import { QnaDocumentVersions } from "./qna.document.versions.model";
 import { ChunkingStrategy } from "../../../domain.types/chunking.strategy.domain.types";
 
 @Entity('qna_documents')
-export class QnaDocuments extends BaseEntity{
+export class QnaDocument extends BaseEntity{
 
 @PrimaryGeneratedColumn('uuid')
 id: string;
@@ -32,7 +33,7 @@ ParentDocument: string;
 @Column(({ type: 'varchar', length: 256, nullable: true }))
 ParentDocumentVersion: integer;
 
-@Column({type : "enum",enum: ChunkingStrategy })
+@Column({ type: "enum",enum: ChunkingStrategy })
 ChunkingStrategy: string;
 
 @Column()
@@ -57,18 +58,8 @@ UpdatedAt: Date;
 DeletedAt: Date;
 
 @ManyToMany(() => QnaDocumentGroups)
-    @JoinTable({
-        name       : "qna_group_documents",
-        joinColumn : {
-            name                 : "GroupId",
-            referencedColumnName : "id"
-        },
-        inverseJoinColumn : {
-            name                 : "DocumentId",
-            referencedColumnName : "id"
-        }
-    })
-    qna_document_groups: QnaDocumentGroups[];
+@JoinTable()
+qna_group_documents:QnaDocumentGroups[];
 
 @OneToMany(() => QnaDocumentVersions,
     qna_document_versions => qna_document_versions.qna_documents)

@@ -13,6 +13,7 @@ import { DbClient } from './database/db.clients/db.client';
 import { DBConnector } from "./database/database.connector";
 // import { FactsDBConnector } from "./modules/fact.extractors/facts.db.connector";
 import { HttpLogger } from "./logger/HttpLogger";
+import { Router } from "./startup/router";
 // import FactsDbClient from "./modules/fact.extractors/facts.db.client";
 
 /////////////////////////////////////////////////////////////////////////
@@ -23,7 +24,7 @@ export default class Application {
 
     public _app: express.Application = null;
 
-    // private _router: Router = null;
+    private _router: Router = null;
 
     private static _instance: Application = null;
 
@@ -31,7 +32,7 @@ export default class Application {
 
     private constructor() {
         this._app = express();
-        // this._router = new Router(this._app);
+        this._router = new Router(this._app);
     }
 
     public static instance(): Application {
@@ -47,7 +48,7 @@ export default class Application {
             await this.setupDatabaseConnection();
             // await Loader.init();
             await this.setupMiddlewares();
-            // await this._router.init();
+            await this._router.init();
             // const seeder = new Seeder();
             // await seeder.seed();
             // await Scheduler.instance().schedule();
@@ -76,7 +77,7 @@ export default class Application {
             await this.listen();
         }
         catch (error){
-            logger.error('An error occurred while starting reancare-api service.' + error.message);
+            logger.error('An error occurred while starting content-api service.' + error.message);
         }
     };
 

@@ -1,23 +1,20 @@
+/* eslint-disable padded-blocks */
+/* eslint-disable key-spacing */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { QnaDocumentGroups } from '../../models/qna.documents/qna.document.groups.model';
 
 import { logger } from '../../../logger/logger';
 import { ErrorHandler } from '../../../common/handlers/error.handler';
-import { Source } from '../../../database/database.connector';
+import { Source } from '../../database.connector';
 import { FindManyOptions, Like, Repository } from 'typeorm';
-import { BadgeMapper } from '../../mappers/awards/badge.mapper';
+
 import { BaseService } from '../base.service';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
-import {
-    BadgeCreateModel,
-    BadgeResponseDto,
-    BadgeSearchFilters,
-    BadgeSearchResults,
-    BadgeUpdateModel,
-} from '../../../domain.types/awards/badge.domain.types';
+
 import { QnaDocumentGroupCreateModel } from '../../../domain.types/content/qna.document.groups.domain.types';
 import { QnaDocumentGroupResponseDto } from '../../../domain.types/content/qna.document.groups.domain.types';
-import { QnaDocuments } from '../../models/qna.documents/qna.documents.model';
-import { QnaDocumentGroupsMapper } from '../../../database/mappers/content/qna.document.groups.mapper';
+import { QnaDocuments } from '../../models/qna.documents/qna.document.model';
+import { QnaDocumentGroupsMapper } from '../../mappers/content/qna.document.groups.mapper';
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -29,11 +26,10 @@ export class QnaDocumentGroupsService extends BaseService {
         const group = this._qnaDocumentGroupsRepository.create({
             Name: createModel.Name,
             Description: createModel.Description,
-            QnaDocuments : createModel.QnaDocuments,
+            qna_documents : createModel.qna_documents,
         });
         var record = await this._qnaDocumentGroupsRepository.save(group);
-        return QnaDocumentGroupsMapper.toRespo
-        nseDto(record);
+        return QnaDocumentGroupsMapper.toResponseDto(record);
     };
 
     // public getById = async (id: uuid): Promise<BadgeResponseDto> => {

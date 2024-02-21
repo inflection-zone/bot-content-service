@@ -1,22 +1,11 @@
-import {
-    BaseEntity,
-    Column,
-    CreateDateColumn,
-    DeleteDateColumn,
-    Entity,
-    JoinTable,
-    ManyToMany,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-} from 'typeorm';
-import { QnaDocuments } from './qna.documents.model';
-
-
+/* eslint-disable eol-last */
+import { BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { QnaDocuments } from "./qna.document.model";
 
 @Entity({ name: 'qna_document_groups' })
 export class QnaDocumentGroups extends BaseEntity {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id: string;
 
     @Column({ type: 'varchar', length: 32, nullable: false })
@@ -26,25 +15,16 @@ export class QnaDocumentGroups extends BaseEntity {
     Description: string;
 
     @ManyToMany(() => QnaDocuments)
-    @JoinTable({
-        name       : 'qna_group_documents',
-        joinColumn : {
-            name                 : 'GroupId',
-            referencedColumnName : 'id',
-        },
-        inverseJoinColumn : {
-            name                 : 'DocumentId',
-            referencedColumnName : 'id',
-        },
-    })
-    qna_documents: QnaDocuments[];
+    @JoinTable()
+         "qna_group_documents":QnaDocuments[];
+    
+@CreateDateColumn()
+CreatedAt: Date;
 
-    @CreateDateColumn()
-    CreatedAt: Date;
+@UpdateDateColumn()
+UpdatedAt: Date;
 
-    @UpdateDateColumn()
-    UpdatedAt: Date;
+@DeleteDateColumn()
+DeletedAt: Date;
 
-    @DeleteDateColumn()
-    DeletedAt: Date;
 }

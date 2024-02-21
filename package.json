@@ -16,7 +16,7 @@
         "url": "yes"
     },
     "keywords": [],
-    "author": "Dattatraya Londhe",
+    "author": "Pratiksha More",
     "license": "ISC",
     "dependencies": {
         "@prisma/client": "^4.9.0",
