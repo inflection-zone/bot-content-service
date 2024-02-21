@@ -1,3 +1,4 @@
+import { BaseSearchFilters } from "../miscellaneous/base.search.types";
 import { decimal, uuid } from "../miscellaneous/system.types";
 
 export interface  LlmPromptVersionsDto {
@@ -15,7 +16,7 @@ export interface  LlmPromptVersionsCreateModel {
     Prompt          : string;
     Variables       : string;
     Score           : decimal;
-    PublishedAt     : Date
+    PublishedAt     : Date;
 }
 export interface  LlmPromptVersionsUpdateModel {
     VersionNumber?  : string;
@@ -24,4 +25,12 @@ export interface  LlmPromptVersionsUpdateModel {
     Variables?      : string;
     Score?          : decimal;
     PublishedAt?    : Date
+}
+export interface LlmPromptVersionsSearchFilters extends BaseSearchFilters {
+    VersionNumber?  : string;
+    PromptId?        : uuid;
+    Prompt?         : string;
+    Variables?      : string;
+    Score?          : decimal;
+    PublishedAt?    : Date;
 }

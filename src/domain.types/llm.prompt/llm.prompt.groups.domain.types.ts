@@ -1,3 +1,4 @@
+import { BaseSearchFilters } from "../miscellaneous/base.search.types";
 import { uuid } from "../miscellaneous/system.types";
 
 export interface  LlmPromptGroupsDto {
@@ -8,10 +9,15 @@ export interface  LlmPromptGroupsDto {
 
 export interface  LlmPromptGroupsCreateModel {
     Name        : string;
-    Description?: string
+    Description?: string;
 }
 
 export interface  LlmPromptGroupsUpdateModel {
     Name?       : string;
-    Description?: string
-    }
+    Description?: string;
+}
+
+export interface LlmPromptGroupsSearchFilters extends BaseSearchFilters {
+        id?                : uuid;
+        Name?              : string;
+}

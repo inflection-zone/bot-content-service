@@ -1,3 +1,4 @@
+import { BaseSearchFilters } from "../miscellaneous/base.search.types";
 import { uuid } from "../miscellaneous/system.types";
 
 export interface  QnaDocumentGroupsDto {
@@ -12,4 +13,8 @@ export interface  QnaDocumentGroupsCreateModel {
 export interface  QnaDocumentGroupsUpdateModel {
     Name?       : string;
     Description?: string;
+}
+export interface QnaDocumentGroupsSearchFilters extends BaseSearchFilters {
+    id?         : uuid;
+    Name?       : string;
 }

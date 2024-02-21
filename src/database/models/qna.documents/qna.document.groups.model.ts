@@ -15,21 +15,8 @@ export class QnaDocumentGroups extends BaseEntity {
 
     @ManyToMany(() => QnaDocuments)
     @JoinTable()
-         "llm_group_prompts":QnaDocuments[];
-    // @ManyToMany(() => QnaDocuments)
-    // @JoinTable({
-    //     name       : "qna_group_documents",
-    //     joinColumn : {
-    //         name                 : "GroupId",
-    //         referencedColumnName : "id"
-    //     },
-    //     inverseJoinColumn : {
-    //         name                 : "DocumentId",
-    //         referencedColumnName : "id"
-    //     }
-    // })
-    // qna_documents: QnaDocuments[];
-
+         "qna_group_documents":QnaDocuments[];
+    
 @CreateDateColumn()
 CreatedAt: Date;
 
@@ -38,4 +25,5 @@ UpdatedAt: Date;
 
 @DeleteDateColumn()
 DeletedAt: Date;
+
 }

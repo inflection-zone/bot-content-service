@@ -1,5 +1,5 @@
-import { decimal, integer } from "../../../domain.types/miscellaneous/system.types";
-import {Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn, ManyToMany, JoinTable} from "typeorm";
+import { decimal } from "../../../domain.types/miscellaneous/system.types";
+import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn } from "typeorm";
 import { LlmPrompts } from "./llm.prompts.model";
 
 @Entity('llm_prompt_versions')
@@ -40,4 +40,5 @@ DeletedAt: Date;
     name : 'PromptId'
 })
 llm_prompts: LlmPrompts;
+
 }

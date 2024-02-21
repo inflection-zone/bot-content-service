@@ -1,5 +1,5 @@
 // import { uuid } from "../../../domain.types/miscellaneous/system.types";
-import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn, ManyToMany, JoinTable} from "typeorm";
+import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn } from "typeorm";
 import { QnaDocuments } from "./qna.documents.model";
 
 @Entity('qna_document_versions')
@@ -21,7 +21,7 @@ DownloadUrl: string;
 FileResourceId: string;
 
 @Column(({ nullable: false }))
-Keywords: string[];
+Keywords: string;
 
 @CreateDateColumn()
 CreatedAt: Date;
@@ -40,4 +40,5 @@ DeletedAt: Date;
     name : 'DocumentId'
 })
 qna_documents : QnaDocuments;
+
 }

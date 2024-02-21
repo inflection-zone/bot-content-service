@@ -1,5 +1,5 @@
 import { LlmPrompts } from "../../models/llm.prompt/llm.prompts.model";
-import { LlmPromptsDto } from "../../../domain.types/llm.prompt/llm.promps.domain.types";
+import { LlmPromptsDto } from "../../../domain.types/llm.prompt/llm.prompts.domain.types";
 
 export class LlmPromptsMapper {
 

@@ -1,5 +1,5 @@
 import { QnaDocuments } from "../../../database/models/qna.documents/qna.documents.model";
-import { QnaDocumentsDto } from "../../../domain.types/qna.document/qna.document.domain.types";
+import { QnaDocumentsDto } from "../../../domain.types/qna.document/qna.documents.domain.types";
 
 export class QnaDocumentVersionsMapper {
 
@@ -21,8 +21,6 @@ export class QnaDocumentVersionsMapper {
             ChunkOverlap          : qnadocument.ChunkOverlap,
             Splitter              : qnadocument.Splitter,
             IsActive              : qnadocument.IsActive
-
-
         };
         return dto;
     };

@@ -1,3 +1,4 @@
+import { BaseSearchFilters } from "../miscellaneous/base.search.types";
 import { integer, uuid } from "../miscellaneous/system.types";
 
 export interface  QnaDocumentsDto {
@@ -44,4 +45,15 @@ export interface  QnaDocumentsUpdateModel {
     ChunkOverlap?           : integer;
     Splitter?               : string;
     IsActive?               : boolean;
+}
+export interface QnaDocumentsSearchFilters extends BaseSearchFilters {
+    id?                      : uuid;
+    Name?                    : string;
+    Filename?                : string;
+    Source?                  : string;
+    CreatedBy?               : string;
+    ParentDocument?          : string;
+    ParentDocumentVersion?   : integer;
+    ChunkingStrategy?        : string;
+    IsActive?                : boolean;
 }
