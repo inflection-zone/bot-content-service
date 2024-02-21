@@ -56,9 +56,9 @@ UpdatedAt: Date;
 @DeleteDateColumn()
 DeletedAt: Date;
 
-@ManyToMany(() => QnaDocumentGroups)
-@JoinTable()
-qna_group_documents:QnaDocumentGroups[];
+// @ManyToMany(() => QnaDocumentGroups)
+// @JoinTable()
+// qna_group_documents:QnaDocumentGroups[];
 
 @OneToMany(() => QnaDocumentVersions,
     qna_document_versions => qna_document_versions.qna_documents)
