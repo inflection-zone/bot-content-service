@@ -1,8 +1,8 @@
 import { BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { LlmPrompts } from "./llm.prompts.model";
+import { LlmPrompt } from "./llm.prompts.model";
 
 @Entity({ name: 'llm_prompt_groups' })
-export class LlmPromptGroups extends BaseEntity {
+export class LlmPromptGroup extends BaseEntity {
 
 @PrimaryGeneratedColumn('uuid')
 id: string;
@@ -13,9 +13,9 @@ Name: string;
 @Column({ type: 'varchar', length: 1024, nullable: true })
 Description: string;
 
-@ManyToMany(() => LlmPrompts)
+@ManyToMany(() => LlmPrompt)
 @JoinTable()
-"llm_group_prompts":LlmPrompts[];
+"llm_group_prompts":LlmPrompt[];
 
 @CreateDateColumn()
 CreatedAt: Date;

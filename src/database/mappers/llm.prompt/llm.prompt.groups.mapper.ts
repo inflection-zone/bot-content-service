@@ -1,8 +1,8 @@
 import { LlmPromptGroupsDto } from "../../../domain.types/llm.prompt/llm.prompt.groups.domain.types";
-import { LlmPromptGroups } from "../../models/llm.prompt/llm.prompt.groups.model";
+import { LlmPromptGroup } from "../../models/llm.prompt/llm.prompt.groups.model";
 export class LlmPromptGroupsMapper {
 
-    static toResponseDto = (llmpromptgroup: LlmPromptGroups): LlmPromptGroupsDto => {
+    static toResponseDto = (llmpromptgroup: LlmPromptGroup): LlmPromptGroupsDto => {
         if (llmpromptgroup == null) {
             return null;
         }

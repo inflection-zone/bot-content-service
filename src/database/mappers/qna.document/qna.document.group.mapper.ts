@@ -1,9 +1,9 @@
 import { QnaDocumentGroupsDto } from "../../../domain.types/qna.document/qna.document.groups.domain.types";
-import { QnaDocumentGroups } from "../../../database/models/qna.documents/qna.document.groups.model";
+import { QnaDocumentGroup } from "../../../database/models/qna.documents/qna.document.groups.model";
 
 export class QnaDocumentGroupsMapper {
 
-    static toResponseDto = (qnadocumentgroup: QnaDocumentGroups): QnaDocumentGroupsDto => {
+    static toResponseDto = (qnadocumentgroup: QnaDocumentGroup): QnaDocumentGroupsDto => {
         if (qnadocumentgroup == null) {
             return null;
         }
