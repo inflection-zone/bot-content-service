@@ -1,11 +1,11 @@
 import { decimal } from "../../../domain.types/miscellaneous/system.types";
 import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, JoinTable, OneToMany } from "typeorm";
-import { LlmPromptGroups } from "./llm.prompt.groups.model";
-import { LlmPromptVersions } from "./llm.prompt.versions.model";
+import { LlmPromptGroup } from "./llm.prompt.groups.model";
+import { LlmPromptVersion, LlmPromptVersion } from "./llm.prompt.versions.model";
 import { PromptUsecase } from "../../../domain.types/usecase.domain.types";
 
 @Entity('llm_prompts')
-export class LlmPrompts extends BaseEntity{
+export class LlmPrompt extends BaseEntity{
 
 @PrimaryGeneratedColumn('uuid')
 id: string;
@@ -56,8 +56,8 @@ DeletedAt: Date;
 // @JoinTable()
 // llm_group_prompts: LlmPromptGroups[];
 
-    @OneToMany(() => LlmPromptVersions,
+    @OneToMany(() => LlmPromptVersion,
         llm_prompt_versions => llm_prompt_versions.llm_prompts)
-        llm_prompt_versions: LlmPromptVersions[];
+        llm_prompt_versions: LlmPromptVersion[];
 
 }
