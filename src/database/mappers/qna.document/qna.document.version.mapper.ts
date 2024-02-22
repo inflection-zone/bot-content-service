@@ -1,9 +1,9 @@
-import { QnaDocumentVersions } from "../../../database/models/qna.documents/qna.document.versions.model";
+import { QnaDocumentVersion } from "../../../database/models/qna.documents/qna.document.versions.model";
 import { QnaDocumentVersionsDto } from "../../../domain.types/qna.document/qna.document.version.domain.types";
 
 export class QnaDocumentVersionsMapper {
 
-    static toResponseDto = (qnadocumentversion:QnaDocumentVersions): QnaDocumentVersionsDto => {
+    static toResponseDto = (qnadocumentversion:QnaDocumentVersion): QnaDocumentVersionsDto => {
         if (qnadocumentversion == null) {
             return null;
         }

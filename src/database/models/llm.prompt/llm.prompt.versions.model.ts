@@ -1,9 +1,9 @@
 import { decimal } from "../../../domain.types/miscellaneous/system.types";
 import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn } from "typeorm";
-import { LlmPrompts } from "./llm.prompts.model";
+import { LlmPrompt } from "./llm.prompts.model";
 
 @Entity('llm_prompt_versions')
-export class LlmPromptVersions extends BaseEntity{
+export class LlmPromptVersion extends BaseEntity{
 
 @PrimaryGeneratedColumn('uuid')
 id: string;
@@ -33,12 +33,12 @@ UpdatedAt: Date;
 DeletedAt: Date;
 
 @ManyToOne(
-    ()=>LlmPrompts,
+    ()=>LlmPrompt,
     llm_prompts=> llm_prompts.llm_prompt_versions
 )
 @JoinColumn({
     name : 'PromptId'
 })
-llm_prompts: LlmPrompts;
+llm_prompts: LlmPrompt;
 
 }

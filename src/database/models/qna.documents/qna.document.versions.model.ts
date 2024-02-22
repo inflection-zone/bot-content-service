@@ -1,9 +1,9 @@
 // import { uuid } from "../../../domain.types/miscellaneous/system.types";
 import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn } from "typeorm";
-import { QnaDocuments } from "./qna.documents.model";
+import { QnaDocument } from "./qna.documents.model";
 
 @Entity('qna_document_versions')
-export class QnaDocumentVersions extends BaseEntity{
+export class QnaDocumentVersion extends BaseEntity{
 
 @PrimaryGeneratedColumn('uuid')
 id: string;
@@ -33,12 +33,12 @@ UpdatedAt: Date;
 DeletedAt: Date;
 
 @ManyToOne(
-    ()=>QnaDocuments,
+    ()=>QnaDocument,
     qna_documents=> qna_documents.qna_document_versions
 )
 @JoinColumn({
     name : 'DocumentId'
 })
-qna_documents : QnaDocuments;
+qna_documents : QnaDocument;
 
 }

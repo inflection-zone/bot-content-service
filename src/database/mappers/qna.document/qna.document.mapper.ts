@@ -1,9 +1,9 @@
-import { QnaDocuments } from "../../../database/models/qna.documents/qna.documents.model";
+import { QnaDocument } from "../../../database/models/qna.documents/qna.documents.model";
 import { QnaDocumentsDto } from "../../../domain.types/qna.document/qna.documents.domain.types";
 
 export class QnaDocumentVersionsMapper {
 
-    static toResponseDto = (qnadocument:QnaDocuments): QnaDocumentsDto => {
+    static toResponseDto = (qnadocument:QnaDocument): QnaDocumentsDto => {
         if (qnadocument == null) {
             return null;
         }

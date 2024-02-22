@@ -5,13 +5,13 @@ import { logger } from '../logger/logger';
 import { DataSource } from "typeorm";
 import path from "path";
 import fs from 'fs';
-import { QnaDocumentGroups } from "./models/qna.documents/qna.document.groups.model";
-import { QnaDocuments } from "./models/qna.documents/qna.documents.model";
-import { QnaDocumentVersions } from "./models/qna.documents/qna.document.versions.model";
+import { QnaDocumentGroup } from "./models/qna.documents/qna.document.groups.model";
+import { QnaDocument } from "./models/qna.documents/qna.documents.model";
+import { QnaDocumentVersion } from "./models/qna.documents/qna.document.versions.model";
 import { DBLogger } from "./database.logger";
-import { LlmPromptVersions } from "./models/llm.prompt/llm.prompt.versions.model";
-import { LlmPromptGroups } from "./models/llm.prompt/llm.prompt.groups.model";
-import { LlmPrompts } from "./models/llm.prompt/llm.prompts.model";
+import { LlmPromptVersion } from "./models/llm.prompt/llm.prompt.versions.model";
+import { LlmPromptGroup } from "./models/llm.prompt/llm.prompt.groups.model";
+import { LlmPrompt } from "./models/llm.prompt/llm.prompts.model";
 import { QnaLibrary } from "./models/qna.documents/qna.library.model";
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -44,12 +44,12 @@ class DatabaseConnector {
         synchronize : true,
         //entities    : [this._basePath + '/**/**{.model.ts}'],
         entities    : [
-            QnaDocumentGroups,
-            QnaDocumentVersions,
-            QnaDocuments,
-            LlmPromptGroups,
-            LlmPrompts,
-            LlmPromptVersions,
+            QnaDocumentGroup,
+            QnaDocumentVersion,
+            QnaDocument,
+            LlmPromptGroup,
+            LlmPrompt,
+            LlmPromptVersion,
             QnaLibrary,
         ],
         migrations  : [],

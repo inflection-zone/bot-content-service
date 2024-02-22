@@ -1,9 +1,9 @@
-import { LlmPrompts } from "../../models/llm.prompt/llm.prompts.model";
+import { LlmPrompt } from "../../models/llm.prompt/llm.prompts.model";
 import { LlmPromptsDto } from "../../../domain.types/llm.prompt/llm.prompts.domain.types";
 
 export class LlmPromptsMapper {
 
-    static toResponseDto = (llmprompts:LlmPrompts): LlmPromptsDto => {
+    static toResponseDto = (llmprompts:LlmPrompt): LlmPromptsDto => {
         if (llmprompts == null) {
             return null;
         }
