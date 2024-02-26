@@ -1,20 +1,23 @@
 import { BaseSearchFilters } from "../miscellaneous/base.search.types";
 import { uuid } from "../miscellaneous/system.types";
 
-export interface  QnaDocumentGroupsDto {
+export interface  LlmPromptGroupDto {
     id         : uuid;
     Name       : string;
     Description: string;
 }
-export interface  QnaDocumentGroupsCreateModel {
+
+export interface  LlmPromptGroupCreateModel {
     Name        : string;
     Description?: string;
 }
-export interface  QnaDocumentGroupsUpdateModel {
+
+export interface  LlmPromptGroupUpdateModel {
     Name?       : string;
     Description?: string;
 }
-export interface QnaDocumentGroupsSearchFilters extends BaseSearchFilters {
-    id?         : uuid;
-    Name?       : string;
+
+export interface LlmPromptGroupSearchFilters extends BaseSearchFilters {
+        id?                : uuid;
+        Name?              : string;
 }

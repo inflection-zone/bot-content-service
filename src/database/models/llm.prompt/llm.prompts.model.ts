@@ -1,7 +1,7 @@
 import { decimal } from "../../../domain.types/miscellaneous/system.types";
-import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, JoinTable, OneToMany } from "typeorm";
-import { LlmPromptGroup } from "./llm.prompt.groups.model";
-import { LlmPromptVersion, LlmPromptVersion } from "./llm.prompt.versions.model";
+import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany } from "typeorm";
+// import { LlmPromptGroup } from "./llm.prompt.groups.model";
+import { LlmPromptVersion } from "./llm.prompt.versions.model";
 import { PromptUsecase } from "../../../domain.types/usecase.domain.types";
 
 @Entity('llm_prompts')

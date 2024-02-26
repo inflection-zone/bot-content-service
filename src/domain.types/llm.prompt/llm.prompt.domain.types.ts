@@ -1,7 +1,7 @@
 import { BaseSearchFilters } from "../miscellaneous/base.search.types";
 import { decimal, uuid } from "../miscellaneous/system.types";
 
-export interface  LlmPromptsCreateModel {
+export interface  LlmPromptCreateModel {
     Name              : string;
     Description?      : string;
     UseCaseType       : string;
@@ -14,7 +14,7 @@ export interface  LlmPromptsCreateModel {
     PresencePenalty   : decimal;
     IsActive          : boolean;
 }
-export interface LlmPromptsUpdateteModel {
+export interface LlmPromptUpdateModel {
     Name?              : string;
     Description?       : string;
     UseCaseType?       : string;
@@ -27,7 +27,7 @@ export interface LlmPromptsUpdateteModel {
     PresencePenalty?   : decimal;
     IsActive?          : boolean;
 }
-export interface LlmPromptsDto {
+export interface LlmPromptDto {
     id                : uuid;
     Name              : string;
     Description       : string;

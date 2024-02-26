@@ -1,13 +1,13 @@
-import { QnaDocuments } from "../../../database/models/qna.documents/qna.documents.model";
-import { QnaDocumentsDto } from "../../../domain.types/qna.document/qna.documents.domain.types";
+import { QnaDocument } from "../../../database/models/qna.documents/qna.documents.model";
+import { QnaDocumentDto } from "../../../domain.types/qna.document/qna.document.domain.types";
 
-export class QnaDocumentVersionsMapper {
+export class QnaDocumentVersionMapper {
 
-    static toResponseDto = (qnadocument:QnaDocuments): QnaDocumentsDto => {
+    static toResponseDto = (qnadocument:QnaDocument): QnaDocumentDto => {
         if (qnadocument == null) {
             return null;
         }
-        const dto: QnaDocumentsDto = {
+        const dto: QnaDocumentDto = {
             id                    : qnadocument.id,
             Name                  : qnadocument.Name,
             Description           : qnadocument.Description,

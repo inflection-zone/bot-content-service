@@ -1,7 +1,7 @@
 import { integer } from "../../../domain.types/miscellaneous/system.types";
 // import { uuid } from "../../../domain.types/miscellaneous/system.types";
 import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, JoinTable, OneToMany } from "typeorm";
-import { QnaDocumentGroup } from "./qna.document.groups.model";
+
 import { QnaDocumentVersion } from "./qna.document.versions.model";
 import { ChunkingStrategy } from "../../../domain.types/chunking.strategy.domain.types";
 

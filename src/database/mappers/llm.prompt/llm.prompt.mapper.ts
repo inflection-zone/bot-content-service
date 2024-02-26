@@ -1,13 +1,13 @@
-import { LlmPrompts } from "../../models/llm.prompt/llm.prompts.model";
-import { LlmPromptsDto } from "../../../domain.types/llm.prompt/llm.prompts.domain.types";
+import { LlmPrompt } from "../../models/llm.prompt/llm.prompts.model";
+import { LlmPromptDto } from "../../../domain.types/llm.prompt/llm.prompt.domain.types";
 
-export class LlmPromptsMapper {
+export class LlmPromptMapper {
 
-    static toResponseDto = (llmprompts:LlmPrompts): LlmPromptsDto => {
+    static toResponseDto = (llmprompts:LlmPrompt): LlmPromptDto => {
         if (llmprompts == null) {
             return null;
         }
-        const dto: LlmPromptsDto = {
+        const dto: LlmPromptDto = {
             id                : llmprompts.id,
             Name              : llmprompts.Name,
             Description       : llmprompts.Description,

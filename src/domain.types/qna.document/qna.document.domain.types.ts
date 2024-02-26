@@ -1,7 +1,7 @@
 import { BaseSearchFilters } from "../miscellaneous/base.search.types";
 import { integer, uuid } from "../miscellaneous/system.types";
 
-export interface  QnaDocumentsDto {
+export interface  QnaDocumentDto {
     id                      : uuid;
     Name                    : string;
     Description             : string;
@@ -17,7 +17,7 @@ export interface  QnaDocumentsDto {
     IsActive                : boolean;
 
 }
-export interface  QnaDocumentsCreateModel {
+export interface  QnaDocumentCreateModel {
     Name                    : string;
     Description?            : string;
     Filename                : string;
@@ -32,7 +32,7 @@ export interface  QnaDocumentsCreateModel {
     IsActive                : boolean;
 }
     
-export interface  QnaDocumentsUpdateModel {
+export interface  QnaDocumentUpdateModel {
     Name?                   : string;
     Description?            : string;
     Filename?               : string;
@@ -46,7 +46,7 @@ export interface  QnaDocumentsUpdateModel {
     Splitter?               : string;
     IsActive?               : boolean;
 }
-export interface QnaDocumentsSearchFilters extends BaseSearchFilters {
+export interface QnaDocumentSearchFilters extends BaseSearchFilters {
     id?                      : uuid;
     Name?                    : string;
     Filename?                : string;

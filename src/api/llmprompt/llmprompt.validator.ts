@@ -26,24 +26,25 @@ export class LlmPromptValidator extends BaseValidator {
                 IsActive          : joi.boolean(),
             });
             return await schema.validateAsync(request.body);
+            
             //  return this.getValidUserCreateModel(request);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    // public validateGetRequest = async (request: express.Request) => {
-    //     try {
-    //         const schema = joi.object({
-    //             id : joi.string().required(),
+    public validateGetRequest = async (request: express.Request) => {
+        try {
+            const schema = joi.object({
+                id : joi.string().required(),
               
-    //         });
-    //         await schema.validateAsync(request.query);
-    //         // return this.getSearchFilters(request.query);
-    //     } catch (error) {
-    //         ErrorHandler.handleValidationError(error);
-    //     }
-    // };
+            });
+           return await schema.validateAsync(request.query);
+            // return this.getSearchFilters(request.query);
+        } catch (error) {
+            ErrorHandler.handleValidationError(error);
+        }
+    };
 
 
 
