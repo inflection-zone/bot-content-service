@@ -122,6 +122,21 @@ export class LlmpromptService extends BaseService {
             ErrorHandler.throwDbAccessError('DB Error: Unable to get Llm prompt record!', error);
         }
     };
+    
+    public delete = async (id: uuid)=> {
+        try {
+            var record = await this._llmPromptRepository.findOne({
+                where : {
+                    id : id
+                }
+            });
+            var result = await this._llmPromptRepository.remove(record);
+            result != null;
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
 
 
 }

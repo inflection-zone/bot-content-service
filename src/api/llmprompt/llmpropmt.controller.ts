@@ -1,4 +1,4 @@
-import { LlmPromptCreateModel, LlmPromptUpdateModel  } from "../../domain.types/llm.prompt/llm.prompt.domain.types";
+import { LlmPromptCreateModel, LlmPromptDto, LlmPromptUpdateModel  } from "../../domain.types/llm.prompt/llm.prompt.domain.types";
 import { LlmPromptValidator } from "./llmprompt.validator";
 import { ErrorHandler } from "../../common/handlers/error.handler";
 import { ResponseHandler } from "../../common/handlers/response.handler";
@@ -67,6 +67,24 @@ export class LlmPromptController {
             const record = await this._service.getAll();
             const message = 'LLm prompt retrieved successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+    delete = async (request: express.Request, response: express.Response) => {
+        try {
+            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const record: LlmPromptDto = await this._service.getById(id);
+            if (record == null) {
+                ErrorHandler.throwNotFoundError('User with id ' + id.toString() + ' cannot be found!');
+            }
+            const userDeleted = await this._service.delete(id);
+            const result = {
+                Deleted : userDeleted
+            };
+            const message = 'User deleted successfully!';
+            ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
