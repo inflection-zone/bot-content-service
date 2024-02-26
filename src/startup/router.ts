@@ -1,7 +1,10 @@
 import express from "express";
 import { logger } from "../logger/logger";
-import { register as registerQnaDocumentGroup } from '../../src/api/content/qna.document.group/qna.document.groups.routes';
-import { register as registerQnaDocument } from '../../src/api/content/qna.documents/qna.document.routes';
+import { register as registerQnaDocumentGroup } from '../api/content/qna.document.group/qna.document.group.routes';
+import { register as registerQnaDocument } from '../api/content/qna.document/qna.document.routes';
+import { register as registerQnaDocumentVersion } from "../api/content/qna.document.version/qna.document.version.routes";
+import { register as registerQnaDocumentLibrary } from "../api/content/qna.document.library/qna.document.library.routes";
+
 ////////////////////////////////////////////////////////////////////////////////////
 
 export class Router {
@@ -25,6 +28,8 @@ export class Router {
 
                 registerQnaDocumentGroup(this._app);
                 registerQnaDocument(this._app);
+                registerQnaDocumentVersion(this._app);
+                registerQnaDocumentLibrary(this._app);
 
                 resolve(true);
 

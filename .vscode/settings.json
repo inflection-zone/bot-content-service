@@ -1,10 +1,31 @@
 {
     "cSpell.words": [
+        "Aaware",
+        "apikey",
+        "contyent",
         "documentgroup",
+        "documentgroups",
+        "documentlibrary",
+        "documentlibrarys",
+        "documentversion",
+        "documentversions",
         "endregion",
+        "exraction",
+        "fileupload",
+        "Forebidden",
+        "hstore",
         "Lenght",
         "linebreak",
+        "Penality",
+        "pino",
         "Pratiksha",
-        "typeorm"
+        "prettystream",
+        "readdirp",
+        "scheducled",
+        "structue",
+        "tsyringe",
+        "typeorm",
+        "usecase",
+        "uuidv"
     ]
 }

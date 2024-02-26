@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import 'reflect-metadata';
 // import { ModuleInjector } from '../modules/module.injector';
 import { DependencyContainer } from 'tsyringe';

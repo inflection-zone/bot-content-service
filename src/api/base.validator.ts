@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-spacing */
 import joi from 'joi';
 import express from 'express';
 import {

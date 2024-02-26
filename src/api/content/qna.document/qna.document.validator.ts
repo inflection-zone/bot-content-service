@@ -1,3 +1,4 @@
+/* eslint-disable no-multiple-empty-lines */
 /* eslint-disable padded-blocks */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable key-spacing */
@@ -9,8 +10,11 @@ import BaseValidator from '../../base.validator';
 
 // import { QnaDocuments } from 'src/database/models/qna.documents/qna.documents.model';
 
-import { QnaDocumentCreateModel, QnaDocumentUpdateModel } from '../../../domain.types/content/qna.document.domain.types';
-import { integer } from '../../../../dist/src/domain.types/miscellaneous/system.types';
+import {
+    QnaDocumentCreateModel,
+    QnaDocumentUpdateModel,
+} from '../../../domain.types/content/qna.document.domain.types';
+import { integer } from '../../../domain.types/miscellaneous/system.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 

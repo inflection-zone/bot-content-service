@@ -1,6 +1,6 @@
 /* eslint-disable eol-last */
 import express from 'express';
-import { QnaDocumentController } from '../qna.documents/qna.document.controller';
+import { QnaDocumentsGroupController } from './qna.document.group.controller';
 // import { Loader } from '../../../startup/loader';
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -8,7 +8,7 @@ import { QnaDocumentController } from '../qna.documents/qna.document.controller'
 export const register = (app: express.Application): void => {
     const router = express.Router();
     // const authenticator = Loader.Authenticator;
-    const controller = new QnaDocumentController();
+    const controller = new QnaDocumentsGroupController();
 
     router.post('/', controller.create);
     // router.get('/search', controller.search);
@@ -16,5 +16,5 @@ export const register = (app: express.Application): void => {
     router.put('/:id', controller.update);
     router.delete('/:id', controller.delete);
 
-    app.use('/api/v1/document', router);
+    app.use('/api/v1/documentgroups', router);
 };

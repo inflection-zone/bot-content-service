@@ -3,7 +3,7 @@ import { integer } from '../miscellaneous/system.types';
 
 //////////////////////////////////////////////////////////////
 
-export interface QnaDocumentGroupCreateModel {
+export interface QnaDocumentVersionCreateModel {
     VersionNumber: integer;
     StorageUrl: string;
     DownloadUrl: string;
@@ -11,7 +11,7 @@ export interface QnaDocumentGroupCreateModel {
     Keywords: string;
 }
 
-export interface QnaDocumentGroupUpdateModel {
+export interface QnaDocumentVersionUpdateModel {
     VersionNumber?: integer;
     StorageUrl?: string;
     DownloadUrl?: string;
@@ -19,7 +19,7 @@ export interface QnaDocumentGroupUpdateModel {
     Keywords?: string;
 }
 
-export interface QnaDocumentGroupResponseDto {
+export interface QnaDocumentVersionResponseDto {
     id: string;
     VersionNumber: integer;
     StorageUrl: string;

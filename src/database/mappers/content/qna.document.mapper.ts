@@ -4,7 +4,7 @@
 /* eslint-disable padded-blocks */
 /* eslint-disable linebreak-style */
 import { QnaDocumentResponseDto } from '../../../domain.types/content/qna.document.domain.types';
-import { QnaDocument } from '../../models/qna.documents/qna.document.model';
+import { QnaDocument } from '../../models/qna.document/qna.document.model';
 
 export class QnaDocumentMapper {
     static toResponseDto = (qnaDocument: QnaDocument): QnaDocumentResponseDto => {

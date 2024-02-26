@@ -1,3 +1,5 @@
+// 
+
 {
     "compilerOptions": {
         "declaration": true,
@@ -29,7 +31,7 @@
     "include": [
         "src/**/*"
     ],
-    "exclude":[ 
+    "exclude":[
         "node_modules"
     ],
 }

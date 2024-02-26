@@ -4,14 +4,23 @@ import { uuid } from '../miscellaneous/system.types';
 //////////////////////////////////////////////////////////////
 
 export interface QnaDocumentGroupCreateModel {
-    DocumentId: uuid;
+    Name: string;
+    Description?: string;
+    
 }
 
 export interface QnaDocumentGroupUpdateModel {
-    DocumentId?: uuid;
+    Name?: string;
+    Description?: string;
+   
 }
 
 export interface QnaDocumentGroupResponseDto {
     id: uuid;
-    DocumentId: uuid;
+    Name: string;
+    Description?: string;
+    // QnaDocuments: string;
+
+    CreatedAt: Date;
+    UpdatedAt: Date;
 }

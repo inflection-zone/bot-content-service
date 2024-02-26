@@ -1,9 +1,9 @@
 /* eslint-disable eol-last */
 import { BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { QnaDocuments } from "./qna.document.model";
+import { QnaDocument } from "./qna.document.model";
 
 @Entity({ name: 'qna_document_groups' })
-export class QnaDocumentGroups extends BaseEntity {
+export class QnaDocumentGroup extends BaseEntity {
 
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -14,9 +14,9 @@ export class QnaDocumentGroups extends BaseEntity {
     @Column({ type: 'varchar', length: 1024, nullable: true })
     Description: string;
 
-    @ManyToMany(() => QnaDocuments)
+    @ManyToMany(() => QnaDocument)
     @JoinTable()
-         "qna_group_documents":QnaDocuments[];
+         "qna_group_documents":QnaDocument[];
     
 @CreateDateColumn()
 CreatedAt: Date;

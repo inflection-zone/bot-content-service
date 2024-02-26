@@ -1,5 +1,5 @@
 import express from 'express';
-import { Authorizer } from '../auth/authorizer';
+// import { Authorizer } from '../auth/authorizer';
 import { ErrorHandler } from '../common/handlers/error.handler';
 import { Loader } from '../startup/loader';
 
@@ -7,11 +7,11 @@ import { Loader } from '../startup/loader';
 
 export class BaseController {
    
-    _authorizer: Authorizer|null = null;
+    // _authorizer: Authorizer|null = null;
 
-    constructor() {
-        this._authorizer = Loader.Authorizer;
-    }
+    // constructor() {
+    //     this._authorizer = Loader.Authorizer;
+    // }
 
     authorize = async (
         context: string,

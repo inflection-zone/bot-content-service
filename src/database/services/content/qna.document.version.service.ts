@@ -2,7 +2,7 @@
 /* eslint-disable padded-blocks */
 /* eslint-disable key-spacing */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { QnaDocument } from '../../models/qna.document/qna.document.model';
+import { QnaDocumentVersion } from '../../models/qna.document/qna.document.version.model';
 
 import { logger } from '../../../logger/logger';
 import { ErrorHandler } from '../../../common/handlers/error.handler';
@@ -12,46 +12,42 @@ import { FindManyOptions, Like, Repository } from 'typeorm';
 import { BaseService } from '../base.service';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
 
-import { QnaDocumentCreateModel, QnaDocumentUpdateModel } from '../../../domain.types/content/qna.document.domain.types';
-import { QnaDocumentResponseDto } from '../../../domain.types/content/qna.document.domain.types';
-import { QnaDocumentMapper } from '../../mappers/content/qna.document.mapper';
+import {
+    QnaDocumentVersionCreateModel,
+    QnaDocumentVersionUpdateModel,
+} from '../../../domain.types/content/qna.document.version.domain.types';
+import { QnaDocumentVersionResponseDto } from '../../../domain.types/content/qna.document.version.domain.types';
+import { QnaDocumentVersionMapper } from '../../mappers/content/qna.document.version.mapper';
 
 ///////////////////////////////////////////////////////////////////////
 
-export class QnaDocumentService extends BaseService {
-    _qnaDocumentRepository: Repository<QnaDocument> = Source.getRepository(QnaDocument);
+export class QnaDocumentVersionService extends BaseService {
+    _qnaDocumentVersionRepository: Repository<QnaDocumentVersion> = Source.getRepository(QnaDocumentVersion);
 
-    public create = async (createModel: QnaDocumentCreateModel): Promise<QnaDocumentResponseDto> => {
-        const group = this._qnaDocumentRepository.create({
-            Name: createModel.Name,
-            Description: createModel.Description,
-            Filename: createModel.Filename,
-            Source: createModel.Source,
-            ParentDocument: createModel.ParentDocument,
-            ParentDocumentVersion: createModel.ParentDocumentVersion,
-            ChunkingStrategy: createModel.ChunkingStrategy,
-            ChunkingLenght: createModel.ChunkingLenght,
-            ChunkOverlap: createModel.ChunkOverlap,
-            Splitter: createModel.Splitter,
-            IsActive: createModel.IsActive,
-            CreatedBy: createModel.CreatedBy,
+    public create = async (createModel: QnaDocumentVersionCreateModel): Promise<QnaDocumentVersionResponseDto> => {
+        const version = this._qnaDocumentVersionRepository.create({
+            VersionNumber: createModel.VersionNumber,
+            StorageUrl: createModel.StorageUrl,
+            DownloadUrl: createModel.DownloadUrl,
+            FileResourceId: createModel.FileResourceId,
+            Keywords: createModel.Keywords,
         });
-        var record = await this._qnaDocumentRepository.save(group);
-        return QnaDocumentMapper.toResponseDto(record);
+        var record = await this._qnaDocumentVersionRepository.save(version);
+        return QnaDocumentVersionMapper.toResponseDto(record);
     };
 
-    public getById = async (id: uuid): Promise<QnaDocumentResponseDto> => {
+    public getById = async (id: uuid): Promise<QnaDocumentVersionResponseDto> => {
         try {
-            var document = await this._qnaDocumentRepository.findOne({
-                where : {
-                    id : id
+            var documentversion = await this._qnaDocumentVersionRepository.findOne({
+                where: {
+                    id: id,
                 },
                 // relations: {
                 //     Category: true,
                 //     Client  : true
                 // }
             });
-            return QnaDocumentMapper.toResponseDto(document);
+            return QnaDocumentVersionMapper.toResponseDto(documentversion);
         } catch (error) {
             logger.error(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
@@ -80,59 +76,37 @@ export class QnaDocumentService extends BaseService {
     //     }
     // };
 
-    public update = async (id: uuid, model: QnaDocumentUpdateModel)
-        : Promise<QnaDocumentResponseDto> => {
+    public update = async (id: uuid, model: QnaDocumentVersionUpdateModel): Promise<QnaDocumentVersionResponseDto> => {
         try {
-            const document = await this._qnaDocumentRepository.findOne({
-                where : {
-                    id : id
-                }
+            const documentversion = await this._qnaDocumentVersionRepository.findOne({
+                where: {
+                    id: id,
+                },
             });
-            if (!document) {
-                ErrorHandler.throwNotFoundError('Document not found!');
+            if (!documentversion) {
+                ErrorHandler.throwNotFoundError('Document version not found!');
             }
             //Badge code is not modifiable
             //Use renew key to update ApiKey, ValidFrom and ValidTill
 
-           
-            if (model.Name != null) {
-                document.Name = model.Name;
+            if (model.VersionNumber != null) {
+                documentversion.VersionNumber = model.VersionNumber;
             }
-            if (model.Description != null) {
-                document.Description = model.Description;
+            if (model.StorageUrl != null) {
+                documentversion.StorageUrl = model.StorageUrl;
             }
-            if (model.Filename != null) {
-                document.Filename = model.Filename;
+            if (model.DownloadUrl != null) {
+                documentversion.DownloadUrl = model.DownloadUrl;
             }
-            if (model.Source != null) {
-                document.Source = model.Source;
+            if (model.FileResourceId != null) {
+                documentversion.FileResourceId = model.FileResourceId;
             }
-            if (model.ParentDocument != null) {
-                document.ParentDocument = model.ParentDocument;
+            if (model.Keywords != null) {
+                documentversion.Keywords = model.Keywords;
             }
-            if (model.ParentDocumentVersion != null) {
-                document.ParentDocumentVersion = model.ParentDocumentVersion;
-            }
-            if (model.ChunkingStrategy != null) {
-                document.ChunkingStrategy = model.ChunkingStrategy;
-            }
-            if (model.ChunkingLenght != null) {
-                document.ChunkingLenght = model.ChunkingLenght;
-            }
-            if (model.ChunkOverlap != null) {
-                document.ChunkOverlap = model.ChunkOverlap;
-            }
-            if (model.Splitter != null) {
-                document.Splitter = model.Splitter;
-            }
-            if (model.IsActive != null) {
-                document.IsActive = model.IsActive;
-            }
-            if (model.CreatedBy != null) {
-                document.CreatedBy = model.CreatedBy;
-            }
-            var record = await this._qnaDocumentRepository.save(document);
-            return QnaDocumentMapper.toResponseDto(record);
+
+            var record = await this._qnaDocumentVersionRepository.save(documentversion);
+            return QnaDocumentVersionMapper.toResponseDto(record);
         } catch (error) {
             logger.error(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
@@ -141,12 +115,12 @@ export class QnaDocumentService extends BaseService {
 
     public delete = async (id: string): Promise<boolean> => {
         try {
-            var record = await this._qnaDocumentRepository.findOne({
-                where : {
-                    id : id
-                }
+            var record = await this._qnaDocumentVersionRepository.findOne({
+                where: {
+                    id: id,
+                },
             });
-            var result = await this._qnaDocumentRepository.remove(record);
+            var result = await this._qnaDocumentVersionRepository.remove(record);
             return result != null;
         } catch (error) {
             logger.error(error.message);
@@ -197,8 +171,4 @@ export class QnaDocumentService extends BaseService {
     // };
 
     //#endregion
-
-   
-
-   
 }

@@ -1,5 +1,5 @@
 import * as cron from 'node-cron';
-// import * as CronSchedules from '../../seed.data/cron.schedules.json';
+import * as CronSchedules from '../';
 import { logger } from '../logger/logger';
 
 ///////////////////////////////////////////////////////////////////////////
@@ -14,7 +14,7 @@ export class Scheduler {
 
     private constructor() {
         const env = process.env.NODE_ENV || 'development';
-        // Scheduler._schedules = CronSchedules[env];
+        Scheduler._schedules = CronSchedules[env];
         logger.info('Initializing the schedular.');
     }
 
