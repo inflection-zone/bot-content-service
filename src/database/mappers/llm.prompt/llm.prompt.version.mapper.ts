@@ -1,13 +1,13 @@
-import { LlmPromptVersionsDto } from "../../../domain.types/llm.prompt/llm.prompt.versions.domain.types";
-import { LlmPromptVersions } from "../../models/llm.prompt/llm.prompt.versions.model";
+import { LlmPromptVersionDto } from "../../../domain.types/llm.prompt/llm.prompt.version.domain.types";
+import { LlmPromptVersion } from "../../models/llm.prompt/llm.prompt.versions.model";
 
-export class LlmPromptVersionsMapper {
+export class LlmPromptVersionMapper {
 
-    static toResponseDto = (llmpromptversion:LlmPromptVersions): LlmPromptVersionsDto => {
+    static toResponseDto = (llmpromptversion:LlmPromptVersion): LlmPromptVersionDto => {
         if (llmpromptversion == null) {
             return null;
         }
-        const dto: LlmPromptVersionsDto = {
+        const dto: LlmPromptVersionDto = {
             id            : llmpromptversion.id,
             VersionNumber : llmpromptversion.VersionNumber,
             // PromptId      : llmpromptversion.PromptId,

@@ -1,12 +1,12 @@
 import { integer } from "../../../domain.types/miscellaneous/system.types";
 // import { uuid } from "../../../domain.types/miscellaneous/system.types";
 import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, JoinTable, OneToMany } from "typeorm";
-import { QnaDocumentGroups } from "./qna.document.groups.model";
-import { QnaDocumentVersions } from "./qna.document.versions.model";
+
+import { QnaDocumentVersion } from "./qna.document.versions.model";
 import { ChunkingStrategy } from "../../../domain.types/chunking.strategy.domain.types";
 
 @Entity('qna_documents')
-export class QnaDocuments extends BaseEntity{
+export class QnaDocument extends BaseEntity{
 
 @PrimaryGeneratedColumn('uuid')
 id: string;
@@ -56,12 +56,12 @@ UpdatedAt: Date;
 @DeleteDateColumn()
 DeletedAt: Date;
 
-@ManyToMany(() => QnaDocumentGroups)
-@JoinTable()
-qna_group_documents:QnaDocumentGroups[];
+// @ManyToMany(() => QnaDocumentGroups)
+// @JoinTable()
+// qna_group_documents:QnaDocumentGroups[];
 
-@OneToMany(() => QnaDocumentVersions,
+@OneToMany(() => QnaDocumentVersion,
     qna_document_versions => qna_document_versions.qna_documents)
-    qna_document_versions: QnaDocumentVersions[];
+    qna_document_versions: QnaDocumentVersion[];
 
 }

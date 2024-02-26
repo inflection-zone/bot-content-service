@@ -1,13 +1,13 @@
-import { QnaDocumentGroupsDto } from "../../../domain.types/qna.document/qna.document.groups.domain.types";
-import { QnaDocumentGroups } from "../../../database/models/qna.documents/qna.document.groups.model";
+import { QnaDocumentGroupDto } from "../../../domain.types/qna.document/qna.document.group.domain.types";
+import { QnaDocumentGroup } from "../../../database/models/qna.documents/qna.document.groups.model";
 
-export class QnaDocumentGroupsMapper {
+export class QnaDocumentGroupMapper {
 
-    static toResponseDto = (qnadocumentgroup: QnaDocumentGroups): QnaDocumentGroupsDto => {
+    static toResponseDto = (qnadocumentgroup: QnaDocumentGroup): QnaDocumentGroupDto => {
         if (qnadocumentgroup == null) {
             return null;
         }
-        const dto: QnaDocumentGroupsDto = {
+        const dto: QnaDocumentGroupDto = {
             id          : qnadocumentgroup.id,
             Name        : qnadocumentgroup.Name,
             Description : qnadocumentgroup.Description

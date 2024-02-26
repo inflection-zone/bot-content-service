@@ -3,7 +3,7 @@ import "reflect-metadata";
 import express from 'express';
 import fileUpload from 'express-fileupload';
 import helmet from 'helmet';
-// import { Router } from './startup/router';
+import { Router } from './startup/router';
 import { logger } from './logger/logger';
 import { ConfigurationManager } from "./config/configuration.manager";
 // import { Loader } from './startup/loader';
@@ -23,15 +23,15 @@ export default class Application {
 
     public _app: express.Application = null;
 
-    // private _router: Router = null;
+    private _router: Router = null;
 
     private static _instance: Application = null;
-
+   
     //#endregion
 
     private constructor() {
         this._app = express();
-        // this._router = new Router(this._app);
+        this._router = new Router(this._app);
     }
 
     public static instance(): Application {
@@ -47,7 +47,7 @@ export default class Application {
             await this.setupDatabaseConnection();
             // await Loader.init();
             await this.setupMiddlewares();
-            // await this._router.init();
+            await this._router.init();
             // const seeder = new Seeder();
             // await seeder.seed();
             // await Scheduler.instance().schedule();
