@@ -1,10 +1,10 @@
-import { LlmPromptCreateModel, LlmPromptDto, LlmPromptUpdateModel  } from "../../domain.types/llm.prompt/llm.prompt.domain.types";
-import { LlmPromptValidator } from "./llmprompt.validator";
-import { ErrorHandler } from "../../common/handlers/error.handler";
-import { ResponseHandler } from "../../common/handlers/response.handler";
+import { LlmPromptCreateModel, LlmPromptDto, LlmPromptUpdateModel  } from "../../../domain.types/llm.prompt/llm.prompt.domain.types";
+import { LlmPromptValidator } from "././llmprompt.validator";
+import { ErrorHandler } from "../../../common/handlers/error.handler";
+import { ResponseHandler } from "../../../common/handlers/response.handler";
 import express from 'express';
-import { LlmpromptService } from "../../database/services/llmprompt.service";
-import { uuid } from "../../domain.types/miscellaneous/system.types";
+import { LlmpromptService } from "../../../database/services/llmprompt.service";
+import { uuid } from "../../../domain.types/miscellaneous/system.types";
 
 export class LlmPromptController {
 
@@ -77,7 +77,7 @@ export class LlmPromptController {
             const id = await this._validator.validateParamAsUUID(request, 'id');
             const record: LlmPromptDto = await this._service.getById(id);
             if (record == null) {
-                ErrorHandler.throwNotFoundError('User with id ' + id.toString() + ' cannot be found!');
+                ErrorHandler.throwNotFoundError('User with id cannot be found!');
             }
             const userDeleted = await this._service.delete(id);
             const result = {

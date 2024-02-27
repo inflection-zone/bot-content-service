@@ -1,6 +1,6 @@
 import express from "express";
 import { logger } from "../logger/logger";
-import { register as registerLlmPromptRoutes } from "../api/llmprompt/llmprompt.routes";
+import { register as registerLlmPromptRoutes } from "../api/llmprompt/llmprompt.table/llmprompt.routes";
 // import { register as registerClientRoutes } from "../api/client/client.routes";
 // import { register as registerBadgeRoutes } from "../api/awards/badge/badge.routes";
 // import { register as registerBadgeCategoryRoutes } from "../api/awards/badge.category/badge.category.routes";
