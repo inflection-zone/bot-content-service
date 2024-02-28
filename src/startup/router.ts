@@ -1,8 +1,8 @@
 import express from "express";
 import { logger } from "../logger/logger";
 import { register as registerLlmPromptRoutes } from "../api/llmprompt/llmprompt.table/llmprompt.routes";
-// import { register as registerClientRoutes } from "../api/client/client.routes";
-// import { register as registerBadgeRoutes } from "../api/awards/badge/badge.routes";
+import { register as registerLlmPromptVersionRoutes } from "../api/llmprompt/llmprompt.version/llmprompt.version.routes";
+import { register as registerLlmPromptGroupRoutes } from "../api/llmprompt/llmprompt.group/llmprompt.group.routes";
 // import { register as registerBadgeCategoryRoutes } from "../api/awards/badge.category/badge.category.routes";
 // import { register as registerParticipantRoutes } from "../api/awards/participant/participant.routes";
 // eslint-disable-next-line max-len
@@ -40,8 +40,8 @@ export class Router {
                 });
 
                 registerLlmPromptRoutes(this._app);
-                // registerClientRoutes(this._app);
-                // registerBadgeRoutes(this._app);
+                registerLlmPromptVersionRoutes(this._app);
+                registerLlmPromptGroupRoutes(this._app);
                 // registerBadgeCategoryRoutes(this._app);
                 // registerParticipantRoutes(this._app);
                 // registerParticipantGroupRoutes(this._app);

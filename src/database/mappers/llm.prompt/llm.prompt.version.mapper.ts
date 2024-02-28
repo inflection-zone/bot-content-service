@@ -10,7 +10,7 @@ export class LlmPromptVersionMapper {
         const dto: LlmPromptVersionDto = {
             id            : llmpromptversion.id,
             VersionNumber : llmpromptversion.VersionNumber,
-            // PromptId      : llmpromptversion.PromptId,
+            PromptId      : llmpromptversion.PromptId,
             Prompt        : llmpromptversion.Prompt,
             Variables     : llmpromptversion.Variables,
             Score         : llmpromptversion.Score,

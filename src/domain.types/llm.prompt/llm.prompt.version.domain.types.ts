@@ -4,7 +4,7 @@ import { decimal, uuid } from "../miscellaneous/system.types";
 export interface  LlmPromptVersionDto {
     id              : uuid;
     VersionNumber   : string;
-    // PromptId        : string;
+    PromptId?        : string;
     Prompt          : string;
     Variables       : string;
     Score           : decimal;
@@ -16,7 +16,7 @@ export interface  LlmPromptVersionCreateModel {
     Prompt          : string;
     Variables       : string;
     Score           : decimal;
-    PublishedAt     : Date;
+    PublishedAt?     : Date;
 }
 export interface  LlmPromptVersionUpdateModel {
     VersionNumber?  : string;

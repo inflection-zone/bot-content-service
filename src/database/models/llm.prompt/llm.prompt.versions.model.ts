@@ -1,4 +1,4 @@
-import { decimal } from "../../../domain.types/miscellaneous/system.types";
+import { decimal, uuid } from "../../../domain.types/miscellaneous/system.types";
 import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn } from "typeorm";
 import { LlmPrompt } from "./llm.prompts.model";
 
@@ -40,5 +40,7 @@ DeletedAt: Date;
     name : 'PromptId'
 })
 llm_prompts: LlmPrompt;
+
+PromptId: uuid;
 
 }

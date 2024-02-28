@@ -5,10 +5,11 @@ import { LlmPrompt } from '../models/llm.prompt/llm.prompts.model';
 import { LlmPromptMapper } from '../mappers/llm.prompt/llm.prompt.mapper';
 import { logger } from '../../logger/logger';
 import { ErrorHandler } from '../../common/handlers/error.handler';
-import { LlmPromptCreateModel, LlmPromptDto, LlmPromptUpdateModel } from '../../domain.types/llm.prompt/llm.prompt.domain.types';
+import { LlmPromptCreateModel, LlmPromptDto, LlmPromptSearchFilters, LlmPromptSearchResults, LlmPromptUpdateModel } from '../../domain.types/llm.prompt/llm.prompt.domain.types';
 import { Source } from '../database.connector';
 import { Repository } from 'typeorm/repository/Repository';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
+import { FindManyOptions, Like } from 'typeorm';
 
 export class LlmpromptService extends BaseService {
 
@@ -138,5 +139,83 @@ export class LlmpromptService extends BaseService {
         }
     };
 
+    public search = async (filters: LlmPromptSearchFilters)
+    : Promise<LlmPromptSearchResults> => {
+        try {
+            var search = this.getSearchModel(filters);
+            var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
+            const [list, count] = await this._llmPromptRepository.findAndCount(search);
+
+            const searchResults = {
+                TotalCount     : count,
+                RetrievedCount : list.length,
+                PageIndex      : pageIndex,
+                ItemsPerPage   : limit,
+                Order          : order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy      : orderByColumn,
+                Items          : list.map(x => LlmPromptMapper.toResponseDto(x)),
+            };
+            return searchResults;
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
+        }
+    };
+
+    private getSearchModel = (filters: LlmPromptSearchFilters) => {
+
+        var search : FindManyOptions<LlmPrompt> = {
+            relations : {
+            },
+            where : {
+            },
+            select : {
+                id                : true,
+                Name              : true,
+                Description       : true,
+                UseCaseType       : true,
+                ModelName         : true,
+                ModelVersion      : true,
+                UserId            : true,
+                Temperature       : true,
+                FrequencyPenality : true,
+                TopP              : true,
+                PresencePenalty   : true,
+                IsActive          : true,
+            }
+        };
+
+        if (filters.Name) {
+            search.where['Name'] = Like(`%${filters.Name}%`);
+        }
+        if (filters.UseCaseType) {
+            search.where['UseCaseType'] = filters.UseCaseType;
+        }
+        if (filters.ModelName) {
+            search.where['ModelName'] = filters.ModelName;
+        }
+        if (filters.ModelVersion) {
+            search.where['ModelVersion'] = filters.ModelVersion;
+        }
+        if (filters.UserId) {
+            search.where['UserId'] = filters.UserId;
+        }
+        if (filters.Temperature) {
+            search.where['Temperature'] = filters.Temperature;
+        }
+        if (filters.FrequencyPenality) {
+            search.where['FrequencyPenality'] = filters.FrequencyPenality;
+        }
+        if (filters.TopP) {
+            search.where['TopP'] = filters.TopP;
+        }
+        if (filters.PresencePenalty ) {
+            search.where['PresencePenalty'] = filters.PresencePenalty ;
+        }
+        if (filters.IsActive ) {
+            search.where['IsActive'] = filters.IsActive ;
+        }
+        return search;
+    };
 
 }
