@@ -8,7 +8,10 @@ import { PromptGroup } from "../../../domain.types/promptgroup.domain.types";
 @Entity('llm_prompts')
 export class LlmPrompt extends BaseEntity{
 
-@Column({ type: 'varchar', length: 256, nullable: false })
+@PrimaryGeneratedColumn('uuid')
+id: string;
+  
+@Column(({ type: 'varchar', length: 256, nullable: false }))
 Name: string;
 
 @Column({ type: 'varchar', length: 256, nullable: true })
@@ -29,33 +32,33 @@ ModelVersion: string;
 @Column(({ nullable: false }))
 UserId: string;
 
-    @Column({ nullable: false })
-    Temperature: decimal;
+@Column(({ nullable: false }))
+Temperature: decimal;
 
-    @Column()
-    FrequencyPenality: decimal;
+@Column()
+FrequencyPenality: decimal;
 
-    @Column()
-    TopP: decimal;
+@Column()
+TopP: decimal;
 
-    @Column()
-    PresencePenalty: decimal;
+@Column()
+PresencePenalty: decimal;
 
-    @Column()
-    IsActive: boolean;
+@Column()
+IsActive: boolean;
 
-    @CreateDateColumn()
-    CreatedAt: Date;
+@CreateDateColumn()
+CreatedAt: Date;
 
-    @UpdateDateColumn()
-    UpdatedAt: Date;
+@UpdateDateColumn()
+UpdatedAt: Date;
 
-    @DeleteDateColumn()
-    DeletedAt: Date;
+@DeleteDateColumn()
+DeletedAt: Date;
 
- @ManyToMany(() => LlmPromptGroups)
-  @JoinTable()
-  llm_group_prompts: LlmPromptGroups[];
+// @ManyToMany(() => LlmPromptGroups)
+// @JoinTable()
+// llm_group_prompts: LlmPromptGroups[];
 
     @OneToMany(() => LlmPromptVersion,
         llm_prompt_versions => llm_prompt_versions.llm_prompts)
