@@ -1,8 +1,11 @@
+/* eslint-disable padded-blocks */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { logger } from '../logger/logger';
 import { Logger, QueryRunner } from "typeorm";
 
 export class DBLogger implements Logger {
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     logQuery(query: string, parameters?: any[], queryRunner?: QueryRunner) {
         logger.info(`query: ${query}, params: ${JSON.stringify(parameters)}`);
     }

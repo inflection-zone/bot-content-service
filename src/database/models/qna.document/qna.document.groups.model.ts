@@ -1,5 +1,6 @@
+/* eslint-disable eol-last */
 import { BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { QnaDocument } from "./qna.documents.model";
+import { QnaDocument } from "./qna.document.model";
 
 @Entity({ name: 'qna_document_groups' })
 export class QnaDocumentGroup extends BaseEntity {

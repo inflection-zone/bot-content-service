@@ -1,9 +1,13 @@
-import { integer } from "../../../domain.types/miscellaneous/system.types";
+/* eslint-disable no-multiple-empty-lines */
+/* eslint-disable eol-last */
+// import { integer } from "../../../domain.types/miscellaneous/system.types";
 // import { uuid } from "../../../domain.types/miscellaneous/system.types";
 import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, JoinTable, OneToMany } from "typeorm";
-
-import { QnaDocumentVersion } from "./qna.document.versions.model";
+import { QnaDocumentGroup } from "./qna.document.groups.model";
+// import { QnaDocument } from "./qna.document.version.model";
 import { ChunkingStrategy } from "../../../domain.types/chunking.strategy.domain.types";
+import { QnaDocumentVersion } from "./qna.document.version.model";
+
 
 @Entity('qna_documents')
 export class QnaDocument extends BaseEntity{
@@ -18,7 +22,7 @@ Name: string;
 Description: string;
 
 @Column(({ type: 'varchar', length: 256, nullable: false }))
-Filename: string;
+FileName: string;
 
 @Column(({ type: 'varchar', length: 256, nullable: false }))
 Source: string;
@@ -30,16 +34,16 @@ CreatedBy: string;
 ParentDocument: string;
 
 @Column(({ type: 'varchar', length: 256, nullable: true }))
-ParentDocumentVersion: integer;
+ParentDocumentVersion: number;
 
 @Column({ type: "enum",enum: ChunkingStrategy })
 ChunkingStrategy: string;
 
 @Column()
-ChunkingLenght: integer;
+ChunkingLenght: number;
 
 @Column()
-ChunkOverlap: integer;
+ChunkOverlap: number;
 
 @Column()
 Splitter: string;
@@ -56,9 +60,9 @@ UpdatedAt: Date;
 @DeleteDateColumn()
 DeletedAt: Date;
 
-// @ManyToMany(() => QnaDocumentGroups)
-// @JoinTable()
-// qna_group_documents:QnaDocumentGroups[];
+@ManyToMany(() => QnaDocumentGroup)
+@JoinTable()
+qna_group_documents:QnaDocumentGroup[];
 
 @OneToMany(() => QnaDocumentVersion,
     qna_document_versions => qna_document_versions.qna_documents)

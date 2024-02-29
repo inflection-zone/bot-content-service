@@ -17,11 +17,11 @@ Description: string;
 @JoinTable()
 "llm_group_prompts":LlmPrompt[];
 
-@CreateDateColumn()
-CreatedAt: Date;
+// @CreateDateColumn()
+// CreatedAt: Date;
 
-@UpdateDateColumn()
-UpdatedAt: Date;
+// @UpdateDateColumn()
+// UpdatedAt: Date;
 
 @DeleteDateColumn()
 DeletedAt: Date;
