@@ -3,7 +3,7 @@ import { ErrorHandler } from "../../../common/handlers/error.handler";
 import { ResponseHandler } from "../../../common/handlers/response.handler";
 import express from 'express';
 import { uuid } from "../../../domain.types/miscellaneous/system.types";
-import { LlmPromptVersionCreateModel, LlmPromptVersionDto, LlmPromptVersionUpdateModel } from "../../../domain.types/llm.prompt/llm.prompt.version.domain.types";
+import { LlmPromptVersionCreateModel, LlmPromptVersionDto, LlmPromptVersionSearchFilters, LlmPromptVersionUpdateModel } from "../../../domain.types/llm.prompt/llm.prompt.version.domain.types";
 import { LlmPromptVersionValidator } from "./llmprompt.version.validator";
 import { LlmpromptVersionService } from "../../../database/services/llmpromptversion.service";
 
@@ -86,6 +86,18 @@ export class LlmPromptVersionController {
             };
             const message = 'LLm version deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+    search = async (request: express.Request, response: express.Response) => {
+        try {
+           
+            var filters: LlmPromptVersionSearchFilters = await this._validator.validateSearchRequest(request);
+            const searchResults = await this._service.search(filters);
+            const message = 'Llm prompt records retrieved successfully!';
+            ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }

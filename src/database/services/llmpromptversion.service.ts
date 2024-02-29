@@ -5,10 +5,11 @@ import { Source } from '../database.connector';
 import { Repository } from 'typeorm/repository/Repository';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { LlmPromptVersion } from '../models/llm.prompt/llm.prompt.versions.model';
-import { LlmPromptVersionCreateModel } from '../../domain.types/llm.prompt/llm.prompt.version.domain.types';
+import { LlmPromptVersionCreateModel, LlmPromptVersionSearchFilters, LlmPromptVersionSearchResults } from '../../domain.types/llm.prompt/llm.prompt.version.domain.types';
 import { LlmPromptVersionUpdateModel } from '../../domain.types/llm.prompt/llm.prompt.version.domain.types';
 import { LlmPromptVersionDto } from '../../domain.types/llm.prompt/llm.prompt.version.domain.types';
 import { LlmPromptVersionMapper } from '../mappers/llm.prompt/llm.prompt.version.mapper';
+import { FindManyOptions, Like } from 'typeorm';
 
 export class LlmpromptVersionService extends BaseService {
 
@@ -113,6 +114,68 @@ export class LlmpromptVersionService extends BaseService {
             logger.error(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
+    };
+
+    public search = async (filters: LlmPromptVersionSearchFilters)
+    : Promise<LlmPromptVersionSearchResults> => {
+        try {
+            var search = this.getSearchModel(filters);
+            var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
+            const [list, count] = await this._llmPromptVersionRepository.findAndCount(search);
+
+            const searchResults = {
+                TotalCount     : count,
+                RetrievedCount : list.length,
+                PageIndex      : pageIndex,
+                ItemsPerPage   : limit,
+                Order          : order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy      : orderByColumn,
+                Items          : list.map(x => LlmPromptVersionMapper.toResponseDto(x)),
+            };
+            return searchResults;
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
+        }
+    };
+
+    private getSearchModel = (filters: LlmPromptVersionSearchFilters) => {
+
+        var search : FindManyOptions<LlmPromptVersion> = {
+            relations : {
+            },
+            where : {
+            },
+            select : {
+                id            : true,
+                VersionNumber : true,
+                PromptId      : true,
+                Prompt        : true,
+                Variables     : true,
+                Score         : true,
+                PublishedAt   : true,
+            }
+        };
+
+        if (filters.VersionNumber) {
+            search.where['VersionNumber'] = Like(`%${filters.VersionNumber}%`);
+        }
+        // if (filters.PromptId) {
+        //     search.where['PromptId'] = filters.PromptId;
+        // }
+        if (filters.Prompt) {
+            search.where['Prompt'] = filters.Prompt;
+        }
+        if (filters.Variables) {
+            search.where['Variables'] = filters.Variables;
+        }
+        if (filters.Score) {
+            search.where['Score'] = filters.Score;
+        }
+        if (filters.PublishedAt) {
+            search.where['PublishedAt'] = filters.PublishedAt;
+        }
+        return search;
     };
 
 }

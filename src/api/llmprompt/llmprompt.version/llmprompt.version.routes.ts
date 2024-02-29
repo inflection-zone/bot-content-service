@@ -7,6 +7,7 @@ export const register = (app: express.Application): void => {
     // const authenticator = Loader.Authenticator;
     const controller = new LlmPromptVersionController();
 
+    router.get('/search', controller.search);
     router.get('/records', controller.getAll);
     router.get('/:id', controller.getById);
     router.post('/', controller.create);
