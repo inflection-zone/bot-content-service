@@ -19,4 +19,20 @@ export class QnaDocumentLibraryMapper {
         };
         return dto;
     };
+
+    static toArrayDto(qnaDocumentLibrary: QnaDocumentLibrary[]): QnaDocumentLibraryResponseDto[] {
+        if (qnaDocumentLibrary === null) {
+            return null;
+        }
+
+        const dto: QnaDocumentLibraryResponseDto[] = [];
+
+        qnaDocumentLibrary.forEach((element) => {
+            dto.push({
+                id: element.id,
+                DocumentId: element.DocumentId,
+            });
+        });
+        return dto;
+    }
 }

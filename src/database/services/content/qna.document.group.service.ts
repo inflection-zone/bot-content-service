@@ -1,3 +1,4 @@
+/* eslint-disable no-multiple-empty-lines */
 /* eslint-disable padded-blocks */
 /* eslint-disable key-spacing */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -11,7 +12,10 @@ import { FindManyOptions, Like, Repository } from 'typeorm';
 import { BaseService } from '../base.service';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
 
-import { QnaDocumentGroupCreateModel, QnaDocumentGroupUpdateModel } from '../../../domain.types/content/qna.document.group.domain.types';
+import {
+    QnaDocumentGroupCreateModel,
+    QnaDocumentGroupUpdateModel,
+} from '../../../domain.types/content/qna.document.group.domain.types';
 import { QnaDocumentGroupResponseDto } from '../../../domain.types/content/qna.document.group.domain.types';
 // import { QnaDocuments } from '../../models/qna.documents/qna.document.model';
 import { QnaDocumentGroupsMapper } from '../../mappers/content/qna.document.group.mapper';
@@ -20,6 +24,17 @@ import { QnaDocumentGroupsMapper } from '../../mappers/content/qna.document.grou
 
 export class QnaDocumentGroupsService extends BaseService {
     _qnaDocumentGroupsRepository: Repository<QnaDocumentGroup> = Source.getRepository(QnaDocumentGroup);
+
+
+    public getAll = async (): Promise<QnaDocumentGroupResponseDto[]> => {
+        try {
+            var documentGroup = await this._qnaDocumentGroupsRepository.find();
+            return QnaDocumentGroupsMapper.toArrayDto(documentGroup);
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
 
     public create = async (createModel: QnaDocumentGroupCreateModel): Promise<QnaDocumentGroupResponseDto> => {
         const group = this._qnaDocumentGroupsRepository.create({
@@ -47,28 +62,6 @@ export class QnaDocumentGroupsService extends BaseService {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
     };
-
-    // public search = async (filters: QnaDocumentSearchFilters)
-    //     : Promise<QnaDocumentSearchResults> => {
-    //     try {
-    //         var search = this.getSearchModel(filters);
-    //         var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
-    //         const [list, count] = await this._qnaDocumentRepository.findAndCount(search);
-    //         const searchResults = {
-    //             TotalCount     : count,
-    //             RetrievedCount : list.length,
-    //             PageIndex      : pageIndex,
-    //             ItemsPerPage   : limit,
-    //             Order          : order === 'DESC' ? 'descending' : 'ascending',
-    //             OrderedBy      : orderByColumn,
-    //             Items          : list.map(x => QnaDocumentMapper.toResponseDto(x)),
-    //         };
-    //         return searchResults;
-    //     } catch (error) {
-    //         logger.error(error.message);
-    //         ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
-    //     }
-    // };
 
     public update = async (id: uuid, model: QnaDocumentGroupUpdateModel): Promise<QnaDocumentGroupResponseDto> => {
         try {
@@ -113,47 +106,17 @@ export class QnaDocumentGroupsService extends BaseService {
         }
     };
 
-    //#region Privates
-
-    // private getSearchModel = (filters: BadgeSearchFilters) => {
-
-    //     var search : FindManyOptions<Badge> = {
-    //         relations : {
-    //         },
-    //         where : {
-    //         },
-    //         select : {
-    //             id      : true,
-    //             Category: {
-    //                 id         : true,
-    //                 Name       : true,
-    //                 Description: true,
-    //             },
-    //             Client       : {
-    //                 id  : true,
-    //                 Name: true,
-    //                 Code: true,
-    //             },
-    //             Name       : true,
-    //             Description: true,
-    //             ImageUrl   : true,
-    //             CreatedAt  : true,
-    //             UpdatedAt  : true,
-    //         }
-    //     };
-
-    //     if (filters.CategoryId) {
-    //         search.where['Category'].id = filters.CategoryId;
-    //     }
-    //     if (filters.ClientId) {
-    //         search.where['Client'].id = filters.ClientId;
-    //     }
-    //     if (filters.Name) {
-    //         search.where['Name'] = Like(`%${filters.Name}%`);
-    //     }
-
-    //     return search;
-    // };
-
-    //#endregion
+    public getByName = async (name: string) => {
+        try {
+            var documentGroup = await this._qnaDocumentGroupsRepository.find({
+                where: {
+                    Name: name,
+                },
+            });
+            return QnaDocumentGroupsMapper.toArrayDto(documentGroup);
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
 }

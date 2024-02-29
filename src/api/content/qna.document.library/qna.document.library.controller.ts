@@ -1,4 +1,6 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable no-multiple-empty-lines */
+/* eslint-disable linebreak-style */
 /* eslint-disable padded-blocks */
 /* eslint-disable indent */
 /* eslint-disable no-console */
@@ -33,6 +35,17 @@ export class QnaDocumentLibraryController {
 
     //#endregion
 
+
+    getAll = async (request: express.Request, response: express.Response) => {
+        try {
+            const record = await this._service.getAll();
+            const message = 'Qna-Document-Library retrieved successfully!';
+            return ResponseHandler.success(request, response, message, 200, record);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+    
     create = async (request: express.Request, response: express.Response) => {
         console.log('Create request call');
         try {

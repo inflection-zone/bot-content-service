@@ -22,7 +22,7 @@ Name: string;
 Description: string;
 
 @Column(({ type: 'varchar', length: 256, nullable: false }))
-Filename: string;
+FileName: string;
 
 @Column(({ type: 'varchar', length: 256, nullable: false }))
 Source: string;

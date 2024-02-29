@@ -11,10 +11,11 @@ export const register = (app: express.Application): void => {
     const controller = new QnaDocumentsGroupController();
 
     router.post('/', controller.create);
-    // router.get('/search', controller.search);
+    router.get('/search', controller.getAll);
     router.get('/:id', controller.getById);
     router.put('/:id', controller.update);
     router.delete('/:id', controller.delete);
+    router.get('/search/:name', controller.getByName);
 
     app.use('/api/v1/documentgroups', router);
 };

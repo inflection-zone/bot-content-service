@@ -24,7 +24,7 @@ export class QnaDocumentValidator extends BaseValidator {
             const schema = joi.object({
                 Name: joi.string(),
                 Description: joi.string(),
-                Filename: joi.string(),
+                FileName: joi.string(),
                 Source: joi.string(),
                 ParentDocument: joi.string(),
                 ParentDocumentVersion: joi.number(),
@@ -39,7 +39,7 @@ export class QnaDocumentValidator extends BaseValidator {
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
-                Filename: request.body.Filename,
+                FileName: request.body.FileName,
                 Source: request.body.Source,
                 ParentDocument: request.body.ParentDocument,
                 ParentDocumentVersion: request.body.ParentDocumentVersion,
@@ -60,7 +60,7 @@ export class QnaDocumentValidator extends BaseValidator {
             const schema = joi.object({
                 Name: joi.string(),
                 Description: joi.string(),
-                Filename: joi.string(),
+                FileName: joi.string(),
                 Source: joi.string(),
                 ParentDocument: joi.string(),
                 ParentDocumentVersion: joi.number(),
@@ -75,7 +75,7 @@ export class QnaDocumentValidator extends BaseValidator {
             return {
                 Name: request.body.Name ?? null,
                 Description: request.body.Description ?? null,
-                Filename: request.body.Filename ?? null,
+                FileName: request.body.FileName ?? null,
                 Source: request.body.Source ?? null,
                 ParentDocument: request.body.ParentDocument ?? null,
                 ParentDocumentVersion: request.body.ParentDocumentVersion ?? null,

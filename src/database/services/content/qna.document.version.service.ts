@@ -36,16 +36,23 @@ export class QnaDocumentVersionService extends BaseService {
         return QnaDocumentVersionMapper.toResponseDto(record);
     };
 
+
+    public getAll = async (): Promise<QnaDocumentVersionResponseDto[]> => {
+        try {
+            var documentversion = await this._qnaDocumentVersionRepository.find();
+            return QnaDocumentVersionMapper.toArrayDto(documentversion);
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
+
     public getById = async (id: uuid): Promise<QnaDocumentVersionResponseDto> => {
         try {
             var documentversion = await this._qnaDocumentVersionRepository.findOne({
                 where: {
                     id: id,
                 },
-                // relations: {
-                //     Category: true,
-                //     Client  : true
-                // }
             });
             return QnaDocumentVersionMapper.toResponseDto(documentversion);
         } catch (error) {
@@ -53,28 +60,6 @@ export class QnaDocumentVersionService extends BaseService {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
     };
-
-    // public search = async (filters: QnaDocumentSearchFilters)
-    //     : Promise<QnaDocumentSearchResults> => {
-    //     try {
-    //         var search = this.getSearchModel(filters);
-    //         var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
-    //         const [list, count] = await this._qnaDocumentRepository.findAndCount(search);
-    //         const searchResults = {
-    //             TotalCount     : count,
-    //             RetrievedCount : list.length,
-    //             PageIndex      : pageIndex,
-    //             ItemsPerPage   : limit,
-    //             Order          : order === 'DESC' ? 'descending' : 'ascending',
-    //             OrderedBy      : orderByColumn,
-    //             Items          : list.map(x => QnaDocumentMapper.toResponseDto(x)),
-    //         };
-    //         return searchResults;
-    //     } catch (error) {
-    //         logger.error(error.message);
-    //         ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
-    //     }
-    // };
 
     public update = async (id: uuid, model: QnaDocumentVersionUpdateModel): Promise<QnaDocumentVersionResponseDto> => {
         try {
@@ -128,47 +113,73 @@ export class QnaDocumentVersionService extends BaseService {
         }
     };
 
-    //#region Privates
+    public getByVersionNumber = async (versionnumber: number) => {
+        try {
+            var documentversion = await this._qnaDocumentVersionRepository.find({
+                where: {
+                    VersionNumber: versionnumber,
+                },
+            });
+            return QnaDocumentVersionMapper.toArrayDto(documentversion);
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
 
-    // private getSearchModel = (filters: BadgeSearchFilters) => {
-
-    //     var search : FindManyOptions<Badge> = {
-    //         relations : {
-    //         },
-    //         where : {
-    //         },
-    //         select : {
-    //             id      : true,
-    //             Category: {
-    //                 id         : true,
-    //                 Name       : true,
-    //                 Description: true,
+    // public getByDate = async (date: Date) => {
+    //     try {
+    //         var documentversion = await this._qnaDocumentVersionRepository.findOne({
+    //             where: {
+    //                 CreatedAt: date,
     //             },
-    //             Client       : {
-    //                 id  : true,
-    //                 Name: true,
-    //                 Code: true,
-    //             },
-    //             Name       : true,
-    //             Description: true,
-    //             ImageUrl   : true,
-    //             CreatedAt  : true,
-    //             UpdatedAt  : true,
-    //         }
-    //     };
-
-    //     if (filters.CategoryId) {
-    //         search.where['Category'].id = filters.CategoryId;
+    //         });
+    //         return QnaDocumentVersionMapper.toResponseDto(documentversion);
+    //     } catch (error) {
+    //         logger.error(error.message);
+    //         ErrorHandler.throwInternalServerError(error.message, 500);
     //     }
-    //     if (filters.ClientId) {
-    //         search.where['Client'].id = filters.ClientId;
-    //     }
-    //     if (filters.Name) {
-    //         search.where['Name'] = Like(`%${filters.Name}%`);
-    //     }
-
-    //     return search;
     // };
 
-    //#endregion
+    public getByFileResourceId = async (fileresourceid: string) => {
+        try {
+            var documentversion = await this._qnaDocumentVersionRepository.find({
+                where: {
+                    FileResourceId: fileresourceid,
+                },
+            });
+            return QnaDocumentVersionMapper.toArrayDto(documentversion);
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
+
+    public getByStorageKey = async (storagekey: string) => {
+        try {
+            var documentversion = await this._qnaDocumentVersionRepository.find({
+                where: {
+                    StorageUrl: storagekey,
+                },
+            });
+            return QnaDocumentVersionMapper.toArrayDto(documentversion);
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
+
+    public getByKeywords = async (keywords: string) => {
+        try {
+            var documentversion = await this._qnaDocumentVersionRepository.find({
+                where: {
+                    Keywords: keywords,
+                },
+            });
+            return QnaDocumentVersionMapper.toArrayDto(documentversion);
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
 }

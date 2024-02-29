@@ -1,3 +1,5 @@
+/* eslint-disable no-multiple-empty-lines */
+/* eslint-disable padded-blocks */
 /* eslint-disable indent */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable linebreak-style */
@@ -7,17 +9,19 @@ import { QnaDocumentGroupsValidator } from './qna.document.group.validator';
 // import { BaseController } from '../../base.controller';
 import { QnaDocumentGroupsService } from '../../../database/services/content/qna.document.group.service';
 import { ErrorHandler } from '../../../common/handlers/error.handler';
-import { QnaDocumentGroupCreateModel, QnaDocumentGroupUpdateModel } from '../../../domain.types/content/qna.document.group.domain.types';
+import {
+    QnaDocumentGroupCreateModel,
+    QnaDocumentGroupUpdateModel,
+} from '../../../domain.types/content/qna.document.group.domain.types';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
 import { QnaDocumentGroup } from '../../../database/models/qna.document/qna.document.groups.model';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
 export class QnaDocumentsGroupController {
-
     //#region member variables and constructors
 
-   public _service: QnaDocumentGroupsService;
+    public _service: QnaDocumentGroupsService;
 
     _validator: QnaDocumentGroupsValidator = new QnaDocumentGroupsValidator();
 
@@ -27,6 +31,17 @@ export class QnaDocumentsGroupController {
     }
 
     //#endregion
+
+
+    getAll = async (request: express.Request, response: express.Response) => {
+        try {
+            const record = await this._service.getAll();
+            const message = 'Qna-Document-Group retrieved successfully!';
+            return ResponseHandler.success(request, response, message, 200, record);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
 
     create = async (request: express.Request, response: express.Response) => {
         try {
@@ -68,19 +83,7 @@ export class QnaDocumentsGroupController {
         }
     };
 
-    // search = async (request: express.Request, response: express.Response) => {
-    //     try {
-    //         // await this.authorize('QnaDocumentGroup.Search', request, response);
-    //         var filters: QnaDocumentGroupSearchFilters = await this._validator.validateSearchRequest(request);
-    //         const searchResults = await this._service.search(filters);
-    //         const message = 'QnaDocumentGroup records retrieved successfully!';
-    //         ResponseHandler.success(request, response, message, 200, searchResults);
-    //     } catch (error) {
-    //         ResponseHandler.handleError(request, response, error);
-    //     }
-    // };
-
-    delete = async (request: express.Request, response: express.Response): Promise < void > => {
+    delete = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
             // await this.authorize('QnaDocumentGroup.Delete', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
@@ -92,4 +95,14 @@ export class QnaDocumentsGroupController {
         }
     };
 
+    getByName = async (request: express.Request, response: express.Response) => {
+        try {
+            const name = request.params.name;
+            const records = await this._service.getByName(name);
+            const message = 'Qna-Document retrieved successfully!';
+            return ResponseHandler.success(request, response, message, 200, records);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
 }

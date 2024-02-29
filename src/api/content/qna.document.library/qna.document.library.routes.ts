@@ -11,7 +11,7 @@ export const register = (app: express.Application): void => {
     const controller = new QnaDocumentLibraryController();
 
     router.post('/', controller.create);
-    // router.get('/search', controller.search);
+    router.get('/search', controller.getAll);
     router.get('/:id', controller.getById);
     router.put('/:id', controller.update);
     router.delete('/:id', controller.delete);

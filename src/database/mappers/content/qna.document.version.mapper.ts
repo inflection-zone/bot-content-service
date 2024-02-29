@@ -24,4 +24,26 @@ export class QnaDocumentVersionMapper {
         };
         return dto;
     };
+
+    static toArrayDto(qnaDocumentVersion: QnaDocumentVersion[]): QnaDocumentVersionResponseDto[] {
+        if (qnaDocumentVersion === null) {
+            return null;
+        }
+
+        const dto: QnaDocumentVersionResponseDto[] = [];
+
+        qnaDocumentVersion.forEach((element) => {
+            dto.push({
+                id: element.id,
+                VersionNumber: element.VersionNumber,
+                StorageUrl: element.StorageUrl,
+                DownloadUrl: element.DownloadUrl,
+                FileResourceId: element.FileResourceId,
+                Keywords: element.Keywords,
+                CreatedAt: element.CreatedAt,
+                UpdatedAt: element.UpdatedAt,
+            });
+        });
+        return dto;
+    }
 }

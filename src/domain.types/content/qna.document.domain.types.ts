@@ -5,7 +5,7 @@ import { integer, uuid } from '../miscellaneous/system.types';
 export interface QnaDocumentCreateModel {
     Name: string;
     Description: string;
-    Filename: string;
+    FileName: string;
     Source: string;
     ParentDocument?: string;
     ParentDocumentVersion?: integer;
@@ -20,7 +20,7 @@ export interface QnaDocumentCreateModel {
 export interface QnaDocumentUpdateModel {
     Name?: string;
     Description?: string;
-    Filename?: string;
+    FileName?: string;
     Source?: string;
     ParentDocument?: string;
     ParentDocumentVersion?: integer;
@@ -36,7 +36,7 @@ export interface QnaDocumentResponseDto {
     id: uuid;
     Name: string;
     Description: string;
-    Filename: string;
+    FileName: string;
     Source: string;
     ParentDocument: string;
     ParentDocumentVersion: integer;

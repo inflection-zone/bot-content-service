@@ -1,3 +1,4 @@
+/* eslint-disable no-multiple-empty-lines */
 /* eslint-disable padded-blocks */
 /* eslint-disable indent */
 /* eslint-disable no-console */
@@ -31,6 +32,16 @@ export class QnaDocumentVersionController {
     }
 
     //#endregion
+
+    getAll = async (request: express.Request, response: express.Response) => {
+        try {
+            const record = await this._service.getAll();
+            const message = 'Qna-Document-version retrieved successfully!';
+            return ResponseHandler.success(request, response, message, 200, record);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
 
     create = async (request: express.Request, response: express.Response) => {
         console.log('Create request call');
@@ -73,18 +84,6 @@ export class QnaDocumentVersionController {
         }
     };
 
-    // search = async (request: express.Request, response: express.Response) => {
-    //     try {
-    //         // await this.authorize('QnaDocumentGroup.Search', request, response);
-    //         // var filters: QnaDocumentSearchFilters = await this._validator.validateSearchRequest(request);
-    //         const searchResults = await this._service.search(filters);
-    //         const message = 'QnaDocument records retrieved successfully!';
-    //         ResponseHandler.success(request, response, message, 200, searchResults);
-    //     } catch (error) {
-    //         ResponseHandler.handleError(request, response, error);
-    //     }
-    // };
-
     delete = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
             // await this.authorize('QnaDocument.Delete', request, response);
@@ -92,6 +91,63 @@ export class QnaDocumentVersionController {
             const result = await this._service.delete(id);
             const message = 'QnaDocumentVersion deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+    getByVersionNumber = async (request: express.Request, response: express.Response) => {
+        try {
+            const versionnumber = parseInt(request.params.versionnumber);
+            const records = await this._service.getByVersionNumber(versionnumber);
+            const message = 'Qna-Document retrieved successfully!';
+            return ResponseHandler.success(request, response, message, 200, records);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+    // getByDate = async (request: express.Request, response: express.Response) => {
+    //     try {
+    //         const dateString = request.body.date;
+    //         const date = new Date(dateString);
+    //         console.log(date);
+    //         const records = await this._service.getByDate(date);
+    //         const message = 'Qna-Document retrieved successfully!';
+    //         return ResponseHandler.success(request, response, message, 200, records);
+    //     } catch (error) {
+    //         ResponseHandler.handleError(request, response, error);
+    //     }
+    // };
+
+    getByFileResourceId = async (request: express.Request, response: express.Response) => {
+        try {
+            const fileresourceid = request.params.fileresourceid;
+            const records = await this._service.getByFileResourceId(fileresourceid);
+            const message = 'Qna-Document retrieved successfully!';
+            return ResponseHandler.success(request, response, message, 200, records);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+    getByStorageKey = async (request: express.Request, response: express.Response) => {
+        try {
+            const storagekey = request.params.storagekey;
+            const records = await this._service.getByStorageKey(storagekey);
+            const message = 'Qna-Document retrieved successfully!';
+            return ResponseHandler.success(request, response, message, 200, records);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+    getByKeywords = async (request: express.Request, response: express.Response) => {
+        try {
+            const keywords = request.params.keywords;
+            const records = await this._service.getByKeywords(keywords);
+            const message = 'Qna-Document retrieved successfully!';
+            return ResponseHandler.success(request, response, message, 200, records);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }

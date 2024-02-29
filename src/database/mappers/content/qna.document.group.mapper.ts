@@ -19,4 +19,23 @@ export class QnaDocumentGroupsMapper {
         };
         return dto;
     };
+
+    static toArrayDto(qnaDocumentGroups: QnaDocumentGroup[]): QnaDocumentGroupResponseDto[] {
+        if (qnaDocumentGroups === null) {
+            return null;
+        }
+
+        const dto: QnaDocumentGroupResponseDto[] = [];
+
+        qnaDocumentGroups.forEach((element) => {
+            dto.push({
+                id: element.id,
+                Name: element.Name,
+                Description: element.Description,
+                CreatedAt: element.CreatedAt,
+                UpdatedAt: element.UpdatedAt,
+            });
+        });
+        return dto;
+    }
 }

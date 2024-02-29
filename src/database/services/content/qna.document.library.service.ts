@@ -24,6 +24,17 @@ import { QnaDocumentLibraryMapper } from '../../mappers/content/qna.document.lib
 export class QnaDocumentLibraryService extends BaseService {
     _qnaDocumentLibraryRepository: Repository<QnaDocumentLibrary> = Source.getRepository(QnaDocumentLibrary);
 
+
+    public getAll = async (): Promise<QnaDocumentLibraryResponseDto[]> => {
+        try {
+            var documentlibrary = await this._qnaDocumentLibraryRepository.find();
+            return QnaDocumentLibraryMapper.toArrayDto(documentlibrary);
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
+
     public create = async (createModel: QnaDocumentLibraryCreateModel): Promise<QnaDocumentLibraryResponseDto> => {
         const library = this._qnaDocumentLibraryRepository.create({
             DocumentId: createModel.DocumentId,
