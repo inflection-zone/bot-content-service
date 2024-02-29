@@ -23,6 +23,7 @@ export class LlmpromptService extends BaseService {
                 Name              : createModel.Name,
                 Description       : createModel.Description,
                 UseCaseType       : createModel.UseCaseType,
+                GroupName         : createModel.GroupName,
                 ModelName         : createModel.ModelName,
                 ModelVersion      : createModel.ModelVersion,
                 UserId            : createModel.UserId,
@@ -60,6 +61,9 @@ export class LlmpromptService extends BaseService {
             }
             if ( model.UseCaseType != null) {
                 updateData.UseCaseType = model.UseCaseType;
+            }
+            if ( model.GroupName != null) {
+                updateData.GroupName = model.GroupName;
             }
             if ( model.ModelName != null) {
                 updateData.ModelName = model.ModelName;
@@ -174,6 +178,7 @@ export class LlmpromptService extends BaseService {
                 Name              : true,
                 Description       : true,
                 UseCaseType       : true,
+                GroupName         : true,
                 ModelName         : true,
                 ModelVersion      : true,
                 UserId            : true,
@@ -190,6 +195,9 @@ export class LlmpromptService extends BaseService {
         }
         if (filters.UseCaseType) {
             search.where['UseCaseType'] = filters.UseCaseType;
+        }
+        if (filters.GroupName) {
+            search.where['GroupName'] = filters.GroupName;
         }
         if (filters.ModelName) {
             search.where['ModelName'] = filters.ModelName;

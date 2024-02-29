@@ -8,6 +8,7 @@ import { ErrorHandler } from '../../../common/handlers/error.handler';
 import { PromptUsecase } from '../../../domain.types/usecase.domain.types';
 import BaseValidator from '../../base.validator';
 import { LlmPromptSearchFilters } from '../../../domain.types/llm.prompt/llm.prompt.domain.types';
+import { PromptGroup } from '../../../domain.types/promptgroup.domain.types';
 
 export class LlmPromptValidator extends BaseValidator {
 
@@ -17,6 +18,7 @@ export class LlmPromptValidator extends BaseValidator {
                 Name              : joi.string().required(),
                 Description       : joi.string().optional(),
                 UseCaseType       : joi.string().valid(...Object.values(PromptUsecase)).optional(),
+                GroupName         : joi.string().valid(...Object.values(PromptGroup)).optional(),
                 ModelName         : joi.string(),
                 ModelVersion      : joi.string(),
                 UserId            : joi.string(),
@@ -53,6 +55,7 @@ export class LlmPromptValidator extends BaseValidator {
                 Name              : joi.string().required(),
                 Description       : joi.string().optional(),
                 UseCaseType       : joi.string().valid(...Object.values(PromptUsecase)).optional(),
+                GroupName         : joi.string().valid(...Object.values(PromptGroup)).optional(),
                 ModelName         : joi.string().optional(),
                 ModelVersion      : joi.string().optional(),
                 UserId            : joi.string().optional(),
@@ -76,6 +79,7 @@ export class LlmPromptValidator extends BaseValidator {
                 Name              : joi.string().optional(),
                 Description       : joi.string().optional(),
                 UseCaseType       : joi.string().valid(...Object.values(PromptUsecase)).optional(),
+                GroupName         : joi.string().valid(...Object.values(PromptGroup)).optional(),
                 ModelName         : joi.string().optional(),
                 ModelVersion      : joi.string().optional(),
                 UserId            : joi.string().optional(),
@@ -105,6 +109,10 @@ export class LlmPromptValidator extends BaseValidator {
         var UseCaseType = query.UseCaseType ? query.UseCaseType : null;
         if (UseCaseType != null) {
             filters['UseCaseType'] = UseCaseType;
+        }
+        var GroupName = query.GroupName ? query.GroupName : null;
+        if (GroupName != null) {
+            filters['GroupName'] = GroupName;
         }
         var ModelName = query.ModelName ? query.ModelName : null;
         if (ModelName != null) {

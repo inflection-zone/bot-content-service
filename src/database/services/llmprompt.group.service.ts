@@ -1,14 +1,16 @@
 import { BaseService } from './base.service';
 import { logger } from '../../logger/logger';
+import express from 'express';
 import { ErrorHandler } from '../../common/handlers/error.handler';
 import { Source } from '../database.connector';
 import { Repository } from 'typeorm/repository/Repository';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { LlmPromptGroup } from '../models/llm.prompt/llm.prompt.groups.model';
-import { LlmPromptGroupCreateModel } from '../../domain.types/llm.prompt/llm.prompt.group.domain.types';
+import { LlmPromptGroupCreateModel, LlmPromptGroupSearchFilters } from '../../domain.types/llm.prompt/llm.prompt.group.domain.types';
 import { LlmPromptGroupDto } from '../../domain.types/llm.prompt/llm.prompt.group.domain.types';
 import { LlmPromptGroupMapper } from '../mappers/llm.prompt/llm.prompt.groups.mapper';
 import { LlmPromptGroupUpdateModel } from '../../domain.types/llm.prompt/llm.prompt.group.domain.types';
+import { FindManyOptions, Like } from 'typeorm';
 
 export class LlmpromptGroupService extends BaseService {
 
@@ -99,6 +101,69 @@ export class LlmpromptGroupService extends BaseService {
             logger.error(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // public getByName = async (name:string)=> {
+    //     try {
+    //         const group = [];
+    //         var data = await this._llmPromptGroupRepository.find({
+    //             where : {
+    //                 Name : name
+    //             },
+    //         });
+    //         for (var i of data) {
+    //             // const record = LlmPromptGroupMapper.toResponseDto(i);
+    //             // const record = (i);
+    //             // const record = i;
+    //             group.push(i);
+    //         }
+    //         return group;
+    //     } catch (error) {
+    //         logger.error(error.message);
+    //         ErrorHandler.throwInternalServerError(error.message, 500);
+    //     }
+    // };
+    public search = async (filters: LlmPromptGroupSearchFilters)
+    : Promise<LlmPromptGroupSearchFilters> => {
+        try {
+            var search = this.getSearchModel(filters);
+            var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
+            const [list, count] = await this._llmPromptGroupRepository.findAndCount(search);
+
+            const searchResults = {
+                TotalCount     : count,
+                RetrievedCount : list.length,
+                PageIndex      : pageIndex,
+                ItemsPerPage   : limit,
+                Order          : order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy      : orderByColumn,
+                Items          : list.map(x => LlmPromptGroupMapper.toResponseDto(x)),
+            };
+            return searchResults;
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
+        }
+    };
+
+    private getSearchModel = (filters: LlmPromptGroupSearchFilters) => {
+
+        var search : FindManyOptions<LlmPromptGroup> = {
+            relations : {
+            },
+            where : {
+            },
+            select : {
+                id          : true,
+                Name        : true,
+                Description : true,
+            }
+        };
+        if (filters.Name) {
+            search.where['Name'] = Like(`%${filters.Name}%`);
+        }
+        return search;
     };
 
 

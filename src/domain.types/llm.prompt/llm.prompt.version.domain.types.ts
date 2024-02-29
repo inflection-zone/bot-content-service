@@ -1,10 +1,10 @@
-import { BaseSearchFilters } from "../miscellaneous/base.search.types";
+import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 import { decimal, uuid } from "../miscellaneous/system.types";
 
 export interface  LlmPromptVersionDto {
     id              : uuid;
     VersionNumber   : string;
-    PromptId?        : string;
+    PromptId?       : string;
     Prompt          : string;
     Variables       : string;
     Score           : decimal;
@@ -12,7 +12,7 @@ export interface  LlmPromptVersionDto {
 }
 export interface  LlmPromptVersionCreateModel {
     VersionNumber   : string;
-    PromptId        : uuid;
+    PromptId        : string;
     Prompt          : string;
     Variables       : string;
     Score           : decimal;
@@ -20,7 +20,7 @@ export interface  LlmPromptVersionCreateModel {
 }
 export interface  LlmPromptVersionUpdateModel {
     VersionNumber?  : string;
-    PromptId        : uuid;
+    PromptId        : string;
     Prompt?         : string;
     Variables?      : string;
     Score?          : decimal;
@@ -28,9 +28,12 @@ export interface  LlmPromptVersionUpdateModel {
 }
 export interface LlmPromptVersionSearchFilters extends BaseSearchFilters {
     VersionNumber?  : string;
-    PromptId?        : uuid;
+    PromptId?        :string;
     Prompt?         : string;
     Variables?      : string;
     Score?          : decimal;
     PublishedAt?    : Date;
+}
+export interface LlmPromptVersionSearchResults extends BaseSearchResults {
+    Items: LlmPromptVersionDto[];
 }

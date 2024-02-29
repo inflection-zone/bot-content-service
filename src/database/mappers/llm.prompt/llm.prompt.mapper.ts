@@ -12,6 +12,7 @@ export class LlmPromptMapper {
             Name              : llmprompts.Name,
             Description       : llmprompts.Description,
             UseCaseType       : llmprompts.UseCaseType,
+            GroupName         : llmprompts.GroupName,
             ModelName         : llmprompts.ModelName,
             ModelVersion      : llmprompts.ModelVersion,
             UserId            : llmprompts.UserId,

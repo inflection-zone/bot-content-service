@@ -5,6 +5,7 @@ export interface  LlmPromptCreateModel {
     Name              : string;
     Description?      : string;
     UseCaseType       : string;
+    GroupName         : string;
     ModelName         : string;
     ModelVersion      : string;
     UserId            : string;
@@ -18,6 +19,7 @@ export interface LlmPromptUpdateModel {
     Name?              : string;
     Description?       : string;
     UseCaseType?       : string;
+    GroupName?      : string;
     ModelName?         : string;
     ModelVersion?      : string;
     UserId?            : string;
@@ -32,6 +34,7 @@ export interface LlmPromptDto {
     Name              : string;
     Description       : string;
     UseCaseType       : string;
+    GroupName         : string;
     ModelName         : string;
     ModelVersion      : string;
     UserId            : string;
@@ -43,16 +46,17 @@ export interface LlmPromptDto {
 }
 export interface LlmPromptSearchFilters extends BaseSearchFilters {
     id?                : uuid;
-    Name?              : string;
-    UseCaseType?       : string;
-    ModelName?         : string;
-    ModelVersion?      : string;
-    UserId?            : string;
-    Temperature?      : decimal;
+    Name?               : string;
+    UseCaseType?        : string;
+    GroupName?          : string;
+    ModelName?          : string;
+    ModelVersion?       : string;
+    UserId?             : string;
+    Temperature?        : decimal;
     FrequencyPenality?  : decimal;
     TopP?               : decimal;
     PresencePenalty?    : decimal;
-    IsActive?          : boolean;
+    IsActive?           : boolean;
 }
 export interface LlmPromptSearchResults extends BaseSearchResults {
     Items: LlmPromptDto[];

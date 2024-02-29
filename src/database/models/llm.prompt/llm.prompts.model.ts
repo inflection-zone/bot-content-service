@@ -3,6 +3,7 @@ import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, Up
 // import { LlmPromptGroup } from "./llm.prompt.groups.model";
 import { LlmPromptVersion } from "./llm.prompt.versions.model";
 import { PromptUsecase } from "../../../domain.types/usecase.domain.types";
+import { PromptGroup } from "../../../domain.types/promptgroup.domain.types";
 
 @Entity('llm_prompts')
 export class LlmPrompt extends BaseEntity{
@@ -16,8 +17,11 @@ Name: string;
 @Column({ type: 'varchar', length: 256, nullable: true })
 Description: string;
 
-@Column({ type: "enum",enum: PromptUsecase })
+@Column({ type: "enum", enum: PromptUsecase })
 UseCaseType: string;
+
+@Column(({ type: "enum", enum: PromptGroup }))
+GroupName: string;
 
 @Column(({ type: 'varchar', length: 256, nullable: false }))
 ModelName: string;
