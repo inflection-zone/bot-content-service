@@ -7,11 +7,11 @@ export const register = (app: express.Application): void => {
     // const authenticator = Loader.Authenticator;
     const controller = new LlmPromptVersionController();
 
-    router.get('/records', controller.getAll);
     router.get('/:id', controller.getById);
+    router.get('/records', controller.getAll);
     router.post('/', controller.create);
     router.put('/:id', controller.update);
     router.delete('/:id', controller.delete);
-    
+    // router.get('/:id', controller.getById);
     app.use('/api/v1/llmpromptversions', router);
 };

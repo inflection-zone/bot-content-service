@@ -1,3 +1,4 @@
+/* eslint-disable lines-between-class-members */
 
 import { ErrorHandler } from "../../../common/handlers/error.handler";
 import { ResponseHandler } from "../../../common/handlers/response.handler";
@@ -91,24 +92,24 @@ export class LlmPromptGroupController {
         }
     };
 
-    // getByName = async (request: express.Request, response: express.Response) => {
-    //     try {
-    //         var name = await this._validator.validateGetNameRequest(request);
-    //         const record = await this._service.getByName(name);
-    //         if (record === null)
-    //         {
-    //             const message = 'LLm prompt group record cannot be retrieved!';
-    //             ErrorHandler.throwNotFoundError(message);
-    //             // return ResponseHandler.success(request, response, message, 200, record);
-    //         }
-    //         else {
-    //             const message = 'LLm prompt group record retrieved successfully!';
-    //             return ResponseHandler.success(request, response, message, 200, record);
-    //         }
-    //     } catch (error) {
-    //         ResponseHandler.handleError(request, response, error);
-    //     }
-    // };
+    getByName = async (request: express.Request, response: express.Response) => {
+        try {
+            var name = await this._validator.validateGetRequest(request);
+            const record = await this._service.getByName(name);
+            if (record === null)
+            {
+                const message = 'LLm prompt group record cannot be retrieved!';
+                ErrorHandler.throwNotFoundError(message);
+                // return ResponseHandler.success(request, response, message, 200, record);
+            }
+            else {
+                const message = 'LLm prompt group record retrieved successfully!';
+                return ResponseHandler.success(request, response, message, 200, record);
+            }
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
     search = async (request: express.Request, response: express.Response) => {
         try {
            

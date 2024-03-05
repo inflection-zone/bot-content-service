@@ -8,10 +8,12 @@ export const register = (app: express.Application): void => {
     const controller = new LlmPromptController();
     
     router.get('/search', controller.search);
+    router.put('/:id', controller.update);
     router.get('/records', controller.getAll);
+    router.get('/search-by-status/:status', controller.getByStatus);
     router.get('/:id', controller.getById);
     router.post('/', controller.create);
-    router.put('/:id', controller.update);
+    
     router.delete('/:id', controller.delete);
     
     // router.get('/records', controller.getAll);

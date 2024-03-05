@@ -11,7 +11,7 @@ import helmet from 'helmet';
 import { Router } from './startup/router';
 import { logger } from './logger/logger';
 import { ConfigurationManager } from "./config/configuration.manager";
-import { Loader } from './startup/loader';
+// import { Loader } from './startup/loader';
 // import { Scheduler } from './startup/scheduler';
 import { DbClient } from './database/db.clients/db.client';
 // import { Seeder } from './startup/seeder';
@@ -42,7 +42,7 @@ export default class Application {
     warmUp = async () => {
         try {
             await this.setupDatabaseConnection();
-             await Loader.init();
+            //  await Loader.init();
             await this.setupMiddlewares();
             await this._router.init();
             // const seeder = new Seeder();

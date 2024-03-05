@@ -104,26 +104,27 @@ export class LlmpromptGroupService extends BaseService {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // public getByName = async (name:string)=> {
-    //     try {
-    //         const group = [];
-    //         var data = await this._llmPromptGroupRepository.find({
-    //             where : {
-    //                 Name : name
-    //             },
-    //         });
-    //         for (var i of data) {
-    //             // const record = LlmPromptGroupMapper.toResponseDto(i);
-    //             // const record = (i);
-    //             // const record = i;
-    //             group.push(i);
-    //         }
-    //         return group;
-    //     } catch (error) {
-    //         logger.error(error.message);
-    //         ErrorHandler.throwInternalServerError(error.message, 500);
-    //     }
-    // };
+    public getByName = async (name:string)=> {
+        try {
+            const group = [];
+            var data = await this._llmPromptGroupRepository.find({
+                where : {
+                    Name : name
+                },
+            });
+            for (var i of data) {
+                // const record = LlmPromptGroupMapper.toResponseDto(i);
+                // const record = (i);
+                // const record = i;
+                group.push(i);
+            }
+            return group;
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
+    
     public search = async (filters: LlmPromptGroupSearchFilters)
     : Promise<LlmPromptGroupSearchFilters> => {
         try {
@@ -165,6 +166,5 @@ export class LlmpromptGroupService extends BaseService {
         }
         return search;
     };
-
 
 }
