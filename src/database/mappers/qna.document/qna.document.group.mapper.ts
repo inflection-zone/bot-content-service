@@ -1,5 +1,5 @@
 import { QnaDocumentGroupDto } from "../../../domain.types/qna.document/qna.document.group.domain.types";
-import { QnaDocumentGroup } from "../../../database/models/qna.documents/qna.document.groups.model";
+import { QnaDocumentGroup } from "../../../database/models/qna.document/qna.document.groups.model";
 
 export class QnaDocumentGroupMapper {
 

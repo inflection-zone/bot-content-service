@@ -1,4 +1,4 @@
-import { QnaDocumentVersion } from "../../../database/models/qna.documents/qna.document.versions.model";
+import { QnaDocumentVersion } from "../../../database/models/qna.document/qna.document.version.model";
 import { QnaDocumentVersionDto } from "../../../domain.types/qna.document/qna.document.version.domain.types";
 
 export class QnaDocumentVersionMapper {

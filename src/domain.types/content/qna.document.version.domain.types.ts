@@ -4,7 +4,7 @@ import { integer } from '../miscellaneous/system.types';
 //////////////////////////////////////////////////////////////
 
 export interface QnaDocumentVersionCreateModel {
-    VersionNumber: integer;
+    VersionNumber: number;
     StorageUrl: string;
     DownloadUrl: string;
     FileResourceId: string;
@@ -12,7 +12,7 @@ export interface QnaDocumentVersionCreateModel {
 }
 
 export interface QnaDocumentVersionUpdateModel {
-    VersionNumber?: integer;
+    VersionNumber?: number;
     StorageUrl?: string;
     DownloadUrl?: string;
     FileResourceId?: string;
@@ -21,7 +21,7 @@ export interface QnaDocumentVersionUpdateModel {
 
 export interface QnaDocumentVersionResponseDto {
     id: string;
-    VersionNumber: integer;
+    VersionNumber: number;
     StorageUrl: string;
     DownloadUrl: string;
     FileResourceId: string;

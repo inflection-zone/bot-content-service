@@ -3,21 +3,21 @@ import { uuid } from "../miscellaneous/system.types";
 
 export interface  QnaDocumentVersionDto {
     id              : uuid;
-    VersionNumber   : string;
+    VersionNumber   : number;
     StorageUrl      : string;
     DownloadUrl     : string;
     FileResourceId  : string;
     Keywords        : string;
 }
 export interface  QnaDocumentVersionCreateModel {
-    VersionNumber   : string;
+    VersionNumber   : number;
     StorageUrl      : string;
     DownloadUrl     : string;
     FileResourceId  : string;
     Keywords        : string;
 }
 export interface  QnaDocumentVersionUpdateModel {
-    VersionNumber?  : string;
+    VersionNumber?  : number;
     StorageUrl?     : string;
     DownloadUrl?    : string;
     FileResourceId? : string;
