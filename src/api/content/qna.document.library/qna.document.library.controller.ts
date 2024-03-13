@@ -35,7 +35,6 @@ export class QnaDocumentLibraryController {
 
     //#endregion
 
-
     getAll = async (request: express.Request, response: express.Response) => {
         try {
             const record = await this._service.getAll();
@@ -45,7 +44,7 @@ export class QnaDocumentLibraryController {
             ResponseHandler.handleError(request, response, error);
         }
     };
-    
+
     create = async (request: express.Request, response: express.Response) => {
         console.log('Create request call');
         try {
@@ -87,18 +86,6 @@ export class QnaDocumentLibraryController {
         }
     };
 
-    // search = async (request: express.Request, response: express.Response) => {
-    //     try {
-    //         // await this.authorize('QnaDocumentGroup.Search', request, response);
-    //         // var filters: QnaDocumentSearchFilters = await this._validator.validateSearchRequest(request);
-    //         const searchResults = await this._service.search(filters);
-    //         const message = 'QnaDocument records retrieved successfully!';
-    //         ResponseHandler.success(request, response, message, 200, searchResults);
-    //     } catch (error) {
-    //         ResponseHandler.handleError(request, response, error);
-    //     }
-    // };
-
     delete = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
             // await this.authorize('QnaDocument.Delete', request, response);
@@ -110,4 +97,6 @@ export class QnaDocumentLibraryController {
             ResponseHandler.handleError(request, response, error);
         }
     };
+
+    
 }

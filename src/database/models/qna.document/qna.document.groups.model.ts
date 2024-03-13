@@ -1,10 +1,20 @@
+/* eslint-disable padded-blocks */
 /* eslint-disable eol-last */
-import { BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { QnaDocument } from "./qna.document.model";
+import {
+    BaseEntity,
+    Column,
+    CreateDateColumn,
+    DeleteDateColumn,
+    Entity,
+    JoinTable,
+    ManyToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+} from 'typeorm';
+import { QnaDocument } from './qna.document.model';
 
 @Entity({ name: 'qna_document_groups' })
 export class QnaDocumentGroup extends BaseEntity {
-
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -16,15 +26,14 @@ export class QnaDocumentGroup extends BaseEntity {
 
     @ManyToMany(() => QnaDocument)
     @JoinTable()
-         "qna_group_documents":QnaDocument[];
-    
-@CreateDateColumn()
-CreatedAt: Date;
+    'qna_group_documents': QnaDocument[];
 
-@UpdateDateColumn()
-UpdatedAt: Date;
+    @CreateDateColumn()
+    CreatedAt: Date;
 
-@DeleteDateColumn()
-DeletedAt: Date;
+    @UpdateDateColumn()
+    UpdatedAt: Date;
 
+    @DeleteDateColumn()
+    DeletedAt: Date;
 }

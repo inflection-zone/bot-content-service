@@ -24,7 +24,7 @@ export interface  QnaDocumentVersionUpdateModel {
     Keywords?       : string;
 }
 export interface LlmPromptVersionSearchFilters extends BaseSearchFilters {
-    VersionNumber?  : string;
+    VersionNumber?  : number;
     StorageUrl?     : string;
     DownloadUrl?    : string;
     FileResourceId? : string;

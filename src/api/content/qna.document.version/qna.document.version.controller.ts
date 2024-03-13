@@ -10,11 +10,14 @@ import { QnaDocumentVersionValidator } from './qna.document.version.validator';
 import { BaseController } from '../../base.controller';
 import { ErrorHandler } from '../../../common/handlers/error.handler';
 
+
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
 import { QnaDocumentVersion } from '../../../database/models/qna.document/qna.document.version.model';
 import { QnaDocumentVersionService } from '../../../database/services/content/qna.document.version.service';
-import { QnaDocumentVersionCreateModel } from '../../../domain.types/content/qna.document.version.domain.types';
+import { QnaDocumentVersionCreateModel, QnaDocumentVersionSearchFilters } from '../../../domain.types/content/qna.document.version.domain.types';
 import { QnaDocumentVersionUpdateModel } from '../../../domain.types/content/qna.document.version.domain.types';
+import moment from 'moment-timezone';
+
 // import { validateParamAsUUID } from './base.validator.ts';
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -36,7 +39,7 @@ export class QnaDocumentVersionController {
     getAll = async (request: express.Request, response: express.Response) => {
         try {
             const record = await this._service.getAll();
-            const message = 'Qna-Document-version retrieved successfully!';
+            const message = 'Qna-Document version retrieved successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -52,7 +55,7 @@ export class QnaDocumentVersionController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add qna document version!');
             }
-            const message = 'QnaDocumentVersion added successfully!';
+            const message = 'QnaDocument Version added successfully!';
             return ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -64,7 +67,7 @@ export class QnaDocumentVersionController {
             // await this.authorize('QnaDocumentVersion.GetById', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
-            const message = 'QnaDocumentVersion retrieved successfully!';
+            const message = 'QnaDocument Version retrieved successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -77,7 +80,7 @@ export class QnaDocumentVersionController {
             const id = await this._validator.validateParamAsUUID(request, 'id');
             var model: QnaDocumentVersionUpdateModel = await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
-            const message = 'QnaDocumentVersion updated successfully!';
+            const message = 'QnaDocument Version updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -89,65 +92,38 @@ export class QnaDocumentVersionController {
             // await this.authorize('QnaDocument.Delete', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const result = await this._service.delete(id);
-            const message = 'QnaDocumentVersion deleted successfully!';
+            const message = 'QnaDocument Version deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
     };
 
-    getByVersionNumber = async (request: express.Request, response: express.Response) => {
-        try {
-            const versionnumber = parseInt(request.params.versionnumber);
-            const records = await this._service.getByVersionNumber(versionnumber);
-            const message = 'Qna-Document retrieved successfully!';
-            return ResponseHandler.success(request, response, message, 200, records);
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    };
+    
 
     // getByDate = async (request: express.Request, response: express.Response) => {
+    //     const dateString = request.params.date;
+    //     const parsedDate = moment(dateString, 'YYYY-MM-DD HH:mm:ss.SSSSSS');
+
     //     try {
-    //         const dateString = request.body.date;
-    //         const date = new Date(dateString);
-    //         console.log(date);
-    //         const records = await this._service.getByDate(date);
-    //         const message = 'Qna-Document retrieved successfully!';
-    //         return ResponseHandler.success(request, response, message, 200, records);
+    //         const utcDate = parsedDate;
+    //         const istDate = utcDate.tz('Asia/Kolkata');
+    //         const formattedDate = istDate.format('YYYY-MM-DD HH:mm:ss.SSS');
+    //         const records = await this._service.getByDate(formattedDate);
+
+    //         const message = 'Qna-Document version retrieved successfully!';
+    //         return ResponseHandler.success(request, response, message, 201, records);
     //     } catch (error) {
     //         ResponseHandler.handleError(request, response, error);
     //     }
     // };
 
-    getByFileResourceId = async (request: express.Request, response: express.Response) => {
+    search = async (request: express.Request, response: express.Response) => {
         try {
-            const fileresourceid = request.params.fileresourceid;
-            const records = await this._service.getByFileResourceId(fileresourceid);
-            const message = 'Qna-Document retrieved successfully!';
-            return ResponseHandler.success(request, response, message, 200, records);
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    };
-
-    getByStorageKey = async (request: express.Request, response: express.Response) => {
-        try {
-            const storagekey = request.params.storagekey;
-            const records = await this._service.getByStorageKey(storagekey);
-            const message = 'Qna-Document retrieved successfully!';
-            return ResponseHandler.success(request, response, message, 200, records);
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    };
-
-    getByKeywords = async (request: express.Request, response: express.Response) => {
-        try {
-            const keywords = request.params.keywords;
-            const records = await this._service.getByKeywords(keywords);
-            const message = 'Qna-Document retrieved successfully!';
-            return ResponseHandler.success(request, response, message, 200, records);
+            var filters: QnaDocumentVersionSearchFilters = await this._validator.validateSearchRequest(request);
+            const searchResults = await this._service.search(filters);
+            const message = 'Qna Document Version records retrieved successfully!';
+            ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }

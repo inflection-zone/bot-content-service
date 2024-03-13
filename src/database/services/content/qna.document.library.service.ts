@@ -24,7 +24,6 @@ import { QnaDocumentLibraryMapper } from '../../mappers/content/qna.document.lib
 export class QnaDocumentLibraryService extends BaseService {
     _qnaDocumentLibraryRepository: Repository<QnaDocumentLibrary> = Source.getRepository(QnaDocumentLibrary);
 
-
     public getAll = async (): Promise<QnaDocumentLibraryResponseDto[]> => {
         try {
             var documentlibrary = await this._qnaDocumentLibraryRepository.find();
@@ -61,28 +60,6 @@ export class QnaDocumentLibraryService extends BaseService {
         }
     };
 
-    // public search = async (filters: QnaDocumentSearchFilters)
-    //     : Promise<QnaDocumentSearchResults> => {
-    //     try {
-    //         var search = this.getSearchModel(filters);
-    //         var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
-    //         const [list, count] = await this._qnaDocumentRepository.findAndCount(search);
-    //         const searchResults = {
-    //             TotalCount     : count,
-    //             RetrievedCount : list.length,
-    //             PageIndex      : pageIndex,
-    //             ItemsPerPage   : limit,
-    //             Order          : order === 'DESC' ? 'descending' : 'ascending',
-    //             OrderedBy      : orderByColumn,
-    //             Items          : list.map(x => QnaDocumentMapper.toResponseDto(x)),
-    //         };
-    //         return searchResults;
-    //     } catch (error) {
-    //         logger.error(error.message);
-    //         ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
-    //     }
-    // };
-
     public update = async (id: uuid, model: QnaDocumentLibraryUpdateModel): Promise<QnaDocumentLibraryResponseDto> => {
         try {
             const documentlibrary = await this._qnaDocumentLibraryRepository.findOne({
@@ -99,7 +76,6 @@ export class QnaDocumentLibraryService extends BaseService {
             if (model.DocumentId != null) {
                 documentlibrary.DocumentId = model.DocumentId;
             }
-            
 
             var record = await this._qnaDocumentLibraryRepository.save(documentlibrary);
             return QnaDocumentLibraryMapper.toResponseDto(record);
@@ -123,48 +99,4 @@ export class QnaDocumentLibraryService extends BaseService {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
     };
-
-    //#region Privates
-
-    // private getSearchModel = (filters: BadgeSearchFilters) => {
-
-    //     var search : FindManyOptions<Badge> = {
-    //         relations : {
-    //         },
-    //         where : {
-    //         },
-    //         select : {
-    //             id      : true,
-    //             Category: {
-    //                 id         : true,
-    //                 Name       : true,
-    //                 Description: true,
-    //             },
-    //             Client       : {
-    //                 id  : true,
-    //                 Name: true,
-    //                 Code: true,
-    //             },
-    //             Name       : true,
-    //             Description: true,
-    //             ImageUrl   : true,
-    //             CreatedAt  : true,
-    //             UpdatedAt  : true,
-    //         }
-    //     };
-
-    //     if (filters.CategoryId) {
-    //         search.where['Category'].id = filters.CategoryId;
-    //     }
-    //     if (filters.ClientId) {
-    //         search.where['Client'].id = filters.ClientId;
-    //     }
-    //     if (filters.Name) {
-    //         search.where['Name'] = Like(`%${filters.Name}%`);
-    //     }
-
-    //     return search;
-    // };
-
-    //#endregion
 }

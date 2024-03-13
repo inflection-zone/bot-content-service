@@ -15,7 +15,6 @@ import {
     QnaDocumentLibraryUpdateModel,
 } from '../../../domain.types/content/qna.document.library.domain.types';
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class QnaDocumentLibraryValidator extends BaseValidator {
@@ -48,39 +47,4 @@ export class QnaDocumentLibraryValidator extends BaseValidator {
             ErrorHandler.handleValidationError(error);
         }
     };
-
-    // public validateSearchRequest = async (request: express.Request): Promise<BadgeSearchFilters> => {
-    //     try {
-    //         const schema = joi.object({
-    //             categoryId : joi.string().uuid().optional(),
-    //             clientId   : joi.string().uuid().optional(),
-    //             name       : joi.string().max(64).optional(),
-    //         });
-    //         await schema.validateAsync(request.query);
-    //         const filters = this.getSearchFilters(request.query);
-    //         return filters;
-    //     } catch (error) {
-    //         ErrorHandler.handleValidationError(error);
-    //     }
-    // };
-
-    // private getSearchFilters = (query): BadgeSearchFilters => {
-
-    //     var filters = {};
-
-    //     var name = query.name ? query.name : null;
-    //     if (name != null) {
-    //         filters['Name'] = name;
-    //     }
-    //     var clientId = query.clientId ? query.clientId : null;
-    //     if (clientId != null) {
-    //         filters['ClientId'] = clientId;
-    //     }
-    //     var categoryId = query.categoryId ? query.categoryId : null;
-    //     if (categoryId != null) {
-    //         filters['CategoryId'] = categoryId;
-    //     }
-
-    //     return filters;
-    // };
 }
