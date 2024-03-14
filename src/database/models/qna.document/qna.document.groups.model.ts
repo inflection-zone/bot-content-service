@@ -26,7 +26,7 @@ export class QnaDocumentGroup extends BaseEntity {
 
     @ManyToMany(() => QnaDocument)
     @JoinTable()
-    'qna_group_documents': QnaDocument[];
+    QnaDocument: QnaDocument[];
 
     @CreateDateColumn()
     CreatedAt: Date;

@@ -1,3 +1,4 @@
+/* eslint-disable lines-between-class-members */
 /* eslint-disable no-multiple-empty-lines */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable padded-blocks */
@@ -44,9 +45,10 @@ export class QnaDocumentVersion extends BaseEntity {
     @DeleteDateColumn()
     DeletedAt: Date;
 
-    @ManyToOne(() => QnaDocument, (qna_documents) => qna_documents.qna_document_versions)
+    @ManyToOne(() => QnaDocument, (qna_documents) => qna_documents.QnaDocumentVersion)
     @JoinColumn({
         name : 'DocumentId',
     })
-    qna_documents: QnaDocument;
+    QnaDocument: QnaDocument;
+    DocumentId: string;
 }

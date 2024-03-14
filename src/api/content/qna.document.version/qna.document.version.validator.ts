@@ -16,6 +16,7 @@ import {
     QnaDocumentVersionUpdateModel,
 } from '../../../domain.types/content/qna.document.version.domain.types';
 import { integer } from '../../../domain.types/miscellaneous/system.types';
+import { uuid } from '../../../../dist/src/domain.types/miscellaneous/system.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,6 +24,7 @@ export class QnaDocumentVersionValidator extends BaseValidator {
     public validateCreateRequest = async (request: express.Request): Promise<QnaDocumentVersionCreateModel> => {
         try {
             const schema = joi.object({
+                DocumentId: joi.string().uuid(),
                 VersionNumber: joi.number(),
                 StorageUrl: joi.string(),
                 DownloadUrl: joi.string(),
@@ -31,6 +33,7 @@ export class QnaDocumentVersionValidator extends BaseValidator {
             });
             await schema.validateAsync(request.body);
             return {
+                DocumentId: request.body.DocumentId,
                 VersionNumber: request.body.VersionNumber,
                 StorageUrl: request.body.StorageUrl,
                 DownloadUrl: request.body.DownloadUrl,
@@ -47,6 +50,7 @@ export class QnaDocumentVersionValidator extends BaseValidator {
     ): Promise<QnaDocumentVersionUpdateModel | undefined> => {
         try {
             const schema = joi.object({
+                DocumentId: joi.string().uuid(),
                 VersionNumber: joi.number(),
                 StorageUrl: joi.string(),
                 DownloadUrl: joi.string(),
@@ -55,6 +59,7 @@ export class QnaDocumentVersionValidator extends BaseValidator {
             });
             await schema.validateAsync(request.body);
             return {
+                DocumentId: request.body.DocumentId ?? null,
                 VersionNumber: request.body.VersionNumber ?? null,
                 StorageUrl: request.body.StorageUrl ?? null,
                 DownloadUrl: request.body.DownloadUrl ?? null,
@@ -69,6 +74,7 @@ export class QnaDocumentVersionValidator extends BaseValidator {
     public validateSearchRequest = async (request: express.Request): Promise<QnaDocumentVersionSearchFilters> => {
         try {
             const schema = joi.object({
+                DocumentId: joi.string().uuid(),
                 VersionNumber: joi.string().optional(),
                 StorageUrl: joi.string().optional(),
                 DownloadUrl: joi.string().optional(),
@@ -86,6 +92,11 @@ export class QnaDocumentVersionValidator extends BaseValidator {
 
     private getSearchFilters = (query): QnaDocumentVersionSearchFilters => {
         var filters = {};
+
+        var DocumentId = query.DocumentId ? query.DocumentId : null;
+        if (DocumentId != null) {
+            filters['DocumentId'] = DocumentId;
+        }
 
         var VersionNumber = query.VersionNumber ? query.VersionNumber : null;
         if (VersionNumber != null) {

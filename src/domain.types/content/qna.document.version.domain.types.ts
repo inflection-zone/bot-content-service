@@ -6,6 +6,7 @@ import { QnaDocumentLibraryResponseDto } from './qna.document.library.domain.typ
 //////////////////////////////////////////////////////////////
 
 export interface QnaDocumentVersionCreateModel {
+    DocumentId: uuid;
     VersionNumber: number;
     StorageUrl: string;
     DownloadUrl: string;
@@ -14,6 +15,7 @@ export interface QnaDocumentVersionCreateModel {
 }
 
 export interface QnaDocumentVersionUpdateModel {
+    DocumentId?: uuid;
     VersionNumber?: number;
     StorageUrl?: string;
     DownloadUrl?: string;
@@ -22,6 +24,7 @@ export interface QnaDocumentVersionUpdateModel {
 }
 
 export interface QnaDocumentVersionResponseDto {
+    DocumentId: uuid;
     id: string;
     VersionNumber: number;
     StorageUrl: string;
@@ -33,6 +36,7 @@ export interface QnaDocumentVersionResponseDto {
 }
 
 export interface QnaDocumentVersionSearchFilters extends BaseSearchFilters {
+    DocumentId?: uuid;
     id?: uuid;
     VersionNumber?: number;
     StorageUrl?: string;

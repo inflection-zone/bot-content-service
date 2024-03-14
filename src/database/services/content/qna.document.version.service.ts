@@ -21,23 +21,41 @@ import {
 } from '../../../domain.types/content/qna.document.version.domain.types';
 import { QnaDocumentVersionResponseDto } from '../../../domain.types/content/qna.document.version.domain.types';
 import { QnaDocumentVersionMapper } from '../../mappers/content/qna.document.version.mapper';
+import { QnaDocument } from '../../models/qna.document/qna.document.model';
 
 ///////////////////////////////////////////////////////////////////////
 
 export class QnaDocumentVersionService extends BaseService {
     _qnaDocumentVersionRepository: Repository<QnaDocumentVersion> = Source.getRepository(QnaDocumentVersion);
 
+    _documentRepository: Repository<QnaDocument> = Source.getRepository(QnaDocument);
+
     public create = async (createModel: QnaDocumentVersionCreateModel): Promise<QnaDocumentVersionResponseDto> => {
+        const document = await this.getDocument(createModel.DocumentId);
         const version = this._qnaDocumentVersionRepository.create({
+            DocumentId : createModel.DocumentId,
             VersionNumber: createModel.VersionNumber,
             StorageUrl: createModel.StorageUrl,
             DownloadUrl: createModel.DownloadUrl,
             FileResourceId: createModel.FileResourceId,
             Keywords: createModel.Keywords,
+            QnaDocument: QnaDocument,
         });
         var record = await this._qnaDocumentVersionRepository.save(version);
         return QnaDocumentVersionMapper.toResponseDto(record);
     };
+
+    private async getDocument(documentId: uuid) {
+        const document = await this._documentRepository.findOne({
+            where: {
+                id: documentId,
+            },
+        });
+        if (!document) {
+            ErrorHandler.throwNotFoundError('Version cannot be found');
+        }
+        return document;
+    }
 
     public getAll = async (): Promise<QnaDocumentVersionResponseDto[]> => {
         try {

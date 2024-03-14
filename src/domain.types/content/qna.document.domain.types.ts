@@ -1,5 +1,8 @@
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BaseSearchFilters, BaseSearchResults } from '../miscellaneous/base.search.types';
 import { integer, uuid } from '../miscellaneous/system.types';
+import { QnaDocument } from '../../database/models/qna.document/qna.document.model';
 
 //////////////////////////////////////////////////////////////
 

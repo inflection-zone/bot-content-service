@@ -1,3 +1,4 @@
+/* eslint-disable padded-blocks */
 /* eslint-disable no-multiple-empty-lines */
 /* eslint-disable eol-last */
 // import { integer } from "../../../domain.types/miscellaneous/system.types";
@@ -11,11 +12,11 @@ import {
     UpdateDateColumn,
     DeleteDateColumn,
     ManyToMany,
-    JoinTable,
+    
     OneToMany,
 } from 'typeorm';
 import { QnaDocumentGroup } from './qna.document.groups.model';
-// import { QnaDocument } from "./qna.document.version.model";
+// import { QnaDocument, QnaDocumentVersion } from './qna.document.version.model';
 import { ChunkingStrategy } from '../../../domain.types/chunking.strategy.domain.types';
 import { QnaDocumentVersion } from './qna.document.version.model';
 
@@ -70,10 +71,10 @@ export class QnaDocument extends BaseEntity {
     @DeleteDateColumn()
     DeletedAt: Date;
 
-    @ManyToMany(() => QnaDocumentGroup)
-    @JoinTable()
-    qna_group_documents: QnaDocumentGroup[];
+    @ManyToMany(() => QnaDocumentGroup, (qna_document_groups) => qna_document_groups.QnaDocument)
+    // @JoinTable()
+    QnaDocumentGroup: QnaDocumentGroup[];
 
-    @OneToMany(() => QnaDocumentVersion, (qna_document_versions) => qna_document_versions.qna_documents)
-    qna_document_versions: QnaDocumentVersion[];
+    @OneToMany(() => QnaDocumentVersion, (qna_document_versions) => qna_document_versions.QnaDocument)
+    QnaDocumentVersion: QnaDocumentVersion[];
 }

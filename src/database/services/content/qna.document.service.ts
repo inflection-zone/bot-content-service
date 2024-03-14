@@ -21,6 +21,8 @@ import {
 import { QnaDocumentResponseDto } from '../../../domain.types/content/qna.document.domain.types';
 import { QnaDocumentMapper } from '../../mappers/content/qna.document.mapper';
 import { strategy } from 'sharp';
+import { QnaDocumentGroup } from '../../models/qna.document/qna.document.groups.model';
+// import { QnaDocumentVersion } from '../../models/qna.document/qna.document.version.model';
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -38,22 +40,27 @@ export class QnaDocumentService extends BaseService {
     };
 
     public create = async (createModel: QnaDocumentCreateModel): Promise<QnaDocumentResponseDto> => {
-        const group = this._qnaDocumentRepository.create({
-            Name: createModel.Name,
-            Description: createModel.Description,
-            FileName: createModel.FileName,
-            Source: createModel.Source,
-            ParentDocument: createModel.ParentDocument,
-            ParentDocumentVersion: createModel.ParentDocumentVersion,
-            ChunkingStrategy: createModel.ChunkingStrategy,
-            ChunkingLenght: createModel.ChunkingLenght,
-            ChunkOverlap: createModel.ChunkOverlap,
-            Splitter: createModel.Splitter,
-            IsActive: createModel.IsActive,
-            CreatedBy: createModel.CreatedBy,
-        });
-        var record = await this._qnaDocumentRepository.save(group);
-        return QnaDocumentMapper.toResponseDto(record);
+        try {
+            const document = this._qnaDocumentRepository.create({
+                Name: createModel.Name,
+                Description: createModel.Description,
+                FileName: createModel.FileName,
+                Source: createModel.Source,
+                ParentDocument: createModel.ParentDocument,
+                ParentDocumentVersion: createModel.ParentDocumentVersion,
+                ChunkingStrategy: createModel.ChunkingStrategy,
+                ChunkingLenght: createModel.ChunkingLenght,
+                ChunkOverlap: createModel.ChunkOverlap,
+                Splitter: createModel.Splitter,
+                IsActive: createModel.IsActive,
+                CreatedBy: createModel.CreatedBy,
+            });
+            var record = await this._qnaDocumentRepository.save(document);
+            return QnaDocumentMapper.toResponseDto(record);
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
     };
 
     public getById = async (id: uuid): Promise<QnaDocumentResponseDto> => {
@@ -84,8 +91,6 @@ export class QnaDocumentService extends BaseService {
             if (!document) {
                 ErrorHandler.throwNotFoundError('Document not found!');
             }
-            //Badge code is not modifiable
-            //Use renew key to update ApiKey, ValidFrom and ValidTill
 
             if (model.Name != null) {
                 document.Name = model.Name;
