@@ -12,9 +12,11 @@ import BaseValidator from '../../base.validator';
 
 import {
     QnaDocumentVersionCreateModel,
+    QnaDocumentVersionSearchFilters,
     QnaDocumentVersionUpdateModel,
 } from '../../../domain.types/content/qna.document.version.domain.types';
 import { integer } from '../../../domain.types/miscellaneous/system.types';
+import { uuid } from '../../../../dist/src/domain.types/miscellaneous/system.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -22,6 +24,7 @@ export class QnaDocumentVersionValidator extends BaseValidator {
     public validateCreateRequest = async (request: express.Request): Promise<QnaDocumentVersionCreateModel> => {
         try {
             const schema = joi.object({
+                DocumentId: joi.string().uuid(),
                 VersionNumber: joi.number(),
                 StorageUrl: joi.string(),
                 DownloadUrl: joi.string(),
@@ -30,6 +33,7 @@ export class QnaDocumentVersionValidator extends BaseValidator {
             });
             await schema.validateAsync(request.body);
             return {
+                DocumentId: request.body.DocumentId,
                 VersionNumber: request.body.VersionNumber,
                 StorageUrl: request.body.StorageUrl,
                 DownloadUrl: request.body.DownloadUrl,
@@ -46,6 +50,7 @@ export class QnaDocumentVersionValidator extends BaseValidator {
     ): Promise<QnaDocumentVersionUpdateModel | undefined> => {
         try {
             const schema = joi.object({
+                DocumentId: joi.string().uuid(),
                 VersionNumber: joi.number(),
                 StorageUrl: joi.string(),
                 DownloadUrl: joi.string(),
@@ -54,6 +59,7 @@ export class QnaDocumentVersionValidator extends BaseValidator {
             });
             await schema.validateAsync(request.body);
             return {
+                DocumentId: request.body.DocumentId ?? null,
                 VersionNumber: request.body.VersionNumber ?? null,
                 StorageUrl: request.body.StorageUrl ?? null,
                 DownloadUrl: request.body.DownloadUrl ?? null,
@@ -65,38 +71,65 @@ export class QnaDocumentVersionValidator extends BaseValidator {
         }
     };
 
-    // public validateSearchRequest = async (request: express.Request): Promise<BadgeSearchFilters> => {
-    //     try {
-    //         const schema = joi.object({
-    //             categoryId : joi.string().uuid().optional(),
-    //             clientId   : joi.string().uuid().optional(),
-    //             name       : joi.string().max(64).optional(),
-    //         });
-    //         await schema.validateAsync(request.query);
-    //         const filters = this.getSearchFilters(request.query);
-    //         return filters;
-    //     } catch (error) {
-    //         ErrorHandler.handleValidationError(error);
-    //     }
-    // };
+    public validateSearchRequest = async (request: express.Request): Promise<QnaDocumentVersionSearchFilters> => {
+        try {
+            const schema = joi.object({
+                DocumentId: joi.string().uuid(),
+                VersionNumber: joi.string().optional(),
+                StorageUrl: joi.string().optional(),
+                DownloadUrl: joi.string().optional(),
+                FileResourceId: joi.string().optional(),
+                Keywords: joi.string().optional(),
+            });
 
-    // private getSearchFilters = (query): BadgeSearchFilters => {
+            await schema.validateAsync(request.query);
+            const filters = this.getSearchFilters(request.query);
+            return filters;
+        } catch (error) {
+            ErrorHandler.handleValidationError(error);
+        }
+    };
 
-    //     var filters = {};
+    private getSearchFilters = (query): QnaDocumentVersionSearchFilters => {
+        var filters = {};
 
-    //     var name = query.name ? query.name : null;
-    //     if (name != null) {
-    //         filters['Name'] = name;
-    //     }
-    //     var clientId = query.clientId ? query.clientId : null;
-    //     if (clientId != null) {
-    //         filters['ClientId'] = clientId;
-    //     }
-    //     var categoryId = query.categoryId ? query.categoryId : null;
-    //     if (categoryId != null) {
-    //         filters['CategoryId'] = categoryId;
-    //     }
+        var DocumentId = query.DocumentId ? query.DocumentId : null;
+        if (DocumentId != null) {
+            filters['DocumentId'] = DocumentId;
+        }
 
-    //     return filters;
-    // };
+        var VersionNumber = query.VersionNumber ? query.VersionNumber : null;
+        if (VersionNumber != null) {
+            filters['VersionNumber'] = VersionNumber;
+        }
+        var StorageUrl = query.StorageUrl ? query.StorageUrl : null;
+        if (StorageUrl != null) {
+            filters['StorageUrl'] = StorageUrl;
+        }
+        var DownloadUrl = query.DownloadUrl ? query.DownloadUrl : null;
+        if (DownloadUrl != null) {
+            filters['DownloadUrl'] = DownloadUrl;
+        }
+        var FileResourceId = query.FileResourceId ? query.FileResourceId : null;
+        if (FileResourceId != null) {
+            filters['FileResourceId'] = FileResourceId;
+        }
+        var Keywords = query.Keywords ? query.Keywords : null;
+        if (Keywords != null) {
+            filters['Keywords'] = Keywords;
+        }
+        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
+        if (itemsPerPage != null) {
+            filters['ItemsPerPage'] = itemsPerPage;
+        }
+        var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
+        if (orderBy != null) {
+            filters['OrderBy'] = orderBy;
+        }
+        var order = query.order ? query.order : 'ASC';
+        if (order != null) {
+            filters['Order'] = order;
+        }
+        return filters;
+    };
 }

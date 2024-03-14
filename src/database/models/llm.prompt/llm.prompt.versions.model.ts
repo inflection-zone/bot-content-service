@@ -1,24 +1,15 @@
-/* eslint-disable padded-blocks */
-/* eslint-disable indent */
-import { decimal, integer } from '../../../domain.types/miscellaneous/system.types';
-import {
-    Entity,
-    BaseEntity,
-    Column,
-    PrimaryGeneratedColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
-    DeleteDateColumn,
-} from 'typeorm';
-// import { LlmPrompts } from "./llm.prompts.model";
+import { decimal, uuid } from "../../../domain.types/miscellaneous/system.types";
+import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn } from "typeorm";
+import { LlmPrompt } from "./llm.prompts.model";
 
 @Entity('llm_prompt_versions')
-export class LlmPromptVersions extends BaseEntity {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+export class LlmPromptVersion extends BaseEntity{
 
-    @Column({ unique: true, nullable: false })
-    VersionNumber: integer;
+@PrimaryGeneratedColumn('uuid')
+id: string;
+  
+@Column(({ unique: true, nullable: false }))
+VersionNumber: string;
 
     @Column({ type: 'varchar', length: 256, nullable: false })
     Prompt: string;
@@ -38,8 +29,19 @@ export class LlmPromptVersions extends BaseEntity {
     @UpdateDateColumn()
     UpdatedAt: Date;
 
-    @DeleteDateColumn()
-    DeletedAt: Date;
+@DeleteDateColumn()
+DeletedAt: Date;
+
+@ManyToOne(
+    ()=>LlmPrompt,
+    llm_prompts=> llm_prompts.llm_prompt_versions
+)
+@JoinColumn({
+    name : 'PromptId'
+})
+llm_prompts: LlmPrompt;
+
+PromptId: string;
 
     // @ManyToOne(
     //     ()=>LlmPrompts,

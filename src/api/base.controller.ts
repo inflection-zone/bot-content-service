@@ -1,7 +1,7 @@
 import express from 'express';
 // import { Authorizer } from '../auth/authorizer';
 import { ErrorHandler } from '../common/handlers/error.handler';
-import { Loader } from '../startup/loader';
+// import { Loader } from '../startup/loader';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,7 +33,7 @@ export class BaseController {
             request.resourceId = request.params.id;
         }
         if (authorize) {
-            await Loader.Authorizer.authorize(request, response);
+            // await Loader.Authorizer.authorize(request, response);
         }
     };
 

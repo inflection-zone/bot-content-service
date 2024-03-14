@@ -9,9 +9,9 @@ import { QnaDocumentGroup } from "./models/qna.document/qna.document.groups.mode
 import { QnaDocument } from "./models/qna.document/qna.document.model";
 import { QnaDocumentVersion } from "./models/qna.document/qna.document.version.model";
 import { DBLogger } from "./database.logger";
-// import { LlmPromptVersions } from "./models/llm.prompt/llm.prompt.versions.model";
-// import { LlmPromptGroups } from "./models/llm.prompt/llm.prompt.groups.model";
-// import { LlmPrompts } from "./models/llm.prompt/llm.prompts.model";
+import { LlmPromptVersion } from "./models/llm.prompt/llm.prompt.versions.model";
+import { LlmPromptGroup } from "./models/llm.prompt/llm.prompt.groups.model";
+import { LlmPrompt } from "./models/llm.prompt/llm.prompts.model";
 import { QnaDocumentLibrary } from "./models/qna.document/qna.document.library.model";
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -47,10 +47,11 @@ class DatabaseConnector {
             QnaDocumentGroup,
             QnaDocumentVersion,
             QnaDocument,
-            // LlmPromptGroups,
-            // LlmPrompts,
-            // LlmPromptVersions,
+            LlmPromptGroup,
+            LlmPrompt,
+            LlmPromptVersion,
             QnaDocumentLibrary,
+
         ],
         migrations  : [],
         subscribers : [],

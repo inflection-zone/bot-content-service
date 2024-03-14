@@ -1,84 +1,68 @@
-// /* eslint-disable eol-last */
-// /* eslint-disable object-curly-spacing */
-// /* eslint-disable key-spacing */
-// import { decimal, integer } from '../../../domain.types/miscellaneous/system.types';
-// import {
-//     Entity,
-//     BaseEntity,
-//     Column,
-//     PrimaryGeneratedColumn,
-//     CreateDateColumn,
-//     UpdateDateColumn,
-//     DeleteDateColumn,
-//     ManyToMany,
-//     JoinTable,
-//     OneToMany,
-// } from 'typeorm';
-// import { LlmPromptGroups } from './llm.prompt.groups.model';
-// import { LlmPromptVersions } from './llm.prompt.versions.model';
-// import { PromptUseCase } from '../../../domain.types/usecase.domain.types';
+import { decimal } from "../../../domain.types/miscellaneous/system.types";
+import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany, JoinTable, ManyToMany } from "typeorm";
+// import { LlmPromptGroup } from "./llm.prompt.groups.model";
+import { LlmPromptVersion } from "./llm.prompt.versions.model";
+import { PromptUsecase } from "../../../domain.types/usecase.domain.types";
+import { PromptGroup } from "../../../domain.types/promptgroup.domain.types";
+import { LlmPromptGroup } from "./llm.prompt.groups.model";
 
-// @Entity('llm_prompts')
-// export class LlmPrompts extends BaseEntity {
-//     @PrimaryGeneratedColumn('uuid')
-//     id: string;
+@Entity('llm_prompts')
+export class LlmPrompt extends BaseEntity{
 
-//     @Column({ type: 'varchar', length: 256, nullable: false })
-//     Name: string;
+@PrimaryGeneratedColumn('uuid')
+id: string;
+  
+@Column(({ type: 'varchar', length: 256, nullable: false }))
+Name: string;
 
-//     @Column({ type: 'varchar', length: 256, nullable: false })
-//     Description: string;
+@Column({ type: 'varchar', length: 256, nullable: true })
+Description: string;
 
-//     @Column({ type: 'enum', enum: PromptUseCase })
-//     UseCaseType: string;
+@Column({ type: "enum", enum: PromptUsecase })
+UseCaseType: string;
 
-//     @Column({ type: 'varchar', length: 256, nullable: false })
-//     ModelName: string;
+@Column(({ type: "enum", enum: PromptGroup }))
+GroupName: string;
 
-//     @Column({ nullable: false })
-//     ModelVersion: integer;
+@Column(({ type: 'varchar', length: 256, nullable: false }))
+ModelName: string;
 
-//     @Column({ nullable: false })
-//     UserId: string;
+@Column(({ nullable: false }))
+ModelVersion: string;
 
-//     @Column({ nullable: false })
-//     Temperature: decimal;
+@Column(({ nullable: false }))
+UserId: string;
 
-//     @Column()
-//     FrequencyPenality: decimal;
+@Column(({ nullable: false }))
+Temperature: decimal;
 
-//     @Column()
-//     TopP: decimal;
+@Column()
+FrequencyPenality: decimal;
 
-//     @Column()
-//     PresencePenalty: decimal;
+@Column()
+TopP: decimal;
 
-//     @Column()
-//     IsActive: boolean;
+@Column()
+PresencePenalty: decimal;
 
-//     @CreateDateColumn()
-//     CreatedAt: Date;
+@Column()
+IsActive: boolean;
 
-//     @UpdateDateColumn()
-//     UpdatedAt: Date;
+@CreateDateColumn()
+CreatedAt: Date;
 
-//     @DeleteDateColumn()
-//     DeletedAt: Date;
+@UpdateDateColumn()
+UpdatedAt: Date;
 
-//     @ManyToMany(() => LlmPromptGroups)
-//     @JoinTable({
-//         name: 'llm_group_prompts',
-//         joinColumn: {
-//             name: 'GroupId',
-//             referencedColumnName: 'id',
-//         },
-//         inverseJoinColumn: {
-//             name: 'PromptId',
-//             referencedColumnName: 'id',
-//         },
-//     })
-//     llm_prompt_groups: LlmPromptGroups[];
+@DeleteDateColumn()
+DeletedAt: Date;
 
-//     @OneToMany(() => LlmPromptVersions, (llm_prompt_versions) => llm_prompt_versions.llm_prompts)
-//     llm_prompt_versions: LlmPromptVersions[];
-// }
+@ManyToMany(() => LlmPromptGroup)
+@JoinTable()
+llm_group_prompts: LlmPromptGroup[];
+
+    @OneToMany(() => LlmPromptVersion,
+        llm_prompt_versions => llm_prompt_versions.llm_prompts)
+        llm_prompt_versions: LlmPromptVersion[];
+
+}

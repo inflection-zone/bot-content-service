@@ -11,7 +11,7 @@ import helmet from 'helmet';
 import { Router } from './startup/router';
 import { logger } from './logger/logger';
 import { ConfigurationManager } from "./config/configuration.manager";
-import { Loader } from './startup/loader';
+// import { Loader } from './startup/loader';
 // import { Scheduler } from './startup/scheduler';
 import { DbClient } from './database/db.clients/db.client';
 // import { Seeder } from './startup/seeder';
@@ -23,12 +23,15 @@ import { HttpLogger } from "./logger/HttpLogger";
 export default class Application {
     //#region Member variables
     public _app: express.Application = null;
+
     private _router: Router = null;
+
     private static _instance: Application = null;
+   
     //#endregion
     private constructor() {
         this._app = express();
-         this._router = new Router(this._app);
+        this._router = new Router(this._app);
     }
     public static instance(): Application {
         return this._instance || (this._instance = new this());
@@ -39,7 +42,7 @@ export default class Application {
     warmUp = async () => {
         try {
             await this.setupDatabaseConnection();
-             await Loader.init();
+            //  await Loader.init();
             await this.setupMiddlewares();
             await this._router.init();
             // const seeder = new Seeder();

@@ -11,6 +11,7 @@ import { QnaDocumentGroupsService } from '../../../database/services/content/qna
 import { ErrorHandler } from '../../../common/handlers/error.handler';
 import {
     QnaDocumentGroupCreateModel,
+    QnaDocumentGroupSearchFilters,
     QnaDocumentGroupUpdateModel,
 } from '../../../domain.types/content/qna.document.group.domain.types';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
@@ -95,12 +96,12 @@ export class QnaDocumentsGroupController {
         }
     };
 
-    getByName = async (request: express.Request, response: express.Response) => {
+    search = async (request: express.Request, response: express.Response) => {
         try {
-            const name = request.params.name;
-            const records = await this._service.getByName(name);
-            const message = 'Qna-Document retrieved successfully!';
-            return ResponseHandler.success(request, response, message, 200, records);
+            var filters: QnaDocumentGroupSearchFilters = await this._validator.validateSearchRequest(request);
+            const searchResults = await this._service.search(filters);
+            const message = 'Qna Document Group records retrieved successfully!';
+            ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }

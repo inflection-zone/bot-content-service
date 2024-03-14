@@ -7,35 +7,55 @@ import { QnaDocumentVersion } from '../../models/qna.document/qna.document.versi
 import { logger } from '../../../logger/logger';
 import { ErrorHandler } from '../../../common/handlers/error.handler';
 import { Source } from '../../database.connector';
-import { FindManyOptions, Like, Repository } from 'typeorm';
+import { Between, FindManyOptions, Like, Repository } from 'typeorm';
+import moment from 'moment';
 
 import { BaseService } from '../base.service';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
 
 import {
     QnaDocumentVersionCreateModel,
+    QnaDocumentVersionSearchFilters,
+    QnaDocumentVersionSearchResults,
     QnaDocumentVersionUpdateModel,
 } from '../../../domain.types/content/qna.document.version.domain.types';
 import { QnaDocumentVersionResponseDto } from '../../../domain.types/content/qna.document.version.domain.types';
 import { QnaDocumentVersionMapper } from '../../mappers/content/qna.document.version.mapper';
+import { QnaDocument } from '../../models/qna.document/qna.document.model';
 
 ///////////////////////////////////////////////////////////////////////
 
 export class QnaDocumentVersionService extends BaseService {
     _qnaDocumentVersionRepository: Repository<QnaDocumentVersion> = Source.getRepository(QnaDocumentVersion);
 
+    _documentRepository: Repository<QnaDocument> = Source.getRepository(QnaDocument);
+
     public create = async (createModel: QnaDocumentVersionCreateModel): Promise<QnaDocumentVersionResponseDto> => {
+        const document = await this.getDocument(createModel.DocumentId);
         const version = this._qnaDocumentVersionRepository.create({
+            DocumentId : createModel.DocumentId,
             VersionNumber: createModel.VersionNumber,
             StorageUrl: createModel.StorageUrl,
             DownloadUrl: createModel.DownloadUrl,
             FileResourceId: createModel.FileResourceId,
             Keywords: createModel.Keywords,
+            QnaDocument: QnaDocument,
         });
         var record = await this._qnaDocumentVersionRepository.save(version);
         return QnaDocumentVersionMapper.toResponseDto(record);
     };
 
+    private async getDocument(documentId: uuid) {
+        const document = await this._documentRepository.findOne({
+            where: {
+                id: documentId,
+            },
+        });
+        if (!document) {
+            ErrorHandler.throwNotFoundError('Version cannot be found');
+        }
+        return document;
+    }
 
     public getAll = async (): Promise<QnaDocumentVersionResponseDto[]> => {
         try {
@@ -113,73 +133,75 @@ export class QnaDocumentVersionService extends BaseService {
         }
     };
 
-    public getByVersionNumber = async (versionnumber: number) => {
-        try {
-            var documentversion = await this._qnaDocumentVersionRepository.find({
-                where: {
-                    VersionNumber: versionnumber,
-                },
-            });
-            return QnaDocumentVersionMapper.toArrayDto(documentversion);
-        } catch (error) {
-            logger.error(error.message);
-            ErrorHandler.throwInternalServerError(error.message, 500);
-        }
-    };
-
-    // public getByDate = async (date: Date) => {
+    // public getByDate = async (date: string) => {
     //     try {
-    //         var documentversion = await this._qnaDocumentVersionRepository.findOne({
+    //         const startDate = moment(date).startOf('day').toDate();
+    //         const endDate = moment(date).endOf('day').toDate();
+
+    //         const documentversion = await this._qnaDocumentVersionRepository.find({
     //             where: {
-    //                 CreatedAt: date,
+    //                 CreatedAt: Between(startDate, endDate),
     //             },
     //         });
-    //         return QnaDocumentVersionMapper.toResponseDto(documentversion);
+
+    //         return QnaDocumentVersionMapper.toArrayDto(documentversion);
     //     } catch (error) {
     //         logger.error(error.message);
     //         ErrorHandler.throwInternalServerError(error.message, 500);
     //     }
     // };
 
-    public getByFileResourceId = async (fileresourceid: string) => {
+    public search = async (filters: QnaDocumentVersionSearchFilters): Promise<QnaDocumentVersionSearchResults> => {
         try {
-            var documentversion = await this._qnaDocumentVersionRepository.find({
-                where: {
-                    FileResourceId: fileresourceid,
-                },
-            });
-            return QnaDocumentVersionMapper.toArrayDto(documentversion);
+            var search = this.getSearchModel(filters);
+            var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
+            const [list, count] = await this._qnaDocumentVersionRepository.findAndCount(search);
+
+            const searchResults = {
+                TotalCount: count,
+                RetrievedCount: list.length,
+                PageIndex: pageIndex,
+                ItemsPerPage: limit,
+                Order: order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy: orderByColumn,
+                Items: list.map((x) => QnaDocumentVersionMapper.toResponseDto(x)),
+            };
+            return searchResults;
         } catch (error) {
             logger.error(error.message);
-            ErrorHandler.throwInternalServerError(error.message, 500);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
         }
     };
 
-    public getByStorageKey = async (storagekey: string) => {
-        try {
-            var documentversion = await this._qnaDocumentVersionRepository.find({
-                where: {
-                    StorageUrl: storagekey,
-                },
-            });
-            return QnaDocumentVersionMapper.toArrayDto(documentversion);
-        } catch (error) {
-            logger.error(error.message);
-            ErrorHandler.throwInternalServerError(error.message, 500);
-        }
-    };
+    private getSearchModel = (filters: QnaDocumentVersionSearchFilters) => {
+        var search: FindManyOptions<QnaDocumentVersion> = {
+            relations: {},
+            where: {},
+            select: {
+                VersionNumber: true,
+                StorageUrl: true,
+                DownloadUrl: true,
+                FileResourceId: true,
+                Keywords: true,
+            },
+        };
 
-    public getByKeywords = async (keywords: string) => {
-        try {
-            var documentversion = await this._qnaDocumentVersionRepository.find({
-                where: {
-                    Keywords: keywords,
-                },
-            });
-            return QnaDocumentVersionMapper.toArrayDto(documentversion);
-        } catch (error) {
-            logger.error(error.message);
-            ErrorHandler.throwInternalServerError(error.message, 500);
+        if (filters.VersionNumber) {
+            search.where['VersionNumber'] = Like(`%${filters.VersionNumber}%`);
         }
+        if (filters.StorageUrl) {
+            search.where['StorageUrl'] = filters.StorageUrl;
+        }
+        if (filters.DownloadUrl) {
+            search.where['DownloadUrl'] = filters.DownloadUrl;
+        }
+        if (filters.FileResourceId) {
+            search.where['FileResourceId'] = filters.FileResourceId;
+        }
+        if (filters.Keywords) {
+            search.where['Keywords'] = filters.Keywords;
+        }
+
+        return search;
     };
 }

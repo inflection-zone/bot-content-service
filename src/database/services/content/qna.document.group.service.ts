@@ -14,17 +14,19 @@ import { uuid } from '../../../domain.types/miscellaneous/system.types';
 
 import {
     QnaDocumentGroupCreateModel,
+    QnaDocumentGroupSearchFilters,
+    QnaDocumentGroupSearchResults,
     QnaDocumentGroupUpdateModel,
 } from '../../../domain.types/content/qna.document.group.domain.types';
 import { QnaDocumentGroupResponseDto } from '../../../domain.types/content/qna.document.group.domain.types';
 // import { QnaDocuments } from '../../models/qna.documents/qna.document.model';
 import { QnaDocumentGroupsMapper } from '../../mappers/content/qna.document.group.mapper';
+// import { QnaDocumentGroupMapper } from '../../mappers/content/qna.document.group.mapper';
 
 ///////////////////////////////////////////////////////////////////////
 
 export class QnaDocumentGroupsService extends BaseService {
     _qnaDocumentGroupsRepository: Repository<QnaDocumentGroup> = Source.getRepository(QnaDocumentGroup);
-
 
     public getAll = async (): Promise<QnaDocumentGroupResponseDto[]> => {
         try {
@@ -106,17 +108,45 @@ export class QnaDocumentGroupsService extends BaseService {
         }
     };
 
-    public getByName = async (name: string) => {
+    public search = async (filters: QnaDocumentGroupSearchFilters): Promise<QnaDocumentGroupSearchResults> => {
         try {
-            var documentGroup = await this._qnaDocumentGroupsRepository.find({
-                where: {
-                    Name: name,
-                },
-            });
-            return QnaDocumentGroupsMapper.toArrayDto(documentGroup);
+            var search = this.getSearchModel(filters);
+            var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
+            const [list, count] = await this._qnaDocumentGroupsRepository.findAndCount(search);
+
+            const searchResults = {
+                TotalCount: count,
+                RetrievedCount: list.length,
+                PageIndex: pageIndex,
+                ItemsPerPage: limit,
+                Order: order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy: orderByColumn,
+                Items: list.map((x) => QnaDocumentGroupsMapper.toResponseDto(x)),
+            };
+            return searchResults;
         } catch (error) {
             logger.error(error.message);
-            ErrorHandler.throwInternalServerError(error.message, 500);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
         }
+    };
+
+    private getSearchModel = (filters: QnaDocumentGroupSearchFilters) => {
+        var search: FindManyOptions<QnaDocumentGroup> = {
+            relations: {},
+            where: {},
+            select: {
+                Name: true,
+                Description: true,
+            },
+        };
+
+        if (filters.Name) {
+            search.where['Name'] = Like(`%${filters.Name}%`);
+        }
+        if (filters.Description) {
+            search.where['Description'] = filters.Description;
+        }
+
+        return search;
     };
 }
