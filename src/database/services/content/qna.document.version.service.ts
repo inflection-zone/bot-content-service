@@ -39,7 +39,7 @@ export class QnaDocumentVersionService extends BaseService {
             DownloadUrl: createModel.DownloadUrl,
             FileResourceId: createModel.FileResourceId,
             Keywords: createModel.Keywords,
-            QnaDocument: QnaDocument,
+            QnaDocument: document,
         });
         var record = await this._qnaDocumentVersionRepository.save(version);
         return QnaDocumentVersionMapper.toResponseDto(record);
@@ -57,13 +57,29 @@ export class QnaDocumentVersionService extends BaseService {
         return document;
     }
 
-    public getAll = async (): Promise<QnaDocumentVersionResponseDto[]> => {
+    // public getAll = async (): Promise<QnaDocumentVersionResponseDto[]> => {
+    //     try {
+    //         var documentversion = await this._qnaDocumentVersionRepository.find();
+    //         return QnaDocumentVersionMapper.toArrayDto(documentversion);
+    //     } catch (error) {
+    //         logger.error(error.message);
+    //         ErrorHandler.throwInternalServerError(error.message, 500);
+    //     }
+    // };
+
+    public getAll = async (): Promise<QnaDocumentVersionResponseDto[]> =>{
         try {
+            const data = [];
             var documentversion = await this._qnaDocumentVersionRepository.find();
-            return QnaDocumentVersionMapper.toArrayDto(documentversion);
+            for (var i of documentversion) {
+                const record = QnaDocumentVersionMapper.toResponseDto(i);
+                // const record = i;
+                data.push(record);
+            }
+            return data;
         } catch (error) {
             logger.error(error.message);
-            ErrorHandler.throwInternalServerError(error.message, 500);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to get Llm prompt version record!', error);
         }
     };
 

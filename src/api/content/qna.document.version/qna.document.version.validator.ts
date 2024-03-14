@@ -15,8 +15,7 @@ import {
     QnaDocumentVersionSearchFilters,
     QnaDocumentVersionUpdateModel,
 } from '../../../domain.types/content/qna.document.version.domain.types';
-import { integer } from '../../../domain.types/miscellaneous/system.types';
-import { uuid } from '../../../../dist/src/domain.types/miscellaneous/system.types';
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 

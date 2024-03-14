@@ -12,6 +12,7 @@ export interface QnaDocumentVersionCreateModel {
     DownloadUrl: string;
     FileResourceId: string;
     Keywords: string;
+    
 }
 
 export interface QnaDocumentVersionUpdateModel {
@@ -24,15 +25,21 @@ export interface QnaDocumentVersionUpdateModel {
 }
 
 export interface QnaDocumentVersionResponseDto {
-    DocumentId: uuid;
+    
     id: string;
     VersionNumber: number;
+    DocumentId: string;
     StorageUrl: string;
     DownloadUrl: string;
     FileResourceId: string;
     Keywords: string;
     CreatedAt: Date;
     UpdatedAt: Date;
+    QnaDocument      :{
+        id : uuid,
+        Name : string,
+       Description :string
+   }
 }
 
 export interface QnaDocumentVersionSearchFilters extends BaseSearchFilters {
