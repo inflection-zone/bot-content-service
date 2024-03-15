@@ -41,6 +41,6 @@ DeletedAt: Date;
 })
 llm_prompts: LlmPrompt;
 
-PromptId: string;
+// PromptId: string;
 
 }

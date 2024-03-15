@@ -4,7 +4,22 @@ import { decimal, uuid } from "../miscellaneous/system.types";
 export interface  LlmPromptVersionDto {
     id              : uuid;
     VersionNumber   : string;
-    PromptId?       : string;
+    llm_prompts?:{
+        id  : uuid;
+        Name             : string;
+        Description      : string;
+        UseCaseType       : string;
+        GroupName         : string;
+        ModelName         : string;
+        ModelVersion      : string;
+        UserId            : string;
+        Temperature       : decimal;
+        FrequencyPenality : decimal;
+        TopP              : decimal;
+        PresencePenalty   : decimal;
+        IsActive          : boolean;
+    };
+    PromptId?       : uuid;
     Prompt          : string;
     Variables       : string;
     Score           : decimal;
@@ -12,7 +27,22 @@ export interface  LlmPromptVersionDto {
 }
 export interface  LlmPromptVersionCreateModel {
     VersionNumber   : string;
-    PromptId        : string;
+    llm_prompts?:{
+        id  : uuid;
+        Name             : string;
+        Description      : string;
+        UseCaseType       : string;
+        GroupName         : string;
+        ModelName         : string;
+        ModelVersion      : string;
+        UserId            : string;
+        Temperature       : decimal;
+        FrequencyPenality : decimal;
+        TopP              : decimal;
+        PresencePenalty   : decimal;
+        IsActive          : boolean;
+    };
+    PromptId        : uuid;
     Prompt          : string;
     Variables       : string;
     Score           : decimal;
@@ -20,7 +50,7 @@ export interface  LlmPromptVersionCreateModel {
 }
 export interface  LlmPromptVersionUpdateModel {
     VersionNumber?  : string;
-    PromptId        : string;
+    PromptId        : uuid;
     Prompt?         : string;
     Variables?      : string;
     Score?          : decimal;
@@ -28,7 +58,7 @@ export interface  LlmPromptVersionUpdateModel {
 }
 export interface LlmPromptVersionSearchFilters extends BaseSearchFilters {
     VersionNumber?  : string;
-    PromptId?        :string;
+    PromptId?        :uuid;
     Prompt?         : string;
     Variables?      : string;
     Score?          : decimal;

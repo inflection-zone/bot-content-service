@@ -10,18 +10,29 @@ import { LlmPromptVersionUpdateModel } from '../../domain.types/llm.prompt/llm.p
 import { LlmPromptVersionDto } from '../../domain.types/llm.prompt/llm.prompt.version.domain.types';
 import { LlmPromptVersionMapper } from '../mappers/llm.prompt/llm.prompt.version.mapper';
 import { FindManyOptions, Like } from 'typeorm';
+import { LlmPrompt } from '../models/llm.prompt/llm.prompts.model';
 
 export class LlmpromptVersionService extends BaseService {
 
     _llmPromptVersionRepository: Repository<LlmPromptVersion> = Source.getRepository(LlmPromptVersion);
 
+    _llmPromptRepository: Repository<LlmPrompt> = Source.getRepository(LlmPrompt);
+
     // create = async (request: express.Request, response: express.Response) => {
     public create = async (createModel: LlmPromptVersionCreateModel)
         : Promise<LlmPromptVersionDto> => {
         try {
+            const pid = await this._llmPromptRepository.findOne({
+                where : {
+                    id : createModel.PromptId
+                }
+            });
+            if (!pid) {
+                ErrorHandler.throwNotFoundError('PromptId cannot be found');
+            }
             const data = this. _llmPromptVersionRepository.create({
                 VersionNumber : createModel.VersionNumber,
-                PromptId      : createModel.PromptId,
+                llm_prompts   : pid,
                 Prompt        : createModel.Prompt,
                 Variables     : JSON.stringify(createModel.Variables),
                 Score         : createModel.Score,
@@ -149,7 +160,7 @@ export class LlmpromptVersionService extends BaseService {
             select : {
                 id            : true,
                 VersionNumber : true,
-                PromptId      : true,
+                // PromptId      : true,
                 Prompt        : true,
                 Variables     : true,
                 Score         : true,

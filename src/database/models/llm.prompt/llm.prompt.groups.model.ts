@@ -1,6 +1,7 @@
 import { BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { LlmPrompt } from "./llm.prompts.model";
 
+
 @Entity({ name: 'llm_prompt_groups' })
 export class LlmPromptGroup extends BaseEntity {
 
