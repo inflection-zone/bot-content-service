@@ -50,5 +50,5 @@ export class QnaDocumentVersion extends BaseEntity {
         name : 'DocumentId',
     })
     QnaDocument: QnaDocument;
-    DocumentId: string;
+    DocumentId: QnaDocument;
 }

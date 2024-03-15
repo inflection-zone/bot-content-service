@@ -1,3 +1,4 @@
+/* eslint-disable eol-last */
 /* eslint-disable no-multiple-empty-lines */
 /* eslint-disable padded-blocks */
 /* eslint-disable key-spacing */
@@ -7,7 +8,7 @@ import { QnaDocumentVersion } from '../../models/qna.document/qna.document.versi
 import { logger } from '../../../logger/logger';
 import { ErrorHandler } from '../../../common/handlers/error.handler';
 import { Source } from '../../database.connector';
-import { Between, FindManyOptions, Like, Repository } from 'typeorm';
+import { FindManyOptions, Like, Repository } from 'typeorm';
 import moment from 'moment';
 
 import { BaseService } from '../base.service';
@@ -33,13 +34,13 @@ export class QnaDocumentVersionService extends BaseService {
     public create = async (createModel: QnaDocumentVersionCreateModel): Promise<QnaDocumentVersionResponseDto> => {
         const document = await this.getDocument(createModel.DocumentId);
         const version = this._qnaDocumentVersionRepository.create({
-            DocumentId : createModel.DocumentId,
+            DocumentId : document,
             VersionNumber: createModel.VersionNumber,
             StorageUrl: createModel.StorageUrl,
             DownloadUrl: createModel.DownloadUrl,
             FileResourceId: createModel.FileResourceId,
             Keywords: createModel.Keywords,
-            QnaDocument: QnaDocument,
+            QnaDocument: document,
         });
         var record = await this._qnaDocumentVersionRepository.save(version);
         return QnaDocumentVersionMapper.toResponseDto(record);
@@ -61,11 +62,28 @@ export class QnaDocumentVersionService extends BaseService {
         try {
             var documentversion = await this._qnaDocumentVersionRepository.find();
             return QnaDocumentVersionMapper.toArrayDto(documentversion);
+            // return documentversion;
         } catch (error) {
             logger.error(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
     };
+
+    // public getAll = async (): Promise<QnaDocumentVersionResponseDto[]> =>{
+    //     try {
+    //         const data = [];
+    //         var documentversion = await this._qnaDocumentVersionRepository.find();
+    //         for (var i of documentversion) {
+    //             const record = QnaDocumentVersionMapper.toResponseDto(i);
+    //             // const record = i;
+    //             data.push(record);
+    //         }
+    //         return data;
+    //     } catch (error) {
+    //         logger.error(error.message);
+    //         ErrorHandler.throwDbAccessError('DB Error: Unable to get Llm prompt version record!', error);
+    //     }
+    // };
 
     public getById = async (id: uuid): Promise<QnaDocumentVersionResponseDto> => {
         try {
@@ -94,6 +112,11 @@ export class QnaDocumentVersionService extends BaseService {
             //Badge code is not modifiable
             //Use renew key to update ApiKey, ValidFrom and ValidTill
 
+            if (model.DocumentId != null) {
+                const document = await this.getDocument(model.DocumentId);
+            
+                documentversion.DocumentId = document;
+            }
             if (model.VersionNumber != null) {
                 documentversion.VersionNumber = model.VersionNumber;
             }
