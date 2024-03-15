@@ -6,7 +6,7 @@ import { LlmPrompt } from "./llm.prompts.model";
 export class LlmPromptVersion extends BaseEntity{
 
 @PrimaryGeneratedColumn('uuid')
-id: string;
+id: uuid;
   
 @Column(({ unique: true, nullable: false }))
 VersionNumber: string;
@@ -41,6 +41,6 @@ DeletedAt: Date;
 })
 llm_prompts: LlmPrompt;
 
-// PromptId: string;
+    // PromptId: string;
 
 }
