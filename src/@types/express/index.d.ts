@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { CurrentClient } from "../../domain.types/miscellaneous/current.client";
 import { CurrentUser } from "../../domain.types/miscellaneous/current.user";
 

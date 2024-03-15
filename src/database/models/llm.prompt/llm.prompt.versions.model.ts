@@ -11,23 +11,23 @@ id: uuid;
 @Column(({ unique: true, nullable: false }))
 VersionNumber: string;
 
-@Column({ type: 'varchar', length: 256, nullable: false })
-Prompt: string;
+    @Column({ type: 'varchar', length: 256, nullable: false })
+    Prompt: string;
 
-@Column(({ nullable: false }))
-Variables: string;
+    @Column({ nullable: false })
+    Variables: string;
 
-@Column(({ nullable: false }))
-Score: decimal;
+    @Column({ nullable: false })
+    Score: decimal;
 
-@Column({ type: 'date', nullable: true })
-PublishedAt: Date;
+    @Column({ type: 'date', nullable: true })
+    PublishedAt: Date;
 
-@CreateDateColumn()
-CreatedAt: Date;
+    @CreateDateColumn()
+    CreatedAt: Date;
 
-@UpdateDateColumn()
-UpdatedAt: Date;
+    @UpdateDateColumn()
+    UpdatedAt: Date;
 
 @DeleteDateColumn()
 DeletedAt: Date;
@@ -43,4 +43,12 @@ llm_prompts: LlmPrompt;
 
     // PromptId: string;
 
+    // @ManyToOne(
+    //     ()=>LlmPrompts,
+    //     llm_prompts=> llm_prompts.llm_prompt_versions
+    // )
+    // @JoinColumn({
+    //     name : 'PromptId'
+    // })
+    // llm_prompts: LlmPrompts;
 }

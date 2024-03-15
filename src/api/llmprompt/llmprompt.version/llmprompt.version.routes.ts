@@ -9,10 +9,9 @@ export const register = (app: express.Application): void => {
 
     router.get('/search', controller.search);
     router.get('/records', controller.getAll);
-    router.get('/:id', controller.getById);
     router.post('/', controller.create);
     router.put('/:id', controller.update);
     router.delete('/:id', controller.delete);
-    
+    // router.get('/:id', controller.getById);
     app.use('/api/v1/llmpromptversions', router);
 };

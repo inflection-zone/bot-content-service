@@ -5,7 +5,7 @@ export interface  QnaDocumentDto {
     id                      : uuid;
     Name                    : string;
     Description             : string;
-    Filename                : string;
+    FileName                : string;
     Source                  : string;
     CreatedBy               : string;
     ParentDocument          : string;

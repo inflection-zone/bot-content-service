@@ -8,13 +8,14 @@ import { ErrorHandler } from '../../../common/handlers/error.handler';
 
 import BaseValidator from '../../base.validator';
 import { LlmPromptGroupSearchFilters } from '../../../domain.types/llm.prompt/llm.prompt.group.domain.types';
+import { PromptGroup } from '../../../domain.types/promptgroup.domain.types';
 
 export class LlmPromptGroupValidator extends BaseValidator {
 
     public validateCreateRequest = async (request: express.Request) => {
         try {
             const schema = joi.object({
-                Name        : joi.string().required(),
+                Name        : joi.string().required().valid(...Object.values(PromptGroup)).optional(),
                 Description : joi.string().optional(),
              });
             return await schema.validateAsync(request.body);
@@ -41,7 +42,7 @@ export class LlmPromptGroupValidator extends BaseValidator {
     public validateUpdateRequest = async (request: express.Request) => {
         try {
             const schema = joi.object({
-                Name        : joi.string().optional(),
+                Name        : joi.string().optional().valid(...Object.values(PromptGroup)).optional(),
                 Description : joi.string().optional(),
                
             });
@@ -68,7 +69,7 @@ export class LlmPromptGroupValidator extends BaseValidator {
     public validateSearchRequest = async (request: express.Request): Promise<LlmPromptGroupSearchFilters> => {
         try {
             const schema = joi.object({
-                Name        : joi.string().optional(),
+                Name        : joi.string().valid(...Object.values(PromptGroup)).optional(),
                 Description : joi.string().optional(),
                 
             });

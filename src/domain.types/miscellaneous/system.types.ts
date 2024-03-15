@@ -5,8 +5,8 @@ export type Optional<T> = T | NotThere;
 export type BloodGroup    = 'A+'| 'B+' | 'O+' | 'AB+' | 'A-' | 'B-' |'O-' | 'AB-' | null;
 export type MaritalStatus = 'Single'| 'Married' | 'Widowed' | 'Divorcee' | 'Live-in' | 'Other' | 'Unknown' | 'Unmarried' | null;
 
-export type uuid    = string | undefined | null;
 export type decimal = number | undefined | null;
+export type uuid    = string | undefined | null;
 export type integer = number | undefined | null;
 
 export const BloodGroupList: BloodGroup[] = [

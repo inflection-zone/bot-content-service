@@ -1,3 +1,8 @@
+/* eslint-disable eol-last */
+/* eslint-disable padded-blocks */
+/* eslint-disable indent */
+/* eslint-disable lines-between-class-members */
+
 //import cors from 'cors';
 import "reflect-metadata";
 import express from 'express';
@@ -14,13 +19,9 @@ import { DBConnector } from "./database/database.connector";
 // import { FactsDBConnector } from "./modules/fact.extractors/facts.db.connector";
 import { HttpLogger } from "./logger/HttpLogger";
 // import FactsDbClient from "./modules/fact.extractors/facts.db.client";
-
 /////////////////////////////////////////////////////////////////////////
-
 export default class Application {
-
     //#region Member variables
-
     public _app: express.Application = null;
 
     private _router: Router = null;
@@ -28,24 +29,20 @@ export default class Application {
     private static _instance: Application = null;
    
     //#endregion
-
     private constructor() {
         this._app = express();
         this._router = new Router(this._app);
     }
-
     public static instance(): Application {
         return this._instance || (this._instance = new this());
     }
-
     public app(): express.Application {
         return this._app;
     }
-
     warmUp = async () => {
         try {
             await this.setupDatabaseConnection();
-            // await Loader.init();
+            //  await Loader.init();
             await this.setupMiddlewares();
             await this._router.init();
             // const seeder = new Seeder();
@@ -56,7 +53,6 @@ export default class Application {
             logger.error('An error occurred while warming up.' + error.message);
         }
     };
-
     setupDatabaseConnection = async () => {
         if (process.env.NODE_ENV === 'test') {
             //Note: This is only for test environment
@@ -65,23 +61,19 @@ export default class Application {
         }
         await DbClient.createDatabase();
         await DBConnector.initialize();
-
         // await FactsDbClient.createDatabase();
         // await FactsDBConnector.initialize();
     };
-
     public start = async(): Promise<void> => {
         try {
             await this.warmUp();
             await this.listen();
         }
         catch (error){
-            logger.error('An error occurred while starting reancare-api service.' + error.message);
+            logger.error('An error occurred while starting content-api service.' + error.message);
         }
     };
-
     private setupMiddlewares = async (): Promise<boolean> => {
-
         return new Promise((resolve, reject) => {
             try {
                 this._app.use(express.urlencoded({ extended: true }));
@@ -91,9 +83,7 @@ export default class Application {
                 if (ConfigurationManager.UseHTTPLogging) {
                     HttpLogger.use(this._app);
                 }
-
                 const MAX_UPLOAD_FILE_SIZE = ConfigurationManager.MaxUploadFileSize;
-
                 this._app.use(fileUpload({
                     limits            : { fileSize: MAX_UPLOAD_FILE_SIZE },
                     preserveExtension : true,
@@ -109,7 +99,6 @@ export default class Application {
             }
         });
     };
-
     private listen = () => {
         return new Promise((resolve, reject) => {
             try {
@@ -127,13 +116,10 @@ export default class Application {
             }
         });
     };
-
 }
-
 // process.on('exit', () => {
 //     logger.info("process.exit() is called.");
 // });
-
 [
     `exit`,
     `SIGINT`,
