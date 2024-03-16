@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import { LlmPrompt } from "../../models/llm.prompt/llm.prompts.model";
 import { LlmPromptDto } from "../../../domain.types/llm.prompt/llm.prompt.domain.types";
+import { LlmPromptGroupMapper } from "./llm.prompt.groups.mapper";
 
 export class LlmPromptMapper {
 
@@ -8,11 +9,14 @@ export class LlmPromptMapper {
         if (llmprompts == null) {
             return null;
         }
+
         const dto: LlmPromptDto = {
             id                : llmprompts.id,
             Name              : llmprompts.Name,
             Description       : llmprompts.Description,
             UseCaseType       : llmprompts.UseCaseType,
+            // eslint-disable-next-line max-len
+            LlmPromptGroup    : LlmPromptGroupMapper.toResponseDto(llmprompts.LlmPromptGroups?.length > 0 ? llmprompts.LlmPromptGroups[0] : null),
             GroupName         : llmprompts.GroupName,
             ModelName         : llmprompts.ModelName,
             ModelVersion      : llmprompts.ModelVersion,

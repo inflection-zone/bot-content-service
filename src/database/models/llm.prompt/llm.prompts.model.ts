@@ -57,12 +57,17 @@ UpdatedAt: Date;
 @DeleteDateColumn()
 DeletedAt: Date;
 
-@ManyToMany(() => LlmPromptGroup)
-@JoinTable()
-llm_group_prompts: LlmPromptGroup[];
+@ManyToMany(() => LlmPromptGroup, (llmromptGroups) => llmromptGroups.LlmPrompts)
+    @JoinTable()
+    LlmPromptGroups: LlmPromptGroup[];
+
+// @ManyToMany(() => LlmPromptGroup)
+// @JoinTable()
+// llm_group_prompts: LlmPromptGroup[];
 
     @OneToMany(() => LlmPromptVersion,
         llm_prompt_versions => llm_prompt_versions.llm_prompts)
         llm_prompt_versions: LlmPromptVersion[];
+    Roles: any;
 
 }

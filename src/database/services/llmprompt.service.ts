@@ -1,3 +1,4 @@
+/* eslint-disable key-spacing */
 
 // import express from 'express';
 import { BaseService } from './base.service';
@@ -10,37 +11,82 @@ import { Source } from '../database.connector';
 import { Repository } from 'typeorm/repository/Repository';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { FindManyOptions, Like } from 'typeorm';
+import { LlmPromptGroup } from '../models/llm.prompt/llm.prompt.groups.model';
 
 export class LlmpromptService extends BaseService {
 
     _llmPromptRepository: Repository<LlmPrompt> = Source.getRepository(LlmPrompt);
 
-    // create = async (request: express.Request, response: express.Response) => {
-    public create = async (createModel: LlmPromptCreateModel)
-        : Promise<LlmPromptDto> => {
-        try {
-            const data = this._llmPromptRepository.create({
-                Name              : createModel.Name,
-                Description       : createModel.Description,
-                UseCaseType       : createModel.UseCaseType,
-                GroupName         : createModel.GroupName,
-                ModelName         : createModel.ModelName,
-                ModelVersion      : createModel.ModelVersion,
-                UserId            : createModel.UserId,
-                Temperature       : createModel.Temperature,
-                FrequencyPenality : createModel.FrequencyPenality,
-                TopP              : createModel.TopP,
-                PresencePenalty   : createModel.PresencePenalty,
-                IsActive          : createModel.IsActive,
-            });
-            var record = await this._llmPromptRepository.save(data);
-            return LlmPromptMapper.toResponseDto(record);
-        }
-        catch (error) {
-            logger.error(error.message);
-            ErrorHandler.throwInternalServerError(error.message, 500);
+    _llmPromptGroupRepository: Repository<LlmPromptGroup> = Source.getRepository(LlmPromptGroup);
+
+    _selectAll = {
+        id        : true,
+        Name      : true,
+        UseCaseType       :true,
+        GroupName         : true,
+        ModelName         : true,
+        ModelVersion      : true,
+        UserId            : true,
+        emperature       : true,
+        FrequencyPenality :true ,
+        TopP              :true ,
+        PresencePenalty   :true ,
+        IsActive          :true ,
+        CreatedAt : true,
+        UpdatedAt : true,
+        
+        LlmPromptGroups : {
+            id   : true,
+            Name : true,
         }
     };
+
+    create = async (createModel: LlmPromptCreateModel): Promise<LlmPromptDto> => {
+        try {
+            const llmprompt = new LlmPrompt();
+            var group : LlmPromptGroup = null;
+            if (createModel.LlmPromptGroupId) {
+                group = await this._llmPromptGroupRepository.findOne({
+                    where : {
+                        id : createModel.LlmPromptGroupId
+                    }
+                });
+                delete createModel.LlmPromptGroupId;
+            }
+            Object.assign(llmprompt, createModel);
+            llmprompt.LlmPromptGroups = [group];
+            var record = await this._llmPromptRepository.save(llmprompt);
+            return LlmPromptMapper.toResponseDto(record);
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to create llmprompt!', error);
+        }
+    };
+    // create = async (request: express.Request, response: express.Response) => {
+    // public create = async (createModel: LlmPromptCreateModel)
+    //     : Promise<LlmPromptDto> => {
+    //     try {
+    //         const data = this._llmPromptRepository.create({
+    //             Name              : createModel.Name,
+    //             Description       : createModel.Description,
+    //             UseCaseType       : createModel.UseCaseType,
+    //             GroupName         : createModel.GroupName,
+    //             ModelName         : createModel.ModelName,
+    //             ModelVersion      : createModel.ModelVersion,
+    //             UserId            : createModel.UserId,
+    //             Temperature       : createModel.Temperature,
+    //             FrequencyPenality : createModel.FrequencyPenality,
+    //             TopP              : createModel.TopP,
+    //             PresencePenalty   : createModel.PresencePenalty,
+    //             IsActive          : createModel.IsActive,
+    //         });
+    //         var record = await this._llmPromptRepository.save(data);
+    //         return LlmPromptMapper.toResponseDto(record);
+    //     }
+    //     catch (error) {
+    //         logger.error(error.message);
+    //         ErrorHandler.throwInternalServerError(error.message, 500);
+    //     }
+    // };
     
     public update = async (id: uuid, model: LlmPromptUpdateModel)
     : Promise<LlmPromptDto> => {

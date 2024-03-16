@@ -15,6 +15,7 @@ export class LlmPromptValidator extends BaseValidator {
     public validateCreateRequest = async (request: express.Request) => {
         try {
             const schema = joi.object({
+                LlmPromptGroupId :joi.string(),
                 Name              : joi.string().required(),
                 Description       : joi.string().optional(),
                 UseCaseType       : joi.string().valid(...Object.values(PromptUsecase)).optional(),
@@ -162,5 +163,3 @@ export class LlmPromptValidator extends BaseValidator {
     };
 
 }
-
-

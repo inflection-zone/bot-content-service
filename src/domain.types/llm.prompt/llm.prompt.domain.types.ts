@@ -1,7 +1,9 @@
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 import { decimal, uuid } from "../miscellaneous/system.types";
+import { LlmPromptGroupDto } from "./llm.prompt.group.domain.types";
 
 export interface  LlmPromptCreateModel {
+    LlmPromptGroupId  : uuid;
     Name              : string;
     Description?      : string;
     UseCaseType       : string;
@@ -34,6 +36,7 @@ export interface LlmPromptDto {
     Name              : string;
     Description       : string;
     UseCaseType       : string;
+    LlmPromptGroup?: LlmPromptGroupDto;
     GroupName         : string;
     ModelName         : string;
     ModelVersion      : string;

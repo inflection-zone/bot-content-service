@@ -14,13 +14,15 @@ Name: string;
 @Column({ type: 'varchar', length: 1024, nullable: true })
 Description: string;
 
-@ManyToMany(() => LlmPrompt)
-@JoinTable()
-"llm_group_prompts":LlmPrompt[];
+// @ManyToMany(() => LlmPrompt)
+// @JoinTable()
+// "llm_group_prompts":LlmPrompt[];
 
 // @CreateDateColumn()
 // CreatedAt: Date;
-
+@ManyToMany(() => LlmPrompt, (llmPrompt) => llmPrompt.LlmPromptGroups)
+    @JoinTable()
+    LlmPrompts: LlmPrompt[];
 // @UpdateDateColumn()
 // UpdatedAt: Date;
 

@@ -5,12 +5,15 @@ import { ResponseHandler } from "../../../common/handlers/response.handler";
 import express from 'express';
 import { LlmpromptService } from "../../../database/services/llmprompt.service";
 import { uuid } from "../../../domain.types/miscellaneous/system.types";
+import { LlmpromptGroupService } from "../../../database/services/llmprompt.group.service";
 
 export class LlmPromptController {
 
     //#region member variables and constructors
 
     _service: LlmpromptService = new LlmpromptService();
+
+    _llmpromptGroupService: LlmpromptGroupService = new LlmpromptGroupService();
 
     _validator: LlmPromptValidator = new LlmPromptValidator();
 
