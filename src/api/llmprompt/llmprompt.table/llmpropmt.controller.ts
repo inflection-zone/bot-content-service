@@ -62,6 +62,17 @@ export class LlmPromptController {
         }
     };
 
+    getByStatus = async (request: express.Request, response: express.Response) => {
+        try {
+            const status: boolean = request.params.status === 'true';
+            const records = await this._service.getByStatus(status);
+            const message = 'LlmPrompt By status retrieved successfully!';
+            return ResponseHandler.success(request, response, message, 200, records);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
     getAll = async (request: express.Request, response: express.Response) => {
         try {
             const record = await this._service.getAll();

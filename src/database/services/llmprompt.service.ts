@@ -112,6 +112,21 @@ export class LlmpromptService extends BaseService {
         }
     };
 
+    public getByStatus = async (status: boolean) => {
+        try {
+            var prompt = await this._llmPromptRepository.find({
+                where : {
+                    IsActive : status,
+                },
+            });
+            return LlmPromptMapper.toArrayDto(prompt);
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
+
+
     public getAll = async (): Promise<LlmPromptDto[]> =>{
         try {
             const data = [];
