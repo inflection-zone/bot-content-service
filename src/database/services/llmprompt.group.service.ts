@@ -1,6 +1,7 @@
+/* eslint-disable indent */
 import { BaseService } from './base.service';
 import { logger } from '../../logger/logger';
-import express from 'express';
+// import express from 'express';
 import { ErrorHandler } from '../../common/handlers/error.handler';
 import { Source } from '../database.connector';
 import { Repository } from 'typeorm/repository/Repository';
@@ -11,27 +12,63 @@ import { LlmPromptGroupDto } from '../../domain.types/llm.prompt/llm.prompt.grou
 import { LlmPromptGroupMapper } from '../mappers/llm.prompt/llm.prompt.groups.mapper';
 import { LlmPromptGroupUpdateModel } from '../../domain.types/llm.prompt/llm.prompt.group.domain.types';
 import { FindManyOptions, Like } from 'typeorm';
+import { LlmPrompt } from '../models/llm.prompt/llm.prompts.model';
 
 export class LlmpromptGroupService extends BaseService {
 
     _llmPromptGroupRepository: Repository<LlmPromptGroup> = Source.getRepository(LlmPromptGroup);
 
-    // create = async (request: express.Request, response: express.Response) => {
-    public create = async (createModel: LlmPromptGroupCreateModel)
-        : Promise<LlmPromptGroupDto> => {
-        try {
-            const data = this._llmPromptGroupRepository.create({
-                Name        : createModel.Name,
-                Description : createModel.Description,
-            });
-            var record = await this._llmPromptGroupRepository.save(data);
-            return LlmPromptGroupMapper.toResponseDto(record);
-        }
-        catch (error) {
-            logger.error(error.message);
-            ErrorHandler.throwInternalServerError(error.message, 500);
+    _llmPromptRepository: Repository<LlmPrompt> = Source.getRepository(LlmPrompt);
+
+    _selectAll = {
+        id          : true,
+        Name        : true,
+        Description : true,
+        CreatedAt   : true,
+        UpdatedAt   : true,
+        LlmPrompts  : {
+            id   : true,
+            Name : true,
         }
     };
+
+    create = async (createModel: LlmPromptGroupCreateModel): Promise<LlmPromptGroupDto> => {
+        try {
+            const llmpromptgroup = new LlmPromptGroup();
+            var llmprompt : LlmPrompt = null;
+            if (createModel.PromptId) {
+                llmprompt = await this._llmPromptRepository.findOne({
+                    where : {
+                        id : createModel.PromptId
+                    }
+                });
+                delete createModel.PromptId;
+            }
+            Object.assign(llmpromptgroup, createModel);
+            llmpromptgroup.LlmPrompts = [llmprompt];
+            var record = await this._llmPromptGroupRepository.save(llmpromptgroup);
+            return LlmPromptGroupMapper.toResponseDto(record);
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to create prompt group!', error);
+        }
+    };
+
+ // create = async (request: express.Request, response: express.Response) => {
+    // public create = async (createModel: LlmPromptGroupCreateModel)
+    //     : Promise<LlmPromptGroupDto> => {
+    //     try {
+    //         const data = this._llmPromptGroupRepository.create({
+    //             Name        : createModel.Name,
+    //             Description : createModel.Description,
+    //         });
+    //         var record = await this._llmPromptGroupRepository.save(data);
+    //         return LlmPromptGroupMapper.toResponseDto(record);
+    //     }
+    //     catch (error) {
+    //         logger.error(error.message);
+    //         ErrorHandler.throwInternalServerError(error.message, 500);
+    //     }
+    // };
     
     public update = async (id: uuid, model: LlmPromptGroupUpdateModel)
     : Promise<LlmPromptGroupDto> => {
@@ -42,7 +79,7 @@ export class LlmpromptGroupService extends BaseService {
                 }
             });
             if (!updateData) {
-                ErrorHandler.throwNotFoundError('LLm prompt group not found!');
+                ErrorHandler.throwNotFoundError('LLm prompt group id not found!');
             }
             if (model.Name != null) {
                 updateData.Name = model.Name;
@@ -88,18 +125,38 @@ export class LlmpromptGroupService extends BaseService {
         }
     };
     
-    public delete = async (id: uuid)=> {
+    // public delete = async (id: uuid)=> {
+    //     try {
+    //         var record = await this._llmPromptGroupRepository.findOne({
+    //             where : {
+    //                 id : id
+    //             }
+    //         });
+    //         var result = await this._llmPromptGroupRepository.remove(record);
+    //         result != null;
+    //     } catch (error) {
+    //         logger.error(error.message);
+    //         ErrorHandler.throwInternalServerError(error.message, 500);
+    //     }
+    // };
+
+    public delete = async (id: string): Promise<boolean> => {
         try {
+            // const record = await this._llmPromptRepository.findOne();
             var record = await this._llmPromptGroupRepository.findOne({
-                where : {
-                    id : id
-                }
-            });
-            var result = await this._llmPromptGroupRepository.remove(record);
-            result != null;
+                            where : {
+                                id : id
+                            }
+                        });
+            if (!record) {
+                return false; // Record not found
+            }
+            record.DeletedAt = new Date(); // Soft delete
+            await this._llmPromptGroupRepository.save(record);
+            return true; // Soft delete successful
         } catch (error) {
             logger.error(error.message);
-            ErrorHandler.throwInternalServerError(error.message, 500);
+            throw new Error('Unable to delete prompt group.');
         }
     };
 
@@ -165,6 +222,5 @@ export class LlmpromptGroupService extends BaseService {
         }
         return search;
     };
-
 
 }

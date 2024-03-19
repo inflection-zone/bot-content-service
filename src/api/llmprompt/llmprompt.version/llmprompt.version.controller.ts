@@ -50,7 +50,7 @@ export class LlmPromptVersionController {
             const record = await this._service.getById(id);
             if (record === null)
             {
-                const message = 'LLm prompt version cannot be retrieved!';
+                const message = ' Prompt version id cannot be found!';
                 ErrorHandler.throwNotFoundError(message);
                 // return ResponseHandler.success(request, response, message, 200, record);
             }
@@ -84,7 +84,7 @@ export class LlmPromptVersionController {
             const result = {
                 Deleted : userDeleted
             };
-            const message = 'LLm version deleted successfully!';
+            const message = 'LLm prompt version deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);

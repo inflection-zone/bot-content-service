@@ -1,9 +1,10 @@
 import { decimal } from "../../../domain.types/miscellaneous/system.types";
-import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany } from "typeorm";
+import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany, ManyToMany, JoinTable } from "typeorm";
 // import { LlmPromptGroup } from "./llm.prompt.groups.model";
 import { LlmPromptVersion } from "./llm.prompt.versions.model";
 import { PromptUsecase } from "../../../domain.types/usecase.domain.types";
 import { PromptGroup } from "../../../domain.types/promptgroup.domain.types";
+import { LlmPromptGroup } from "./llm.prompt.groups.model";
 
 @Entity('llm_prompts')
 export class LlmPrompt extends BaseEntity{
@@ -56,12 +57,12 @@ UpdatedAt: Date;
 @DeleteDateColumn()
 DeletedAt: Date;
 
-// @ManyToMany(() => LlmPromptGroups)
-// @JoinTable()
-// llm_group_prompts: LlmPromptGroups[];
+@ManyToMany(() => LlmPromptGroup, (llmpromptgroup) => llmpromptgroup.LlmPrompts)
+    @JoinTable()
+    LlmPromptGroups: LlmPromptGroup[];
 
-    @OneToMany(() => LlmPromptVersion,
-        llm_prompt_versions => llm_prompt_versions.llm_prompts)
+@OneToMany(() => LlmPromptVersion,
+    llm_prompt_versions => llm_prompt_versions.llm_prompts)
         llm_prompt_versions: LlmPromptVersion[];
 
 }

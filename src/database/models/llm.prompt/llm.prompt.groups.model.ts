@@ -1,6 +1,5 @@
-import { BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { LlmPrompt } from "./llm.prompts.model";
-
 
 @Entity({ name: 'llm_prompt_groups' })
 export class LlmPromptGroup extends BaseEntity {
@@ -14,9 +13,8 @@ Name: string;
 @Column({ type: 'varchar', length: 1024, nullable: true })
 Description: string;
 
-@ManyToMany(() => LlmPrompt)
-@JoinTable()
-"llm_group_prompts":LlmPrompt[];
+@ManyToMany(() => LlmPrompt, (llmprompt) => llmprompt.LlmPromptGroups)
+LlmPrompts: LlmPrompt[];
 
 @CreateDateColumn()
 CreatedAt: Date;

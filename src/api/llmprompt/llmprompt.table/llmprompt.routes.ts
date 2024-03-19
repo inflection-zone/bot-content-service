@@ -9,6 +9,8 @@ export const register = (app: express.Application): void => {
     
     router.get('/search', controller.search);
     router.get('/records', controller.getAll);
+    router.get('/search-by-status/:status', controller.getByStatus);
+
     router.get('/:id', controller.getById);
     router.post('/', controller.create);
     router.put('/:id', controller.update);

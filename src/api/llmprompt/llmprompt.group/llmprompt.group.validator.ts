@@ -8,14 +8,16 @@ import { ErrorHandler } from '../../../common/handlers/error.handler';
 
 import BaseValidator from '../../base.validator';
 import { LlmPromptGroupSearchFilters } from '../../../domain.types/llm.prompt/llm.prompt.group.domain.types';
+import { PromptGroup } from '../../../domain.types/promptgroup.domain.types';
 
 export class LlmPromptGroupValidator extends BaseValidator {
 
     public validateCreateRequest = async (request: express.Request) => {
         try {
             const schema = joi.object({
-                Name        : joi.string().required(),
+                Name        : joi.string().valid(...Object.values(PromptGroup)).optional(),
                 Description : joi.string().optional(),
+                PromptId    : joi.string().uuid().required(),
              });
             return await schema.validateAsync(request.body);
             

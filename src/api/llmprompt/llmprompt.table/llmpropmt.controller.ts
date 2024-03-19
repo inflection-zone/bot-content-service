@@ -49,7 +49,7 @@ export class LlmPromptController {
             const record = await this._service.getById(id);
             if (record === null)
             {
-                const message = 'LLm prompt cannot be retrieved!';
+                const message = 'LLm prompt id cannot be found!';
                 ErrorHandler.throwNotFoundError(message);
                 // return ResponseHandler.success(request, response, message, 200, record);
             }
@@ -88,18 +88,36 @@ export class LlmPromptController {
             const id = await this._validator.validateParamAsUUID(request, 'id');
             const record: LlmPromptDto = await this._service.getById(id);
             if (record == null) {
-                ErrorHandler.throwNotFoundError('User with id cannot be found!');
+                ErrorHandler.throwNotFoundError('Prompt with id cannot be found!');
             }
-            const userDeleted = await this._service.delete(id);
+            const promptDeleted = await this._service.delete(id);
             const result = {
-                Deleted : userDeleted
+                Deleted : promptDeleted
             };
-            const message = 'User deleted successfully!';
+            const message = 'Prompt deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
     };
+
+    // delete = async (request: express.Request, response: express.Response) => {
+    //     try {
+    //         const id = await this._validator.validateParamAsUUID(request, 'id');
+    //         const record: LlmPromptDto = await this._service.getById(id);
+    //         if (record == null) {
+    //             ErrorHandler.throwNotFoundError('Prompt with id ' + id.toString() + ' cannot be found!');
+    //         }
+    //         const userDeleted: boolean = await this._service.delete(id);
+    //         const result = {
+    //             Deleted : userDeleted
+    //         };
+    //         const message = 'Prompt deleted successfully!';
+    //         ResponseHandler.success(request, response, message, 200, result);
+    //     } catch (error) {
+    //         ResponseHandler.handleError(request, response, error);
+    //     }
+    // };
 
     search = async (request: express.Request, response: express.Response) => {
         try {

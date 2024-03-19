@@ -6,6 +6,7 @@ import { uuid } from "../../../domain.types/miscellaneous/system.types";
 import { LlmPromptGroupValidator } from "./llmprompt.group.validator";
 import { LlmpromptGroupService } from "../../../database/services/llmprompt.group.service";
 import { LlmPromptGroupCreateModel, LlmPromptGroupDto, LlmPromptGroupSearchFilters, LlmPromptGroupUpdateModel } from "../../../domain.types/llm.prompt/llm.prompt.group.domain.types";
+import { LlmpromptService } from "../../../database/services/llmprompt.service";
 
 export class LlmPromptGroupController {
 
@@ -15,9 +16,10 @@ export class LlmPromptGroupController {
 
     _validator: LlmPromptGroupValidator = new LlmPromptGroupValidator();
 
+    _llmPromptRepository: LlmpromptService = new LlmpromptService();
+
     create = async (request: express.Request, response: express.Response) => {
         try {
-            // await this.authorize('Badge.Create', request, response);
             var model: LlmPromptGroupCreateModel = await this._validator.validateCreateRequest(request);
             const record = await this._service.create(model);
             if (record === null) {
@@ -50,7 +52,7 @@ export class LlmPromptGroupController {
             const record = await this._service.getById(id);
             if (record === null)
             {
-                const message = 'LLm prompt cannot be retrieved!';
+                const message = ' Prompt Group cannot be found!';
                 ErrorHandler.throwNotFoundError(message);
                 // return ResponseHandler.success(request, response, message, 200, record);
             }
@@ -78,13 +80,13 @@ export class LlmPromptGroupController {
             const id = await this._validator.validateParamAsUUID(request, 'id');
             const record: LlmPromptGroupDto = await this._service.getById(id);
             if (record == null) {
-                ErrorHandler.throwNotFoundError('User with id cannot be found!');
+                ErrorHandler.throwNotFoundError('Prompt Group with id cannot be found!');
             }
             const userDeleted = await this._service.delete(id);
             const result = {
                 Deleted : userDeleted
             };
-            const message = 'User deleted successfully!';
+            const message = 'Prompt Group deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);

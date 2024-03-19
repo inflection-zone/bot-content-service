@@ -1,13 +1,16 @@
 import { BaseSearchFilters } from "../miscellaneous/base.search.types";
 import { uuid } from "../miscellaneous/system.types";
+import { LlmPromptDto } from "./llm.prompt.domain.types";
 
 export interface  LlmPromptGroupDto {
     id?         : uuid;
     Name?       : string;
     Description?: string;
+    LlmPrompt      ?: LlmPromptDto;
 }
 
 export interface  LlmPromptGroupCreateModel {
+    PromptId    : string;
     Name        : string;
     Description?: string;
 }

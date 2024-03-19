@@ -162,5 +162,3 @@ export class LlmPromptValidator extends BaseValidator {
     };
 
 }
-
-

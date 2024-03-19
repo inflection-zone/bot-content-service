@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 
 // import express from 'express';
 import { BaseService } from './base.service';
@@ -126,7 +127,6 @@ export class LlmpromptService extends BaseService {
         }
     };
 
-
     public getAll = async (): Promise<LlmPromptDto[]> =>{
         try {
             const data = [];
@@ -143,21 +143,41 @@ export class LlmpromptService extends BaseService {
         }
     };
     
-    public delete = async (id: uuid)=> {
+    // public delete = async (id: uuid)=> {
+    //     try {
+    //         var record = await this._llmPromptRepository.findOne({
+    //             where : {
+    //                 id : id
+    //             }
+    //         });
+    //         var result = await this._llmPromptRepository.remove(record);
+    //         result != null;
+    //     } catch (error) {
+    //         logger.error(error.message);
+    //         ErrorHandler.throwInternalServerError(error.message, 500);
+    //     }
+    // };
+
+    public delete = async (id: string): Promise<boolean> => {
         try {
+            // const record = await this._llmPromptRepository.findOne();
             var record = await this._llmPromptRepository.findOne({
-                where : {
-                    id : id
-                }
-            });
-            var result = await this._llmPromptRepository.remove(record);
-            result != null;
+                            where : {
+                                id : id
+                            }
+                        });
+            if (!record) {
+                return false; // Record not found
+            }
+            record.DeletedAt = new Date(); // Soft delete
+            await this._llmPromptRepository.save(record);
+            return true; // Soft delete successful
         } catch (error) {
             logger.error(error.message);
-            ErrorHandler.throwInternalServerError(error.message, 500);
+            throw new Error('Unable to delete prompt.');
         }
     };
-
+    
     public search = async (filters: LlmPromptSearchFilters)
     : Promise<LlmPromptSearchResults> => {
         try {

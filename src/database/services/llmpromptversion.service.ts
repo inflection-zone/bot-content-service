@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { BaseService } from './base.service';
 import { logger } from '../../logger/logger';
 import { ErrorHandler } from '../../common/handlers/error.handler';
@@ -112,18 +113,38 @@ export class LlmpromptVersionService extends BaseService {
         }
     };
     
-    public delete = async (id: uuid)=> {
+    // public delete = async (id: uuid)=> {
+    //     try {
+    //         var record = await this._llmPromptVersionRepository.findOne({
+    //             where : {
+    //                 id : id
+    //             }
+    //         });
+    //         var result = await this._llmPromptVersionRepository.remove(record);
+    //         result != null;
+    //     } catch (error) {
+    //         logger.error(error.message);
+    //         ErrorHandler.throwInternalServerError(error.message, 500);
+    //     }
+    // };
+
+    public delete = async (id: string): Promise<boolean> => {
         try {
+            // const record = await this._llmPromptRepository.findOne();
             var record = await this._llmPromptVersionRepository.findOne({
-                where : {
-                    id : id
-                }
-            });
-            var result = await this._llmPromptVersionRepository.remove(record);
-            result != null;
+                            where : {
+                                id : id
+                            }
+                        });
+            if (!record) {
+                return false; // Record not found
+            }
+            record.DeletedAt = new Date(); // Soft delete
+            await this._llmPromptVersionRepository.save(record);
+            return true; // Soft delete successful
         } catch (error) {
             logger.error(error.message);
-            ErrorHandler.throwInternalServerError(error.message, 500);
+            throw new Error('Unable to delete prompt version.');
         }
     };
 
