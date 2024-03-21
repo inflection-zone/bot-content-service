@@ -1,8 +1,9 @@
 {
-    "name": "awards",
+    "name": "bot-content-service",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
+    "type": "commonjs",
     "scripts": {
         "build": "NODE_OPTIONS=--max_old_space_size=5120 tsc",
         "start": "tsc && ts-node --files ./src/index.ts",

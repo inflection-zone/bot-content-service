@@ -1,17 +1,10 @@
-/* eslint-disable no-multiple-empty-lines */
-/* eslint-disable padded-blocks */
-/* eslint-disable key-spacing */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { QnaDocument } from '../../models/qna.document/qna.document.model';
-
+import { QnaDocument } from '../../models/content/qna.document.model';
 import { logger } from '../../../logger/logger';
 import { ErrorHandler } from '../../../common/handlers/error.handler';
 import { Source } from '../../database.connector';
 import { FindManyOptions, Like, Repository } from 'typeorm';
-
 import { BaseService } from '../base.service';
-import { integer, uuid } from '../../../domain.types/miscellaneous/system.types';
-
+import { uuid } from '../../../domain.types/miscellaneous/system.types';
 import {
     QnaDocumentCreateModel,
     QnaDocumentSearchFilters,
@@ -20,40 +13,28 @@ import {
 } from '../../../domain.types/content/qna.document.domain.types';
 import { QnaDocumentResponseDto } from '../../../domain.types/content/qna.document.domain.types';
 import { QnaDocumentMapper } from '../../mappers/content/qna.document.mapper';
-import { strategy } from 'sharp';
-import { QnaDocumentGroup } from '../../models/qna.document/qna.document.groups.model';
-// import { QnaDocumentVersion } from '../../models/qna.document/qna.document.version.model';
 
 ///////////////////////////////////////////////////////////////////////
 
 export class QnaDocumentService extends BaseService {
-    _qnaDocumentRepository: Repository<QnaDocument> = Source.getRepository(QnaDocument);
 
-    public getAll = async (): Promise<QnaDocumentResponseDto[]> => {
-        try {
-            var document = await this._qnaDocumentRepository.find();
-            return QnaDocumentMapper.toArrayDto(document);
-        } catch (error) {
-            logger.error(error.message);
-            ErrorHandler.throwInternalServerError(error.message, 500);
-        }
-    };
+    _qnaDocumentRepository: Repository<QnaDocument> = Source.getRepository(QnaDocument);
 
     public create = async (createModel: QnaDocumentCreateModel): Promise<QnaDocumentResponseDto> => {
         try {
             const document = this._qnaDocumentRepository.create({
-                Name: createModel.Name,
-                Description: createModel.Description,
-                FileName: createModel.FileName,
-                Source: createModel.Source,
-                ParentDocument: createModel.ParentDocument,
-                ParentDocumentVersion: createModel.ParentDocumentVersion,
-                ChunkingStrategy: createModel.ChunkingStrategy,
-                ChunkingLenght: createModel.ChunkingLenght,
-                ChunkOverlap: createModel.ChunkOverlap,
-                Splitter: createModel.Splitter,
-                IsActive: createModel.IsActive,
-                CreatedBy: createModel.CreatedBy,
+                Name                  : createModel.Name,
+                Description           : createModel.Description,
+                FileName              : createModel.FileName,
+                Source                : createModel.Source,
+                ParentDocument        : createModel.ParentDocument,
+                ParentDocumentVersion : createModel.ParentDocumentVersion,
+                ChunkingStrategy      : createModel.ChunkingStrategy,
+                ChunkingLenght        : createModel.ChunkingLenght,
+                ChunkOverlap          : createModel.ChunkOverlap,
+                Splitter              : createModel.Splitter,
+                IsActive              : createModel.IsActive,
+                CreatedBy             : createModel.CreatedBy,
             });
             var record = await this._qnaDocumentRepository.save(document);
             return QnaDocumentMapper.toResponseDto(record);
@@ -63,29 +44,11 @@ export class QnaDocumentService extends BaseService {
         }
     };
 
-    public getById = async (id: uuid): Promise<QnaDocumentResponseDto> => {
-        try {
-            var document = await this._qnaDocumentRepository.findOne({
-                where: {
-                    id: id,
-                },
-                // relations: {
-                //     Category: true,
-                //     Client  : true
-                // }
-            });
-            return QnaDocumentMapper.toResponseDto(document);
-        } catch (error) {
-            logger.error(error.message);
-            ErrorHandler.throwInternalServerError(error.message, 500);
-        }
-    };
-
     public update = async (id: uuid, model: QnaDocumentUpdateModel): Promise<QnaDocumentResponseDto> => {
         try {
             const document = await this._qnaDocumentRepository.findOne({
-                where: {
-                    id: id,
+                where : {
+                    id : id,
                 },
             });
             if (!document) {
@@ -136,14 +99,47 @@ export class QnaDocumentService extends BaseService {
         }
     };
 
-    public delete = async (id: string): Promise<boolean> => {
+    public getById = async (id: uuid): Promise<QnaDocumentResponseDto> => {
         try {
-            var record = await this._qnaDocumentRepository.findOne({
-                where: {
-                    id: id,
+            var document = await this._qnaDocumentRepository.findOne({
+                where : {
+                    id : id,
                 },
             });
-            var result = await this._qnaDocumentRepository.remove(record);
+            return QnaDocumentMapper.toResponseDto(document);
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
+
+    public getByStatus = async (status: boolean) => {
+        try {
+            var document = await this._qnaDocumentRepository.find({
+                where : {
+                    IsActive : status,
+                },
+            });
+            return QnaDocumentMapper.toArrayDto(document);
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
+
+    public getAll = async (): Promise<QnaDocumentResponseDto[]> => {
+        try {
+            var document = await this._qnaDocumentRepository.find();
+            return QnaDocumentMapper.toArrayDto(document);
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
+
+    public delete = async (id: string): Promise<boolean> => {
+        try {
+            var result = await this._qnaDocumentRepository.softDelete(id);
             return result != null;
         } catch (error) {
             logger.error(error.message);
@@ -158,13 +154,13 @@ export class QnaDocumentService extends BaseService {
             const [list, count] = await this._qnaDocumentRepository.findAndCount(search);
 
             const searchResults = {
-                TotalCount: count,
-                RetrievedCount: list.length,
-                PageIndex: pageIndex,
-                ItemsPerPage: limit,
-                Order: order === 'DESC' ? 'descending' : 'ascending',
-                OrderedBy: orderByColumn,
-                Items: list.map((x) => QnaDocumentMapper.toResponseDto(x)),
+                TotalCount     : count,
+                RetrievedCount : list.length,
+                PageIndex      : pageIndex,
+                ItemsPerPage   : limit,
+                Order          : order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy      : orderByColumn,
+                Items          : list.map((x) => QnaDocumentMapper.toResponseDto(x)),
             };
             return searchResults;
         } catch (error) {
@@ -175,21 +171,21 @@ export class QnaDocumentService extends BaseService {
 
     private getSearchModel = (filters: QnaDocumentSearchFilters) => {
         var search: FindManyOptions<QnaDocument> = {
-            relations: {},
-            where: {},
-            select: {
-                Name: true,
-                Description: true,
-                FileName: true,
-                Source: true,
-                ParentDocument: true,
-                ParentDocumentVersion: true,
-                ChunkingStrategy: true,
-                ChunkingLenght: true,
-                ChunkOverlap: true,
-                Splitter: true,
-                IsActive: true,
-                CreatedBy: true,
+            relations : {},
+            where     : {},
+            select    : {
+                Name                  : true,
+                Description           : true,
+                FileName              : true,
+                Source                : true,
+                ParentDocument        : true,
+                ParentDocumentVersion : true,
+                ChunkingStrategy      : true,
+                ChunkingLenght        : true,
+                ChunkOverlap          : true,
+                Splitter              : true,
+                IsActive              : true,
+                CreatedBy             : true,
             },
         };
 
@@ -231,4 +227,5 @@ export class QnaDocumentService extends BaseService {
         }
         return search;
     };
+
 }

@@ -1,41 +1,37 @@
-/* eslint-disable key-spacing */
-/* eslint-disable padded-blocks */
-/* eslint-disable linebreak-style */
-import { QnaDocumentGroupResponseDto } from '../../../domain.types/content/qna.document.group.domain.types';
-import { QnaDocumentGroup } from '../../models/qna.document/qna.document.groups.model';
+import {
+    QnaDocumentGroupResponseDto,
+    QnaDocumentGroupSearchResponseDto,
+} from '../../../domain.types/content/qna.document.group.domain.types';
+import { QnaDocumentGroup } from '../../models/content/qna.document.groups.model';
+import { QnaDocumentMapper } from './qna.document.mapper';
 
 export class QnaDocumentGroupsMapper {
+
     static toResponseDto = (qnaDocumentGroups: QnaDocumentGroup): QnaDocumentGroupResponseDto => {
         if (qnaDocumentGroups == null) {
             return null;
         }
         const dto: QnaDocumentGroupResponseDto = {
-            id: qnaDocumentGroups.id,
-            Name: qnaDocumentGroups.Name,
-            Description: qnaDocumentGroups.Description,
-
-            CreatedAt: qnaDocumentGroups.CreatedAt,
-            UpdatedAt: qnaDocumentGroups.UpdatedAt,
+            id          : qnaDocumentGroups.id,
+            Name        : qnaDocumentGroups.Name,
+            Description : qnaDocumentGroups.Description,
+            QnaDocument : QnaDocumentMapper.toResponseDto(
+                qnaDocumentGroups.QnaDocuments?.length > 0 ? qnaDocumentGroups.QnaDocuments[0] : null
+            ),
         };
         return dto;
     };
 
-    static toArrayDto(qnaDocumentGroups: QnaDocumentGroup[]): QnaDocumentGroupResponseDto[] {
-        if (qnaDocumentGroups === null) {
+    static toSearchResponseDto = (qnaDocumentGroups): QnaDocumentGroupSearchResponseDto => {
+        if (qnaDocumentGroups == null) {
             return null;
         }
-
-        const dto: QnaDocumentGroupResponseDto[] = [];
-
-        qnaDocumentGroups.forEach((element) => {
-            dto.push({
-                id: element.id,
-                Name: element.Name,
-                Description: element.Description,
-                CreatedAt: element.CreatedAt,
-                UpdatedAt: element.UpdatedAt,
-            });
-        });
+        const dto: QnaDocumentGroupSearchResponseDto = {
+            id          : qnaDocumentGroups.id,
+            Name        : qnaDocumentGroups.Name,
+            Description : qnaDocumentGroups.Description,
+        };
         return dto;
-    }
+    };
+    
 }

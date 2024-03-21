@@ -1,9 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable key-spacing */
-/* eslint-disable linebreak-style */
-/* eslint-disable max-len */
-/* eslint-disable linebreak-style */
-
 import request from 'supertest';
 import { expect } from 'chai';
 import Application from '../../src/app';

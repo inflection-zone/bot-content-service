@@ -1,44 +1,28 @@
-/* eslint-disable no-multiple-empty-lines */
-/* eslint-disable padded-blocks */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable key-spacing */
 import joi from 'joi';
 import express from 'express';
-
 import { ErrorHandler } from '../../../common/handlers/error.handler';
 import BaseValidator from '../../base.validator';
-
-// import { QnaDocuments } from 'src/database/models/qna.documents/qna.documents.model';
-
 import {
     QnaDocumentVersionCreateModel,
     QnaDocumentVersionSearchFilters,
     QnaDocumentVersionUpdateModel,
 } from '../../../domain.types/content/qna.document.version.domain.types';
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class QnaDocumentVersionValidator extends BaseValidator {
+
     public validateCreateRequest = async (request: express.Request): Promise<QnaDocumentVersionCreateModel> => {
         try {
             const schema = joi.object({
-                DocumentId: joi.string().uuid(),
-                VersionNumber: joi.number(),
-                StorageUrl: joi.string(),
-                DownloadUrl: joi.string(),
-                FileResourceId: joi.string(),
-                Keywords: joi.string(),
+                VersionNumber  : joi.string().required(),
+                StorageUrl     : joi.string().required(),
+                DownloadUrl    : joi.string().required(),
+                FileResourceId : joi.string().required(),
+                Keywords       : joi.array().items(joi.string().required()),
+                QnaDocumentId  : joi.string().uuid().required(),
             });
-            await schema.validateAsync(request.body);
-            return {
-                DocumentId: request.body.DocumentId,
-                VersionNumber: request.body.VersionNumber,
-                StorageUrl: request.body.StorageUrl,
-                DownloadUrl: request.body.DownloadUrl,
-                FileResourceId: request.body.FileResourceId,
-                Keywords: request.body.Keywords,
-            };
+            return await schema.validateAsync(request.body);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -49,22 +33,25 @@ export class QnaDocumentVersionValidator extends BaseValidator {
     ): Promise<QnaDocumentVersionUpdateModel | undefined> => {
         try {
             const schema = joi.object({
-                DocumentId: joi.string().uuid(),
-                VersionNumber: joi.number(),
-                StorageUrl: joi.string(),
-                DownloadUrl: joi.string(),
-                FileResourceId: joi.string(),
-                Keywords: joi.string(),
+                VersionNumber  : joi.string().optional(),
+                StorageUrl     : joi.string().optional(),
+                DownloadUrl    : joi.string().optional(),
+                FileResourceId : joi.string().optional(),
+                Keywords       : joi.array().items(joi.string().optional()),
+                QnaDocumentId  : joi.string().uuid().optional(),
             });
-            await schema.validateAsync(request.body);
-            return {
-                DocumentId: request.body.DocumentId ?? null,
-                VersionNumber: request.body.VersionNumber ?? null,
-                StorageUrl: request.body.StorageUrl ?? null,
-                DownloadUrl: request.body.DownloadUrl ?? null,
-                FileResourceId: request.body.FileResourceId ?? null,
-                Keywords: request.body.Keywords ?? null,
-            };
+            return await schema.validateAsync(request.body);
+        } catch (error) {
+            ErrorHandler.handleValidationError(error);
+        }
+    };
+
+    public validateGetRequest = async (request: express.Request) => {
+        try {
+            const schema = joi.object({
+                id : joi.string().required(),
+            });
+            return await schema.validateAsync(request.query);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -73,12 +60,12 @@ export class QnaDocumentVersionValidator extends BaseValidator {
     public validateSearchRequest = async (request: express.Request): Promise<QnaDocumentVersionSearchFilters> => {
         try {
             const schema = joi.object({
-                DocumentId: joi.string().uuid(),
-                VersionNumber: joi.string().optional(),
-                StorageUrl: joi.string().optional(),
-                DownloadUrl: joi.string().optional(),
-                FileResourceId: joi.string().optional(),
-                Keywords: joi.string().optional(),
+                VersionNumber  : joi.string().optional(),
+                QnaDocumentId  : joi.string().uuid().optional(),
+                StorageUrl     : joi.string().optional(),
+                DownloadUrl    : joi.string().optional(),
+                FileResourceId : joi.string().optional(),
+                Keywords       : joi.string().optional(),
             });
 
             await schema.validateAsync(request.query);
@@ -92,15 +79,14 @@ export class QnaDocumentVersionValidator extends BaseValidator {
     private getSearchFilters = (query): QnaDocumentVersionSearchFilters => {
         var filters = {};
 
-        var DocumentId = query.DocumentId ? query.DocumentId : null;
-        if (DocumentId != null) {
-            filters['DocumentId'] = DocumentId;
-        }
-
         var VersionNumber = query.VersionNumber ? query.VersionNumber : null;
         if (VersionNumber != null) {
             filters['VersionNumber'] = VersionNumber;
         }
+        // var QnaDocumentId = query.QnaDocumentId ? query.QnaDocumentId : null;
+        // if (QnaDocumentId != null) {
+        //     filters['QnaDocumentId'] = QnaDocumentId;
+        // }
         var StorageUrl = query.StorageUrl ? query.StorageUrl : null;
         if (StorageUrl != null) {
             filters['StorageUrl'] = StorageUrl;
@@ -113,10 +99,12 @@ export class QnaDocumentVersionValidator extends BaseValidator {
         if (FileResourceId != null) {
             filters['FileResourceId'] = FileResourceId;
         }
+
         var Keywords = query.Keywords ? query.Keywords : null;
         if (Keywords != null) {
             filters['Keywords'] = Keywords;
         }
+
         var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
         if (itemsPerPage != null) {
             filters['ItemsPerPage'] = itemsPerPage;
@@ -131,4 +119,5 @@ export class QnaDocumentVersionValidator extends BaseValidator {
         }
         return filters;
     };
+    
 }

@@ -1,17 +1,9 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable key-spacing */
-/* eslint-disable linebreak-style */
-/* eslint-disable max-len */
-/* eslint-disable linebreak-style */
-
 import request from 'supertest';
 import { expect } from 'chai';
 import Application from '../../src/app';
 import { describe, it } from 'mocha';
 import { getTestData, setTestData } from '../init';
 import { faker } from '@faker-js/faker';
-// import { getRandomEnumValue } from '../utils';
-// import { ChunkingStrategy } from '../../src/domain.types/chunking.strategy.domain.types';
 
 const infra = Application.instance();
 
@@ -109,12 +101,12 @@ describe('Qna Document Group tests', function () {
             .expect(200, done);
     });
 
-    it('06:03 -> Search qna document group records', function(done) {
+    it('06:03 -> Search qna document group records', function (done) {
         loadOrganizationQueryString();
         agent
             .get(`/api/v1/documentgroups/search${loadOrganizationQueryString()}`)
             .set('Content-Type', 'application/json')
-            .expect(response => {
+            .expect((response) => {
                 expect(response.body.Data).to.have.property('TotalCount');
                 expect(response.body.Data).to.have.property('RetrievedCount');
                 expect(response.body.Data).to.have.property('PageIndex');

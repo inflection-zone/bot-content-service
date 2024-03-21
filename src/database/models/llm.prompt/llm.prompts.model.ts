@@ -57,9 +57,9 @@ UpdatedAt: Date;
 @DeleteDateColumn()
 DeletedAt: Date;
 
-@ManyToMany(() => LlmPromptGroup)
-@JoinTable()
-llm_group_prompts: LlmPromptGroup[];
+// @ManyToMany(() => LlmPromptGroup)
+// @JoinTable()
+// llm_group_prompts: LlmPromptGroup[];
 
     @OneToMany(() => LlmPromptVersion,
         llm_prompt_versions => llm_prompt_versions.llm_prompts)

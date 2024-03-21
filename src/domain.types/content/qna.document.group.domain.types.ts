@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BaseSearchFilters, BaseSearchResults } from '../miscellaneous/base.search.types';
-import { uuid } from '../miscellaneous/system.types';
+import { decimal, uuid } from '../miscellaneous/system.types';
 
 //////////////////////////////////////////////////////////////
 
 export interface QnaDocumentGroupCreateModel {
+    QnaDocumentId: uuid;
     Name: string;
     Description?: string;
 }
@@ -12,26 +12,40 @@ export interface QnaDocumentGroupCreateModel {
 export interface QnaDocumentGroupUpdateModel {
     Name?: string;
     Description?: string;
+    QnaDocumentId?: uuid;
 }
 
 export interface QnaDocumentGroupResponseDto {
     id: uuid;
     Name: string;
-    Description?: string;
-    // QnaDocuments: string;
-
-    CreatedAt: Date;
-    UpdatedAt: Date;
+    Description: string;
+    QnaDocument: {
+        id: string;
+        Name: string;
+        Description: string;
+        FileName: string;
+        Source: string;
+        ParentDocument: string;
+        ParentDocumentVersion: string;
+        ChunkingStrategy: string;
+        ChunkingLenght: decimal;
+        ChunkOverlap: decimal;
+        Splitter: string;
+        IsActive: boolean;
+        CreatedBy: string;
+    };
 }
 
 export interface QnaDocumentGroupSearchFilters extends BaseSearchFilters {
-    id?: uuid;
     Name?: string;
-    Description?: string;
-    CreatedAt?: Date;
-    UpdatedAt?: Date;
 }
 
 export interface QnaDocumentGroupSearchResults extends BaseSearchResults {
-    Items: QnaDocumentGroupResponseDto[];
+    Items: QnaDocumentGroupSearchResponseDto[];
+}
+
+export interface QnaDocumentGroupSearchResponseDto {
+    id?: uuid;
+    Name?: string;
+    Description?: string;
 }

@@ -1,8 +1,6 @@
 import joi from 'joi';
 import express from 'express';
-import {
-    ErrorHandler
-} from '../common/handlers/error.handler';
+import { ErrorHandler } from '../common/handlers/error.handler';
 import { uuid } from '../domain.types/miscellaneous/system.types';
 import { DownloadDisposition } from '../domain.types/general/file.resource/file.resource.types';
 import { FileResourceMetadata } from '..//domain.types/general/file.resource/file.resource.types';
@@ -23,13 +21,12 @@ export default class BaseValidator {
     };
 
     getByVersionName = async (request: express.Request): Promise<FileResourceMetadata> => {
-
         var disposition = this.getDownloadDisposition(request);
 
         var metadata: FileResourceMetadata = {
             ResourceId  : request.params.id,
             Version     : request.params.version,
-            Disposition : disposition
+            Disposition : disposition,
         };
 
         return metadata;
@@ -40,15 +37,13 @@ export default class BaseValidator {
         if (request.query.disposition) {
             if (request.query.disposition === 'inline') {
                 disposition = DownloadDisposition.Inline;
-            }
-            else if (request.query.disposition === 'stream') {
+            } else if (request.query.disposition === 'stream') {
                 disposition = DownloadDisposition.Stream;
-            }
-            else {
+            } else {
                 disposition = DownloadDisposition.Attachment;
             }
         }
         return disposition;
     }
-
+    
 }

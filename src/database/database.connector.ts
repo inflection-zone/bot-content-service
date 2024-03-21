@@ -1,18 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import "reflect-metadata";
 import { Config } from './database.config';
 import { logger } from '../logger/logger';
 import { DataSource } from "typeorm";
 import path from "path";
 import fs from 'fs';
-import { QnaDocumentGroup } from "./models/qna.document/qna.document.groups.model";
-import { QnaDocument } from "./models/qna.document/qna.document.model";
-import { QnaDocumentVersion } from "./models/qna.document/qna.document.version.model";
+import { QnaDocumentGroup } from "./models/content/qna.document.groups.model";
+import { QnaDocument } from "./models/content/qna.document.model";
+import { QnaDocumentVersion } from "./models/content/qna.document.version.model";
 import { DBLogger } from "./database.logger";
 import { LlmPromptVersion } from "./models/llm.prompt/llm.prompt.versions.model";
 import { LlmPromptGroup } from "./models/llm.prompt/llm.prompt.groups.model";
 import { LlmPrompt } from "./models/llm.prompt/llm.prompts.model";
-import { QnaDocumentLibrary } from "./models/qna.document/qna.document.library.model";
+import { QnaDocumentLibrary } from "./models/content/qna.document.library.model";
 
 ///////////////////////////////////////////////////////////////////////////////////
 

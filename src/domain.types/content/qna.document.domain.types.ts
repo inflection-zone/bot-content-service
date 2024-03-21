@@ -1,23 +1,22 @@
-/* eslint-disable no-trailing-spaces */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BaseSearchFilters, BaseSearchResults } from '../miscellaneous/base.search.types';
-import { integer, uuid } from '../miscellaneous/system.types';
-import { QnaDocument } from '../../database/models/qna.document/qna.document.model';
+import { decimal, uuid } from '../miscellaneous/system.types';
+
+import { QnaDocumentGroupResponseDto } from './qna.document.group.domain.types';
 
 //////////////////////////////////////////////////////////////
 
 export interface QnaDocumentCreateModel {
     Name: string;
-    Description: string;
+    Description?: string;
     FileName: string;
     Source: string;
-    ParentDocument?: string;
-    ParentDocumentVersion?: integer;
-    ChunkingStrategy?: string;
-    ChunkingLenght?: integer;
-    ChunkOverlap?: integer;
-    Splitter?: string;
-    IsActive?: boolean;
+    ParentDocument: string;
+    ParentDocumentVersion: string;
+    ChunkingStrategy: string;
+    ChunkingLenght: decimal;
+    ChunkOverlap: decimal;
+    Splitter: string;
+    IsActive: boolean;
     CreatedBy: string;
 }
 
@@ -27,10 +26,10 @@ export interface QnaDocumentUpdateModel {
     FileName?: string;
     Source?: string;
     ParentDocument?: string;
-    ParentDocumentVersion?: integer;
+    ParentDocumentVersion?: string;
     ChunkingStrategy?: string;
-    ChunkingLenght?: integer;
-    ChunkOverlap?: integer;
+    ChunkingLenght?: decimal;
+    ChunkOverlap?: decimal;
     Splitter?: string;
     IsActive?: boolean;
     CreatedBy?: string;
@@ -41,17 +40,16 @@ export interface QnaDocumentResponseDto {
     Name: string;
     Description: string;
     FileName: string;
+    QnaDocumentGroup?: QnaDocumentGroupResponseDto;
     Source: string;
     ParentDocument: string;
-    ParentDocumentVersion: integer;
+    ParentDocumentVersion: string;
     ChunkingStrategy: string;
-    ChunkingLenght: integer;
-    ChunkOverlap: integer;
+    ChunkingLenght: decimal;
+    ChunkOverlap: decimal;
     Splitter: string;
     IsActive: boolean;
     CreatedBy: string;
-    CreatedAt: Date;
-    UpdatedAt: Date;
 }
 
 export interface QnaDocumentSearchFilters extends BaseSearchFilters {
@@ -61,14 +59,15 @@ export interface QnaDocumentSearchFilters extends BaseSearchFilters {
     FileName?: string;
     Source?: string;
     ParentDocument?: string;
-    ParentDocumentVersion?: integer;
+    ParentDocumentVersion?: string;
     ChunkingStrategy?: string;
-    ChunkingLenght?: integer;
-    ChunkOverlap?: integer;
+    ChunkingLenght?: decimal;
+    ChunkOverlap?: decimal;
     Splitter?: string;
     IsActive?: boolean;
     CreatedBy?: string;
 }
 export interface QnaDocumentSearchResults extends BaseSearchResults {
-    Items: QnaDocumentResponseDto[];
+    id?: uuid;
+    Name?: string;
 }

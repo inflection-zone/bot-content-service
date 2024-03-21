@@ -1,8 +1,3 @@
-/* eslint-disable padded-blocks */
-/* eslint-disable no-multiple-empty-lines */
-/* eslint-disable eol-last */
-// import { integer } from "../../../domain.types/miscellaneous/system.types";
-// import { uuid } from "../../../domain.types/miscellaneous/system.types";
 import {
     Entity,
     BaseEntity,
@@ -11,17 +6,17 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     DeleteDateColumn,
-    ManyToMany,
-    
     OneToMany,
+    ManyToMany,
+    JoinTable,
 } from 'typeorm';
-import { QnaDocumentGroup } from './qna.document.groups.model';
-// import { QnaDocument, QnaDocumentVersion } from './qna.document.version.model';
 import { ChunkingStrategy } from '../../../domain.types/chunking.strategy.domain.types';
 import { QnaDocumentVersion } from './qna.document.version.model';
+import { QnaDocumentGroup } from './qna.document.groups.model';
 
-@Entity('qna_documents')
+@Entity({ name: 'qna_document' })
 export class QnaDocument extends BaseEntity {
+
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -45,7 +40,7 @@ export class QnaDocument extends BaseEntity {
 
     // @Column(({ type: 'varchar', length: 256, nullable: true }))
     @Column()
-    ParentDocumentVersion: number;
+    ParentDocumentVersion: string;
 
     @Column({ type: 'enum', enum: ChunkingStrategy })
     ChunkingStrategy: string;
@@ -71,10 +66,11 @@ export class QnaDocument extends BaseEntity {
     @DeleteDateColumn()
     DeletedAt: Date;
 
-    @ManyToMany(() => QnaDocumentGroup, (qna_document_groups) => qna_document_groups.QnaDocument)
-    // @JoinTable()
-    QnaDocumentGroup: QnaDocumentGroup[];
+    @OneToMany(() => QnaDocumentVersion, (qna_Document_Versions) => qna_Document_Versions.Qna_Documents)
+    Qna_Document_versions: QnaDocumentVersion[];
 
-    @OneToMany(() => QnaDocumentVersion, (qna_document_versions) => qna_document_versions.QnaDocument)
-    QnaDocumentVersion: QnaDocumentVersion[];
+    @ManyToMany(() => QnaDocumentGroup, (qnaDocumentGroup) => qnaDocumentGroup.QnaDocuments)
+    @JoinTable()
+    QnaDocumentGroups: QnaDocumentGroup[];
+    
 }

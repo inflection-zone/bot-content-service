@@ -1,59 +1,48 @@
-/* eslint-disable no-multiple-empty-lines */
-/* eslint-disable padded-blocks */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable key-spacing */
 import joi from 'joi';
 import express from 'express';
-
 import { ErrorHandler } from '../../../common/handlers/error.handler';
 import BaseValidator from '../../base.validator';
-
-// import { QnaDocuments } from 'src/database/models/qna.documents/qna.documents.model';
-
 import {
-    QnaDocumentCreateModel,
     QnaDocumentSearchFilters,
     QnaDocumentUpdateModel,
 } from '../../../domain.types/content/qna.document.domain.types';
-import { integer } from '../../../domain.types/miscellaneous/system.types';
-
-import { QnaDocument } from '../../../database/models/qna.document/qna.document.model';
 import { ChunkingStrategy } from '../../../domain.types/chunking.strategy.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class QnaDocumentValidator extends BaseValidator {
-    public validateCreateRequest = async (request: express.Request): Promise<QnaDocumentCreateModel> => {
+    
+    public validateCreateRequest = async (request: express.Request) => {
         try {
             const schema = joi.object({
-                Name: joi.string(),
-                Description: joi.string(),
-                FileName: joi.string(),
-                Source: joi.string(),
-                ParentDocument: joi.string(),
-                ParentDocumentVersion: joi.number(),
-                ChunkingStrategy: joi.string(),
-                ChunkingLenght: joi.number(),
-                ChunkOverlap: joi.number(),
-                Splitter: joi.string(),
-                IsActive: joi.boolean(),
-                CreatedBy: joi.string(),
+                Name                  : joi.string().required(),
+                Description           : joi.string(),
+                FileName              : joi.string().required(),
+                Source                : joi.string().required(),
+                ParentDocument        : joi.string().required(),
+                ParentDocumentVersion : joi.string(),
+                ChunkingStrategy      : joi
+                    .string()
+                    .valid(...Object.values(ChunkingStrategy))
+                    .required(),
+                ChunkingLenght : joi.number().required(),
+                ChunkOverlap   : joi.number().required(),
+                Splitter       : joi.string().required(),
+                IsActive       : joi.boolean().required(),
+                CreatedBy      : joi.string().required(),
             });
-            await schema.validateAsync(request.body);
-            return {
-                Name: request.body.Name,
-                Description: request.body.Description,
-                FileName: request.body.FileName,
-                Source: request.body.Source,
-                ParentDocument: request.body.ParentDocument,
-                ParentDocumentVersion: request.body.ParentDocumentVersion,
-                ChunkingStrategy: request.body.ChunkingStrategy,
-                ChunkingLenght: request.body.ChunkingLenght,
-                ChunkOverlap: request.body.ChunkOverlap,
-                Splitter: request.body.Splitter,
-                IsActive: request.body.IsActive,
-                CreatedBy: request.body.CreatedBy,
-            };
+            return await schema.validateAsync(request.body);
+        } catch (error) {
+            ErrorHandler.handleValidationError(error);
+        }
+    };
+
+    public validateGetRequest = async (request: express.Request) => {
+        try {
+            const schema = joi.object({
+                id : joi.string().required(),
+            });
+            return await schema.validateAsync(request.query);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -62,34 +51,23 @@ export class QnaDocumentValidator extends BaseValidator {
     public validateUpdateRequest = async (request: express.Request): Promise<QnaDocumentUpdateModel | undefined> => {
         try {
             const schema = joi.object({
-                Name: joi.string(),
-                Description: joi.string(),
-                FileName: joi.string(),
-                Source: joi.string(),
-                ParentDocument: joi.string(),
-                ParentDocumentVersion: joi.number(),
-                ChunkingStrategy: joi.string(),
-                ChunkingLenght: joi.number(),
-                ChunkOverlap: joi.number(),
-                Splitter: joi.string(),
-                IsActive: joi.boolean(),
-                CreatedBy: joi.string(),
+                Name                  : joi.string().optional(),
+                Description           : joi.string().optional(),
+                FileName              : joi.string().optional(),
+                Source                : joi.string().optional(),
+                ParentDocument        : joi.string().optional(),
+                ParentDocumentVersion : joi.string().optional(),
+                ChunkingStrategy      : joi
+                    .string()
+                    .valid(...Object.values(ChunkingStrategy))
+                    .optional(),
+                ChunkingLength : joi.number().optional(),
+                ChunkOverlap   : joi.number().optional(),
+                Splitter       : joi.string().optional(),
+                IsActive       : joi.boolean().optional(),
+                CreatedBy      : joi.string().optional(),
             });
-            await schema.validateAsync(request.body);
-            return {
-                Name: request.body.Name ?? null,
-                Description: request.body.Description ?? null,
-                FileName: request.body.FileName ?? null,
-                Source: request.body.Source ?? null,
-                ParentDocument: request.body.ParentDocument ?? null,
-                ParentDocumentVersion: request.body.ParentDocumentVersion ?? null,
-                ChunkingStrategy: request.body.ChunkingStrategy ?? null,
-                ChunkingLenght: request.body.ChunkingLenght ?? null,
-                ChunkOverlap: request.body.ChunkOverlap ?? null,
-                Splitter: request.body.Splitter ?? null,
-                IsActive: request.body.IsActive ?? null,
-                CreatedBy: request.body.CreatedBy ?? null,
-            };
+            return await schema.validateAsync(request.body);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -98,21 +76,21 @@ export class QnaDocumentValidator extends BaseValidator {
     public validateSearchRequest = async (request: express.Request): Promise<QnaDocumentSearchFilters> => {
         try {
             const schema = joi.object({
-                Name: joi.string().optional(),
-                Description: joi.string().optional(),
-                FileName: joi.string().optional(),
-                Source: joi.string().optional(),
-                ParentDocument: joi.string().optional(),
-                ParentDocumentVersion: joi.string().optional(),
-                ChunkingStrategy: joi
+                Name                  : joi.string().optional(),
+                Description           : joi.string().optional(),
+                FileName              : joi.string().optional(),
+                Source                : joi.string().optional(),
+                ParentDocument        : joi.string().optional(),
+                ParentDocumentVersion : joi.string().optional(),
+                ChunkingStrategy      : joi
                     .string()
                     .valid(...Object.values(ChunkingStrategy))
                     .optional(),
-                ChunkingLenght: joi.number().optional(),
-                ChunkOverlap: joi.number().optional(),
-                Splitter: joi.number().optional(),
-                IsActive: joi.boolean().optional(),
-                CreatedBy: joi.number().optional(),
+                ChunkingLength : joi.number().optional(),
+                ChunkOverlap   : joi.number().optional(),
+                Splitter       : joi.number().optional(),
+                IsActive       : joi.boolean().optional(),
+                CreatedBy      : joi.string().optional(),
             });
 
             await schema.validateAsync(request.query);
@@ -154,9 +132,9 @@ export class QnaDocumentValidator extends BaseValidator {
         if (ChunkingStrategy != null) {
             filters['ChunkingStrategy'] = ChunkingStrategy;
         }
-        var ChunkingLenght = query.ChunkingLenght ? query.ChunkingLenght : null;
-        if (ChunkingLenght != null) {
-            filters['ChunkingLenght'] = ChunkingLenght;
+        var ChunkingLength = query.ChunkingLength ? query.ChunkingLength : null;
+        if (ChunkingLength != null) {
+            filters['ChunkingLength'] = ChunkingLength;
         }
         var ChunkOverlap = query.ChunkOverlap ? query.ChunkOverlap : null;
         if (ChunkOverlap != null) {
@@ -188,4 +166,5 @@ export class QnaDocumentValidator extends BaseValidator {
         }
         return filters;
     };
+
 }

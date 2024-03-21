@@ -1,57 +1,72 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BaseSearchFilters, BaseSearchResults } from '../miscellaneous/base.search.types';
-import { integer, uuid } from '../miscellaneous/system.types';
-import { QnaDocumentLibraryResponseDto } from './qna.document.library.domain.types';
+import { decimal  } from '../miscellaneous/system.types';
 
 //////////////////////////////////////////////////////////////
 
 export interface QnaDocumentVersionCreateModel {
-    DocumentId: uuid;
-    VersionNumber: number;
+    VersionNumber: string;
     StorageUrl: string;
     DownloadUrl: string;
     FileResourceId: string;
     Keywords: string;
-    
+    QnaDocumentId: string;
 }
 
 export interface QnaDocumentVersionUpdateModel {
-    DocumentId?: uuid;
-    VersionNumber?: number;
+    VersionNumber?: string;
     StorageUrl?: string;
     DownloadUrl?: string;
     FileResourceId?: string;
     Keywords?: string;
+    QnaDocumentId: string;
 }
 
 export interface QnaDocumentVersionResponseDto {
-    
     id: string;
-    VersionNumber: number;
-    DocumentId: string;
+    VersionNumber: string;
     StorageUrl: string;
     DownloadUrl: string;
     FileResourceId: string;
     Keywords: string;
     CreatedAt: Date;
     UpdatedAt: Date;
-    QnaDocument      :{
-        id : uuid,
-        Name : string,
-       Description :string
-   }
+    QnaDocumentId: {
+        id: string;
+        Name: string;
+        Description: string;
+        FileName: string;
+        Source: string;
+        ParentDocument: string;
+        ParentDocumentVersion: string;
+        ChunkingStrategy: string;
+        ChunkingLenght: decimal;
+        ChunkOverlap: decimal;
+        Splitter: string;
+        IsActive: boolean;
+        CreatedBy: string;
+    };
 }
 
 export interface QnaDocumentVersionSearchFilters extends BaseSearchFilters {
-    DocumentId?: uuid;
-    id?: uuid;
-    VersionNumber?: number;
+    VersionNumber?: string;
     StorageUrl?: string;
     DownloadUrl?: string;
     FileResourceId?: string;
     Keywords?: string;
+    QnaDocumentId?: string;
 }
 
 export interface QnaDocumentVersionSearchResults extends BaseSearchResults {
-    Items: QnaDocumentVersionResponseDto[];
+    Items: QnaDocumentVersionSearchResponseDto[];
+}
+
+export interface QnaDocumentVersionSearchResponseDto {
+    id: string;
+    VersionNumber: string;
+    StorageUrl: string;
+    DownloadUrl: string;
+    FileResourceId: string;
+    Keywords: string;
+    CreatedAt: Date;
+    UpdatedAt: Date;
 }

@@ -1,8 +1,3 @@
-/* eslint-disable lines-between-class-members */
-/* eslint-disable no-multiple-empty-lines */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable padded-blocks */
-import { uuid } from '../../../domain.types/miscellaneous/system.types';
 import {
     Entity,
     BaseEntity,
@@ -16,13 +11,14 @@ import {
 } from 'typeorm';
 import { QnaDocument } from './qna.document.model';
 
-@Entity('qna_document_versions')
+@Entity({ name: 'qna_document_version' })
 export class QnaDocumentVersion extends BaseEntity {
+
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
     @Column({ unique: true, nullable: false })
-    VersionNumber: number;
+    VersionNumber: string;
 
     @Column({ type: 'varchar', length: 1024, nullable: true })
     StorageUrl: string;
@@ -45,10 +41,13 @@ export class QnaDocumentVersion extends BaseEntity {
     @DeleteDateColumn()
     DeletedAt: Date;
 
-    @ManyToOne(() => QnaDocument, (qna_documents) => qna_documents.QnaDocumentVersion)
+    @ManyToOne(
+        ()=>QnaDocument,
+        Qna_Documents=> Qna_Documents.Qna_Document_versions
+    )
     @JoinColumn({
-        name : 'DocumentId',
+        name : 'QnaDocumentId'
     })
-    QnaDocument: QnaDocument;
-    DocumentId: string;
+    Qna_Documents: QnaDocument;
+    
 }

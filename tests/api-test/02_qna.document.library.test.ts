@@ -1,8 +1,4 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable key-spacing */
-/* eslint-disable linebreak-style */
-/* eslint-disable max-len */
-/* eslint-disable linebreak-style */
+
 
 import request from 'supertest';
 import { expect } from 'chai';
@@ -10,8 +6,7 @@ import Application from '../../src/app';
 import { describe, it } from 'mocha';
 import { getTestData, setTestData } from '../init';
 import { faker } from '@faker-js/faker';
-// import { getRandomEnumValue } from '../utils';
-// import { ChunkingStrategy } from '../../src/domain.types/chunking.strategy.domain.types';
+
 
 const infra = Application.instance();
 

@@ -1,7 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable linebreak-style */
-/* eslint-disable no-console */
 import Application from '../src/app';
 import path from 'path';
 import fs from 'fs';

@@ -1,10 +1,9 @@
 /* eslint-disable padded-blocks */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { logger } from '../logger/logger';
-import { Logger, QueryRunner } from "typeorm";
+import { Logger, QueryRunner } from 'typeorm';
 
 export class DBLogger implements Logger {
-
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     logQuery(query: string, parameters?: any[], queryRunner?: QueryRunner) {
         logger.info(`query: ${query}, params: ${JSON.stringify(parameters)}`);
@@ -26,11 +25,10 @@ export class DBLogger implements Logger {
         logger.info(`Migrations -> ${message}`);
     }
 
-    log(level: "warn" | "info" | "log", message: any, queryRunner?: QueryRunner) {
+    log(level: 'warn' | 'info' | 'log', message: any, queryRunner?: QueryRunner) {
         if (level === 'warn') {
             logger.warn(message);
-        }
-        else {
+        } else {
             logger.info(message);
         }
     }
