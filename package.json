@@ -8,8 +8,9 @@
         "start": "tsc && ts-node --files ./src/index.ts",
         "lint": "eslint ./src/**",
         "lint:fix": "eslint ./src/** --fix",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "nodemon --watch './**/*.ts' --exec 'ts-node' ./src/index.ts"
+        "dev": "nodemon --watch './**/*.ts' --exec 'ts-node' ./src/index.ts",
+        "test": "tsc && mocha -u tdd --timeout 999999 --colors ./dist/tests/api-tests/**/*.js",
+        "test-debug": "NODE_ENV=test mocha --file ./tests/api-tests/init.ts --reporter spec --exit"
     },
     "repository": {
         "type": "git",
@@ -19,6 +20,7 @@
     "author": "Dattatraya Londhe",
     "license": "ISC",
     "dependencies": {
+        "@faker-js/faker": "^8.0.2",
         "@prisma/client": "^4.9.0",
         "@types/adm-zip": "^0.5.0",
         "@types/bcryptjs": "^2.4.2",
@@ -73,6 +75,12 @@
         "winston-daily-rotate-file": "^4.7.1"
     },
     "devDependencies": {
+        "@types/mocha": "^10.0.1",
+        "@types/supertest": "^2.0.12",
+        "@types/chai": "^4.3.5",
+        "chai": "^4.3.8",
+        "mocha": "^10.2.0",
+        "supertest": "^6.3.3",
         "@jest/types": "^29.3.1",
         "@types/body-parser": "^1.19.2",
         "@types/fs-extra": "^11.0.1",
