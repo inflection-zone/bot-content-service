@@ -27,10 +27,12 @@ describe('03 - PromptGroup tests', function () {
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('Name');
                 expect(response.body.Data).to.have.property('Description');
+                expect(response.body.Data).to.have.property('PromptId');
 
                 setTestData(response.body.Data.id, 'LlmPromptGroupId_1');
                 expect(response.body.Data.Name).to.equal(getTestData('LlmPromptGroupCreateModel').Name);
                 expect(response.body.Data.Description).to.equal(getTestData('LlmPromptGroupCreateModel').Description);
+                expect(response.body.Data.PromptId).to.equal(getTestData('LlmPromptVersionCreateModel').PromptId);
                 
             })
             .expect(201, done);
@@ -44,16 +46,36 @@ describe('03 - PromptGroup tests', function () {
              expect(response.body.Data).to.have.property('id');
              expect(response.body.Data).to.have.property('Name');
              expect(response.body.Data).to.have.property('Description');
+             expect(response.body.Data).to.have.property('PromptId');
    
              expect(response.body.Data.Name).to.equal(getTestData('LlmPromptGroupCreateModel').Name);
              expect(response.body.Data.Description).to.equal(getTestData('LlmPromptGroupCreateModel').Description);
+             expect(response.body.Data.PromptId).to.equal(getTestData('LlmPromptVersionCreateModel').PromptId);
              
          })
          .expect(201, done);
    });
-   
 
-    it('03:03 -> Update PromptGroup', function (done) {
+   it('02:03 -> Search prompt group records', function(done) {
+    loadLlmPromptGroupQueryString();
+    agent
+        .get(`/api/v1/llmpromptgroups/search${loadLlmPromptGroupQueryString()}`)
+        .set('Content-Type', 'application/json')
+        .expect(response => {
+            expect(response.body.Data).to.have.property('TotalCount');
+            expect(response.body.Data).to.have.property('RetrievedCount');
+            expect(response.body.Data).to.have.property('PageIndex');
+            expect(response.body.Data).to.have.property('ItemsPerPage');
+            expect(response.body.Data).to.have.property('Order');
+            expect(response.body.Data.TotalCount).to.greaterThan(0);
+            expect(response.body.Data.RetrievedCount).to.greaterThan(0);
+            expect(response.body.Data.Items.length).to.greaterThan(0);
+        })
+        .expect(200, done);
+});
+
+
+    it('03:04 -> Update PromptGroup', function (done) {
      loadLlmPromptGroupUpdateModel();
         const UpdateModel = getTestData('LlmPromptGroupUpdateModel');
         agent
@@ -65,17 +87,19 @@ describe('03 - PromptGroup tests', function () {
              expect(response.body.Data).to.have.property('id');
              expect(response.body.Data).to.have.property('Name');
              expect(response.body.Data).to.have.property('Description');
+             expect(response.body.Data).to.have.property('PromptId');
 
              setTestData(response.body.Data.id, 'LlmPromptGroupId_1');
              expect(response.body.Data.Name).to.equal(getTestData('LlmPromptGroupUpdateModel').Name);
              expect(response.body.Data.Description).to.equal(getTestData('LlmPromptGroupUpdateModel').Description);
+             expect(response.body.Data.PromptId).to.equal(getTestData('LlmPromptVersionCreateModel').PromptId);
              
          })
          .expect(201, done);
  });
 
  
- it('03:04 -> Delete LlmPromptGroup', function(done) {
+ it('03:05 -> Delete LlmPromptGroup', function(done) {
         
   agent
       .delete(`/api/v1/llmpromptgroups${getTestData('LlmPromptGroupId_1')}`)
@@ -86,12 +110,25 @@ describe('03 - PromptGroup tests', function () {
       })
       .expect(200, done);
  });
+
+ it('03:06 -> Get All LlmPrompt group', function (done) {
+    agent
+        .get(`/api/v1/llmpromptgroups/all/`)
+        .set('Content-Type', 'application/json')
+        .expect((response) => {
+            expect(response.body).to.have.property('Status');
+            expect(response.body.Status).to.equal('success');
+        })
+        .expect(200, done);
+});
+
 });
 
 export const loadLlmPromptGroupCreateModel = async () => {
     const model = {
         Name        : getRandomEnumValue(PromptGroup),
-        Description : faker.lorem.words(200),
+        Description : faker.lorem.words(2),
+        PromptId    : getTestData("LlmPromptId"),
     };
     setTestData(model, 'LlmPromptGroupCreateModel');
 };
@@ -99,7 +136,14 @@ export const loadLlmPromptGroupCreateModel = async () => {
 export const loadLlmPromptGroupUpdateModel = async () => {
     const model = {
         Name        : getRandomEnumValue(PromptGroup),
-        Description : faker.lorem.words(200),
+        Description : faker.lorem.words(2),
+        PromptId    : getTestData("LlmPromptId"),
     };
     setTestData(model, 'LlmPromptGroupUpdateModel');
 };
+
+function loadLlmPromptGroupQueryString() {
+    //This is raw query. Please modify to suit the test
+    const queryString = '';
+    return queryString;
+}

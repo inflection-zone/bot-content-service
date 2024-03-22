@@ -97,7 +97,25 @@ describe('01 - Prompt tests', function () {
          .expect(200, done);
  });
 
-    it('01:03 -> Update LlmPrompt', function(done) {
+ it('01:03 -> Search prompt records', function(done) {
+    loadLlmPromptQueryString();
+    agent
+        .get(`/api/v1/llmprompts/search${loadLlmPromptQueryString()}`)
+        .set('Content-Type', 'application/json')
+        .expect(response => {
+            expect(response.body.Data).to.have.property('TotalCount');
+            expect(response.body.Data).to.have.property('RetrievedCount');
+            expect(response.body.Data).to.have.property('PageIndex');
+            expect(response.body.Data).to.have.property('ItemsPerPage');
+            expect(response.body.Data).to.have.property('Order');
+            expect(response.body.Data.TotalCount).to.greaterThan(0);
+            expect(response.body.Data.RetrievedCount).to.greaterThan(0);
+            expect(response.body.Data.Items.length).to.greaterThan(0);
+        })
+        .expect(200, done);
+});
+
+    it('01:04 -> Update LlmPrompt', function(done) {
         loadLlmPromptUpdateModel();
         const updateModel = getTestData("LlmPromptUpdateModel");
         agent
@@ -138,7 +156,7 @@ describe('01 - Prompt tests', function () {
 
     
 
-    it('01:04 -> Delete LlmPrompt', function(done) {
+    it('01:05 -> Delete LlmPrompt', function(done) {
         
         agent
             .delete(`/api/v1/llmprompts/${getTestData('LlmPromptId_1')}`)
@@ -148,6 +166,59 @@ describe('01 - Prompt tests', function () {
                 expect(response.body.Status).to.equal('success');
             })
             .expect(200, done);
+    });
+
+    it('01:06 -> Get All LlmPrompt', function (done) {
+        agent
+            .get(`/api/v1/llmprompts/records`)
+            .set('Content-Type', 'application/json')
+            .expect((response) => {
+                expect(response.body).to.have.property('Status');
+                expect(response.body.Status).to.equal('success');
+            })
+            .expect(200, done);
+    });
+
+    it('01:01 -> Create Promptcreateagain', function (done) {
+        loadLlmPromptCreateModel();
+        const createModel = getTestData('LlmPromptCreateModel');
+        agent
+            .post(`/api/v1/llmprompts/`)
+            .set('Content-Type', 'application/json')
+            .send(createModel)
+            .expect((response) => {
+                setTestData(response.body.Data.id, 'LlmPromptId');
+                expect(response.body.Data).to.have.property('id');
+                expect(response.body.Data).to.have.property('Name');
+                expect(response.body.Data).to.have.property('Description');
+                expect(response.body.Data).to.have.property('UseCaseType');
+                expect(response.body.Data).to.have.property('GroupName');
+                expect(response.body.Data).to.have.property('ModelName');
+                expect(response.body.Data).to.have.property('ModelVersion');
+                expect(response.body.Data).to.have.property('UserId');
+                expect(response.body.Data).to.have.property('Temperature');
+                expect(response.body.Data).to.have.property('FrequencyPenality');
+                expect(response.body.Data).to.have.property('TopP');
+                expect(response.body.Data).to.have.property('PresencePenalty');
+                expect(response.body.Data).to.have.property('IsActive');
+
+                setTestData(response.body.Data.id, 'LlmPromptId');
+                // expect(response.body.Data?.id).to.equal(getTestData("LlmPromptCreateModel").id);
+
+                expect(response.body.Data.Name).to.equal(getTestData('LlmPromptCreateModel').Name);
+                expect(response.body.Data.Description).to.equal(getTestData('LlmPromptCreateModel').Description);
+                expect(response.body.Data.UseCaseType).to.equal(getTestData('LlmPromptCreateModel').UseCaseType);
+                expect(response.body.Data.GroupName).to.equal(getTestData('LlmPromptCreateModel').GroupName);
+                expect(response.body.Data.ModelName).to.equal(getTestData('LlmPromptCreateModel').ModelName);
+                expect(response.body.Data.ModelVersion).to.equal(getTestData('LlmPromptCreateModel').ModelVersion);
+                expect(response.body.Data.UserId).to.equal(getTestData('LlmPromptCreateModel').UserId);
+                expect(response.body.Data.Temperature).to.equal(getTestData('LlmPromptCreateModel').Temperature);
+                expect(response.body.Data.FrequencyPenality).to.equal(getTestData('LlmPromptCreateModel').FrequencyPenality);
+                expect(response.body.Data.TopP).to.equal(getTestData('LlmPromptCreateModel').TopP);
+                expect(response.body.Data.PresencePenalty).to.equal(getTestData('LlmPromptCreateModel').PresencePenalty);
+                expect(response.body.Data.IsActive).to.equal(getTestData('LlmPromptCreateModel').IsActive);
+            })
+            .expect(201, done);
     });
 
 });
@@ -187,3 +258,9 @@ export const loadLlmPromptUpdateModel = async () => {
     };
     setTestData(model, 'LlmPromptUpdateModel');
 };
+
+function loadLlmPromptQueryString() {
+    //This is raw query. Please modify to suit the test
+    const queryString = '';
+    return queryString;
+}

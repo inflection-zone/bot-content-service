@@ -8,16 +8,15 @@ export class LlmPromptVersionMapper {
         if (llmpromptversion == null) {
             return null;
         }
-        const prmpt = LlmPromptMapper.toResponseDto(llmpromptversion.llm_prompts);
+        const prompt = LlmPromptMapper.toResponseDto(llmpromptversion.llm_prompts);
         const dto: LlmPromptVersionDto = {
             id            : llmpromptversion.id,
             VersionNumber : llmpromptversion.VersionNumber,
-            llm_prompts   : prmpt,
+            llm_prompts   : prompt,
             Prompt        : llmpromptversion.Prompt,
             Variables     : llmpromptversion.Variables,
             Score         : llmpromptversion.Score,
             PublishedAt   : llmpromptversion.PublishedAt,
-            
         };
         return dto;
     };

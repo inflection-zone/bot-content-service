@@ -1,6 +1,5 @@
 import { decimal } from "../../../domain.types/miscellaneous/system.types";
 import { Entity,BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany, ManyToMany, JoinTable } from "typeorm";
-// import { LlmPromptGroup } from "./llm.prompt.groups.model";
 import { LlmPromptVersion } from "./llm.prompt.versions.model";
 import { PromptUsecase } from "../../../domain.types/usecase.domain.types";
 import { PromptGroup } from "../../../domain.types/promptgroup.domain.types";
@@ -64,5 +63,4 @@ DeletedAt: Date;
 @OneToMany(() => LlmPromptVersion,
     llm_prompt_versions => llm_prompt_versions.llm_prompts)
         llm_prompt_versions: LlmPromptVersion[];
-
 }
