@@ -3,7 +3,11 @@ import { logger } from "../logger/logger";
 import { register as registerLlmPromptRoutes } from "../api/llmprompt/llmprompt.table/llmprompt.routes";
 import { register as registerLlmPromptVersionRoutes } from "../api/llmprompt/llmprompt.version/llmprompt.version.routes";
 import { register as registerLlmPromptGroupRoutes } from "../api/llmprompt/llmprompt.group/llmprompt.group.routes";
-// import { register as registerBadgeCategoryRoutes } from "../api/awards/badge.category/badge.category.routes";
+// qna code
+import { register as registerQnaDocumentGroup } from '../api/content/qna.document.group/qna.document.group.routes';
+import { register as registerQnaDocument } from '../api/content/qna.document/qna.document.routes';
+import { register as registerQnaDocumentVersion } from '../api/content/qna.document.version/qna.document.version.routes';
+import { register as registerQnaDocumentLibrary } from '../api/content/qna.document.library/qna.document.library.routes';
 // import { register as registerParticipantRoutes } from "../api/awards/participant/participant.routes";
 // eslint-disable-next-line max-len
 // import { register as registerParticipantGroupRoutes } from "../api/awards/participant.group/participant.group.routes";
@@ -42,19 +46,12 @@ export class Router {
                 registerLlmPromptRoutes(this._app);
                 registerLlmPromptVersionRoutes(this._app);
                 registerLlmPromptGroupRoutes(this._app);
-                // registerBadgeCategoryRoutes(this._app);
-                // registerParticipantRoutes(this._app);
-                // registerParticipantGroupRoutes(this._app);
-                // registerSchemaRoutes(this._app);
-                // registerNodeRoutes(this._app);
-                // registerRuleRoutes(this._app);
-                // registerConditionRoutes(this._app);
-                // registerIncomingEventTypeRoutes(this._app);
-                // registerIncomingEventRoutes(this._app);
-                // registerSchemaInstanceRoutes(this._app);
-                // registerTypesRoutes(this._app);
-                // registerFileResourceRoutes(this._app);
-
+                // qna code
+                registerQnaDocumentGroup(this._app);
+                registerQnaDocument(this._app);
+                registerQnaDocumentVersion(this._app);
+                registerQnaDocumentLibrary(this._app);// registerParticipantRoutes(this._app);
+                
                 resolve(true);
 
             } catch (error) {
