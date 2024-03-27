@@ -58,7 +58,7 @@ export interface  LlmPromptVersionUpdateModel {
 }
 export interface LlmPromptVersionSearchFilters extends BaseSearchFilters {
     VersionNumber?  : string;
-    PromptId?        :uuid;
+    PromptId?       :uuid;
     Prompt?         : string;
     Variables?      : string;
     Score?          : decimal;

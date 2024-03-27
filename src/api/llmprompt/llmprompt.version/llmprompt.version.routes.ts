@@ -4,7 +4,6 @@ import { LlmPromptVersionController  } from './././llmprompt.version.controller'
 export const register = (app: express.Application): void => {
 
     const router = express.Router();
-    // const authenticator = Loader.Authenticator;
     const controller = new LlmPromptVersionController();
 
     router.get('/search', controller.search);

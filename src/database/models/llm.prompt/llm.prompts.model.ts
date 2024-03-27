@@ -63,4 +63,5 @@ DeletedAt: Date;
 @OneToMany(() => LlmPromptVersion,
     llm_prompt_versions => llm_prompt_versions.llm_prompts)
         llm_prompt_versions: LlmPromptVersion[];
+
 }

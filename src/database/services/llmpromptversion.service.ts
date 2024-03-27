@@ -35,7 +35,8 @@ export class LlmpromptVersionService extends BaseService {
                 VersionNumber : createModel.VersionNumber,
                 llm_prompts   : pid,
                 Prompt        : createModel.Prompt,
-                Variables     : JSON.stringify(createModel.Variables),
+                // Variables     : JSON.stringify(createModel.Variables),
+                Variables     : createModel.Variables,
                 Score         : createModel.Score,
                 PublishedAt   : createModel.PublishedAt,
             });
@@ -112,21 +113,6 @@ export class LlmpromptVersionService extends BaseService {
             ErrorHandler.throwDbAccessError('DB Error: Unable to get Llm prompt version record!', error);
         }
     };
-    
-    // public delete = async (id: uuid)=> {
-    //     try {
-    //         var record = await this._llmPromptVersionRepository.findOne({
-    //             where : {
-    //                 id : id
-    //             }
-    //         });
-    //         var result = await this._llmPromptVersionRepository.remove(record);
-    //         result != null;
-    //     } catch (error) {
-    //         logger.error(error.message);
-    //         ErrorHandler.throwInternalServerError(error.message, 500);
-    //     }
-    // };
 
     public delete = async (id: string): Promise<boolean> => {
         try {

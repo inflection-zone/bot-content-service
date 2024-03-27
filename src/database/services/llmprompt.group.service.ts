@@ -1,7 +1,5 @@
-/* eslint-disable indent */
 import { BaseService } from './base.service';
 import { logger } from '../../logger/logger';
-// import express from 'express';
 import { ErrorHandler } from '../../common/handlers/error.handler';
 import { Source } from '../database.connector';
 import { Repository } from 'typeorm/repository/Repository';
@@ -53,23 +51,6 @@ export class LlmpromptGroupService extends BaseService {
         }
     };
 
- // create = async (request: express.Request, response: express.Response) => {
-    // public create = async (createModel: LlmPromptGroupCreateModel)
-    //     : Promise<LlmPromptGroupDto> => {
-    //     try {
-    //         const data = this._llmPromptGroupRepository.create({
-    //             Name        : createModel.Name,
-    //             Description : createModel.Description,
-    //         });
-    //         var record = await this._llmPromptGroupRepository.save(data);
-    //         return LlmPromptGroupMapper.toResponseDto(record);
-    //     }
-    //     catch (error) {
-    //         logger.error(error.message);
-    //         ErrorHandler.throwInternalServerError(error.message, 500);
-    //     }
-    // };
-    
     public update = async (id: uuid, model: LlmPromptGroupUpdateModel)
     : Promise<LlmPromptGroupDto> => {
         try {
@@ -125,29 +106,14 @@ export class LlmpromptGroupService extends BaseService {
         }
     };
     
-    // public delete = async (id: uuid)=> {
-    //     try {
-    //         var record = await this._llmPromptGroupRepository.findOne({
-    //             where : {
-    //                 id : id
-    //             }
-    //         });
-    //         var result = await this._llmPromptGroupRepository.remove(record);
-    //         result != null;
-    //     } catch (error) {
-    //         logger.error(error.message);
-    //         ErrorHandler.throwInternalServerError(error.message, 500);
-    //     }
-    // };
-
     public delete = async (id: string): Promise<boolean> => {
         try {
             // const record = await this._llmPromptRepository.findOne();
             var record = await this._llmPromptGroupRepository.findOne({
-                            where : {
-                                id : id
-                            }
-                        });
+                where : {
+                    id : id
+                }
+            });
             if (!record) {
                 return false; // Record not found
             }

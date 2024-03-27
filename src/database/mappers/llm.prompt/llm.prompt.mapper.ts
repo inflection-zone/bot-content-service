@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { LlmPrompt } from "../../models/llm.prompt/llm.prompts.model";
 import { LlmPromptDto } from "../../../domain.types/llm.prompt/llm.prompt.domain.types";
 
@@ -36,18 +35,18 @@ export class LlmPromptMapper {
         llmprompts.forEach((element) => {
             dto.push({
                 id                : element.id,
-            Name              : element.Name,
-            Description       : element.Description,
-            UseCaseType       : element.UseCaseType,
-            GroupName         : element.GroupName,
-            ModelName         : element.ModelName,
-            ModelVersion      : element.ModelVersion,
-            UserId            : element.UserId,
-            Temperature       : element.Temperature,
-            FrequencyPenality : element.FrequencyPenality,
-            TopP              : element.TopP,
-            PresencePenalty   : element.PresencePenalty,
-            IsActive          : element.IsActive
+                Name              : element.Name,
+                Description       : element.Description,
+                UseCaseType       : element.UseCaseType,
+                GroupName         : element.GroupName,
+                ModelName         : element.ModelName,
+                ModelVersion      : element.ModelVersion,
+                UserId            : element.UserId,
+                Temperature       : element.Temperature,
+                FrequencyPenality : element.FrequencyPenality,
+                TopP              : element.TopP,
+                PresencePenalty   : element.PresencePenalty,
+                IsActive          : element.IsActive
             });
         });
         return dto;

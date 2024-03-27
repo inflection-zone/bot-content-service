@@ -1,11 +1,6 @@
-/* eslint-disable indent */
-/* eslint-disable padded-blocks */
-/* eslint-disable max-len */
 import express from 'express';
 import joi from 'joi';
 import { ErrorHandler } from '../../../common/handlers/error.handler';
-// import { LlmPromptsCreateModel } from "../../domain.types/llm.prompt/llm.prompts.domain.types";
-
 import BaseValidator from '../../base.validator';
 import { LlmPromptGroupSearchFilters } from '../../../domain.types/llm.prompt/llm.prompt.group.domain.types';
 import { PromptGroup } from '../../../domain.types/promptgroup.domain.types';
@@ -18,10 +13,8 @@ export class LlmPromptGroupValidator extends BaseValidator {
                 Name        : joi.string().valid(...Object.values(PromptGroup)).optional(),
                 Description : joi.string().optional(),
                 PromptId    : joi.string().uuid().required(),
-             });
+            });
             return await schema.validateAsync(request.body);
-            
-            //  return this.getValidUserCreateModel(request);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -33,7 +26,7 @@ export class LlmPromptGroupValidator extends BaseValidator {
                 id : joi.string().required(),
               
             });
-           return await schema.validateAsync(request.query);
+            return await schema.validateAsync(request.query);
             // return this.getSearchFilters(request.query);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -47,26 +40,12 @@ export class LlmPromptGroupValidator extends BaseValidator {
                 Description : joi.string().optional(),
                
             });
-           return await schema.validateAsync(request.body);
-            // const id = await this.validateParamAsUUID(request, 'id');
-            // return await this.getValidUserUpdateModel(id, request);
+            return await schema.validateAsync(request.body);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
-    
-    // public validateGetNameRequest = async (request: express.Request) => {
-    //     try {
-    //         const schema = joi.object({
-    //             Name : joi.string().required(),
-              
-    //         });
-    //        return await schema.validateAsync(request.query);
-    //         // return this.getSearchFilters(request.query);
-    //     } catch (error) {
-    //         ErrorHandler.handleValidationError(error);
-    //     }
-    // };
+
     public validateSearchRequest = async (request: express.Request): Promise<LlmPromptGroupSearchFilters> => {
         try {
             const schema = joi.object({
@@ -83,26 +62,27 @@ export class LlmPromptGroupValidator extends BaseValidator {
         }
     };
 
-        private getSearchFilters = (query): LlmPromptGroupSearchFilters => {
+    private getSearchFilters = (query): LlmPromptGroupSearchFilters => {
 
-            var filters = {};
+        var filters = {};
     
-            var Name = query.Name ? query.Name : null;
-            if (Name != null) {
-                filters['Name'] = Name;
-            }
-            var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
-            if (itemsPerPage != null) {
-                filters['ItemsPerPage'] = itemsPerPage;
-            }
-            var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
-            if (orderBy != null) {
-                filters['OrderBy'] = orderBy;
-            }
-            var order = query.order ? query.order : 'ASC';
-            if (order != null) {
-                filters['Order'] = order;
-            }
-            return filters;
-        };
-    }
+        var Name = query.Name ? query.Name : null;
+        if (Name != null) {
+            filters['Name'] = Name;
+        }
+        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
+        if (itemsPerPage != null) {
+            filters['ItemsPerPage'] = itemsPerPage;
+        }
+        var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
+        if (orderBy != null) {
+            filters['OrderBy'] = orderBy;
+        }
+        var order = query.order ? query.order : 'ASC';
+        if (order != null) {
+            filters['Order'] = order;
+        }
+        return filters;
+    };
+
+}

@@ -18,8 +18,6 @@ export class LlmPromptVersionValidator extends BaseValidator {
                
             });
             return await schema.validateAsync(request.body);
-            
-            //  return this.getValidUserCreateModel(request);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -32,7 +30,6 @@ export class LlmPromptVersionValidator extends BaseValidator {
               
             });
             return await schema.validateAsync(request.query);
-            // return this.getSearchFilters(request.query);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -49,8 +46,6 @@ export class LlmPromptVersionValidator extends BaseValidator {
                 PublishedAt   : joi.date().optional(),
             });
             return await schema.validateAsync(request.body);
-            // const id = await this.validateParamAsUUID(request, 'id');
-            // return await this.getValidUserUpdateModel(id, request);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -82,10 +77,10 @@ export class LlmPromptVersionValidator extends BaseValidator {
         if (VersionNumber != null) {
             filters['VersionNumber'] = VersionNumber;
         }
-        // var PromptId  = query.PromptId  ? query.PromptId  : null;
-        // if (PromptId  != null) {
-        //     filters['PromptId '] = PromptId ;
-        // }
+        var PromptId  = query.PromptId  ? query.PromptId  : null;
+        if (PromptId  != null) {
+            filters['PromptId '] = PromptId ;
+        }
         var Prompt = query.Prompt ? query.Prompt : null;
         if (Prompt != null) {
             filters['Prompt'] = Prompt;

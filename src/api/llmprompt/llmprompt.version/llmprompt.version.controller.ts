@@ -1,4 +1,3 @@
-
 import { ErrorHandler } from "../../../common/handlers/error.handler";
 import { ResponseHandler } from "../../../common/handlers/response.handler";
 import express from 'express';
@@ -17,7 +16,6 @@ export class LlmPromptVersionController {
 
     create = async (request: express.Request, response: express.Response) => {
         try {
-            // await this.authorize('Badge.Create', request, response);
             var model: LlmPromptVersionCreateModel = await this._validator.validateCreateRequest(request);
             const record = await this._service.create(model);
             if (record === null) {
@@ -45,14 +43,12 @@ export class LlmPromptVersionController {
     
     getById = async (request: express.Request, response: express.Response) => {
         try {
-            // await this.authorize('Badge.GetById', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
             if (record === null)
             {
                 const message = ' Prompt version id cannot be found!';
                 ErrorHandler.throwNotFoundError(message);
-                // return ResponseHandler.success(request, response, message, 200, record);
             }
             else {
                 const message = 'LLm prompt version retrieved successfully!';
