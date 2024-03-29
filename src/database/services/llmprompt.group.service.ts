@@ -57,7 +57,10 @@ export class LlmpromptGroupService extends BaseService {
             const updateData = await this._llmPromptGroupRepository.findOne({
                 where : {
                     id : id
-                }
+                },
+                // relations : {
+                //     LlmPrompts : true,
+                // }
             });
             if (!updateData) {
                 ErrorHandler.throwNotFoundError('LLm prompt group id not found!');
@@ -82,6 +85,9 @@ export class LlmpromptGroupService extends BaseService {
                 where : {
                     id : id
                 },
+                relations : {
+                    LlmPrompts : true,
+                }
             });
             return LlmPromptGroupMapper.toResponseDto(llmPromptGroupId);
         } catch (error) {
@@ -93,7 +99,11 @@ export class LlmpromptGroupService extends BaseService {
     public getAll = async (): Promise<LlmPromptGroupDto[]> =>{
         try {
             const data = [];
-            var prompts = await this._llmPromptGroupRepository.find();
+            var prompts = await this._llmPromptGroupRepository.find({
+                relations : {
+                    LlmPrompts : true,
+                }
+            });
             for (var i of prompts) {
                 const record = LlmPromptGroupMapper.toResponseDto(i);
                 // const record = i;
@@ -112,6 +122,9 @@ export class LlmpromptGroupService extends BaseService {
             var record = await this._llmPromptGroupRepository.findOne({
                 where : {
                     id : id
+                },
+                relations : {
+                    LlmPrompts : true,
                 }
             });
             if (!record) {
@@ -174,6 +187,7 @@ export class LlmpromptGroupService extends BaseService {
 
         var search : FindManyOptions<LlmPromptGroup> = {
             relations : {
+                // LlmPrompts : true,
             },
             where : {
             },

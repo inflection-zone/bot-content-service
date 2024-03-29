@@ -229,9 +229,9 @@ describe('01 - Prompt tests', function () {
     });
 
     it('06:07 -> Negative - Search prompt records', function(done) {
-        loadLlmPromptQueryString();
+        loadNegativeLlmPromptQueryString();
         agent
-            .get(`/api/v1/llmprompts/search${loadLlmPromptQueryString()}`)
+            .get(`/api/v1/llmprompts/search/${loadNegativeLlmPromptQueryString()}`)
             .set('Content-Type', 'application/json')
             .expect(response => {
                 expect(response.body).to.have.property('Status');
@@ -253,7 +253,6 @@ describe('01 - Prompt tests', function () {
     });
 
 });
-
 
 export const loadLlmPromptCreateModel = async () => {
     const model = {
@@ -305,3 +304,8 @@ export const loadNegativeLlmPromptCreateModel = async () => {
     };
     setTestData(model, 'NegativeLlmPromptCreateModel');
 };
+
+function loadNegativeLlmPromptQueryString() {
+    const queryString = 'abc';
+    return queryString;
+}

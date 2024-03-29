@@ -63,6 +63,24 @@ export class LlmPromptGroupController {
         }
     };
 
+    // getByName = async (request: express.Request, response: express.Response) => {
+    //     try {
+    //         var name: uuid = await this._validator.validateParamAsUUID(request, 'name');
+    //         const record = await this._service.getByName(name);
+    //         if (record === null)
+    //         {
+    //             const message = ' Prompt Group name cannot be found!';
+    //             ErrorHandler.throwNotFoundError(message);
+    //         }
+    //         else {
+    //             const message = ' Prompt Group name retrieved successfully!';
+    //             return ResponseHandler.success(request, response, message, 200, record);
+    //         }
+    //     } catch (error) {
+    //         ResponseHandler.handleError(request, response, error);
+    //     }
+    // };
+
     getAll = async (request: express.Request, response: express.Response) => {
         try {
             const record = await this._service.getAll();
@@ -96,7 +114,7 @@ export class LlmPromptGroupController {
            
             var filters: LlmPromptGroupSearchFilters = await this._validator.validateSearchRequest(request);
             const searchResults = await this._service.search(filters);
-            const message = 'Llm prompt records retrieved successfully!';
+            const message = 'Llm prompt group records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);

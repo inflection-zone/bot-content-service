@@ -33,10 +33,9 @@ export class LlmpromptVersionService extends BaseService {
             }
             const data = this. _llmPromptVersionRepository.create({
                 VersionNumber : createModel.VersionNumber,
-                llm_prompts   : pid,
+                LlmPrompt     : pid,
                 Prompt        : createModel.Prompt,
-                // Variables     : JSON.stringify(createModel.Variables),
-                Variables     : createModel.Variables,
+                Variables     : JSON.stringify(createModel.Variables),
                 Score         : createModel.Score,
                 PublishedAt   : createModel.PublishedAt,
             });
@@ -55,6 +54,9 @@ export class LlmpromptVersionService extends BaseService {
             const updateData = await this._llmPromptVersionRepository.findOne({
                 where : {
                     id : id
+                },
+                relations : {
+                    LlmPrompt : true,
                 }
             });
             if (!updateData) {
@@ -67,7 +69,7 @@ export class LlmpromptVersionService extends BaseService {
                 updateData.Prompt = model.Prompt;
             }
             if ( model.Variables != null) {
-                updateData.Variables  = JSON.stringify(model.Variables);
+                updateData.Variables = JSON.stringify(model.Variables);
             }
             if ( model.Score != null) {
                 updateData.Score = model.Score;
@@ -90,6 +92,9 @@ export class LlmpromptVersionService extends BaseService {
                 where : {
                     id : id
                 },
+                relations : {
+                    LlmPrompt : true,
+                }
             });
             return LlmPromptVersionMapper.toResponseDto(llmPromptVersionId);
         } catch (error) {
@@ -98,15 +103,41 @@ export class LlmpromptVersionService extends BaseService {
         }
     };
 
+    public getByPromptId = async (promptId: uuid): Promise<LlmPromptVersionDto[]> => {
+        try {
+            var promptversion = await this._llmPromptVersionRepository.find({
+                where : {
+                    LlmPrompt : {
+                        id : promptId
+                    }
+                },
+                // relations : {
+                //     LlmPrompt : true,
+                // }
+            });
+            return promptversion.map(x => LlmPromptVersionMapper.toResponseDto(x));
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
+
+
     public getAll = async (): Promise<LlmPromptVersionDto[]> =>{
         try {
             const data = [];
-            var prompts = await this._llmPromptVersionRepository.find();
+            var prompts = await this._llmPromptVersionRepository.find({
+                relations : {
+                    LlmPrompt : true
+                }
+            });
             for (var i of prompts) {
                 const record = LlmPromptVersionMapper.toResponseDto(i);
                 // const record = i;
                 data.push(record);
+                
             }
+            
             return data;
         } catch (error) {
             logger.error(error.message);
@@ -120,6 +151,9 @@ export class LlmpromptVersionService extends BaseService {
             var record = await this._llmPromptVersionRepository.findOne({
                             where : {
                                 id : id
+                            },
+                            relations : {
+                                LlmPrompt : true,
                             }
                         });
             if (!record) {
@@ -160,12 +194,18 @@ export class LlmpromptVersionService extends BaseService {
     private getSearchModel = (filters: LlmPromptVersionSearchFilters) => {
 
         var search : FindManyOptions<LlmPromptVersion> = {
-            relations : {
-            },
             where : {
             },
+            relations : {
+            
+            },
             select : {
-                id            : true,
+                id        : true,
+                LlmPrompt :{
+                    id   : true,
+                    Name : true,
+
+                },
                 VersionNumber : true,
                 // PromptId      : true,
                 Prompt        : true,
@@ -178,9 +218,9 @@ export class LlmpromptVersionService extends BaseService {
         if (filters.VersionNumber) {
             search.where['VersionNumber'] = Like(`%${filters.VersionNumber}%`);
         }
-        // if (filters.PromptId) {
-        //     search.where['PromptId'] = filters.PromptId;
-        // }
+        if (filters.PromptId) {
+            search.where['PromptId'] = filters.PromptId;
+        }
         if (filters.Prompt) {
             search.where['Prompt'] = filters.Prompt;
         }

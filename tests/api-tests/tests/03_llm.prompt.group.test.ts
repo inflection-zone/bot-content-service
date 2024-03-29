@@ -45,11 +45,9 @@ describe('03 - PromptGroup tests', function () {
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('Name');
                 expect(response.body.Data).to.have.property('Description');
-                // expect(response.body.Data).to.have.property('PromptId');
    
                 expect(response.body.Data.Name).to.equal(getTestData('LlmPromptGroupCreateModel').Name);
                 expect(response.body.Data.Description).to.equal(getTestData('LlmPromptGroupCreateModel').Description);
-                // expect(response.body.Data.PromptId).to.equal(getTestData('LlmPromptVersionCreateModel').PromptId);
              
             })
             .expect(200, done);
@@ -135,16 +133,16 @@ describe('03 - PromptGroup tests', function () {
     });
 
     it('06:07 -> Negative - Search prompt group records', function(done) {
-        loadLlmPromptGroupQueryString();
+        loadNegativePromptGroupQueryString();
         agent
-            .get(`/api/v1/llmpromptgroups/search${loadLlmPromptGroupQueryString()}`)
+            .get(`/api/v1/llmpromptgroups/search/${loadNegativePromptGroupQueryString()}`)
             .set('Content-Type', 'application/json')
             .expect(response => {
                 expect(response.body).to.not.have.property('Status');
                 // expect(response.body).to.have.property('Status');
                 expect(response.body.Status).to.equal('failure');
             })
-            .expect(404, done);
+            .expect(402, done);
     });
 
     it('01:08 -> Negative - Delete prompt', function(done) {
@@ -191,3 +189,8 @@ export const loadNegativeLlmPromptGroupCreateModel = async () => {
     };
     setTestData(model, 'NegativeLlmPromptGroupCreateModel');
 };
+
+function loadNegativePromptGroupQueryString() {
+    const queryString = 'abc';
+    return queryString;
+}

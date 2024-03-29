@@ -4,6 +4,7 @@ import { ErrorHandler } from '../../../common/handlers/error.handler';
 import BaseValidator from '../../base.validator';
 import { LlmPromptGroupSearchFilters } from '../../../domain.types/llm.prompt/llm.prompt.group.domain.types';
 import { PromptGroup } from '../../../domain.types/promptgroup.domain.types';
+import { ParsedQs } from 'qs';
 
 export class LlmPromptGroupValidator extends BaseValidator {
 
@@ -23,7 +24,8 @@ export class LlmPromptGroupValidator extends BaseValidator {
     public validateGetRequest = async (request: express.Request) => {
         try {
             const schema = joi.object({
-                id : joi.string().required(),
+                id   : joi.string().required(),
+                Name : joi.string().optional(),
               
             });
             return await schema.validateAsync(request.query);
@@ -49,6 +51,7 @@ export class LlmPromptGroupValidator extends BaseValidator {
     public validateSearchRequest = async (request: express.Request): Promise<LlmPromptGroupSearchFilters> => {
         try {
             const schema = joi.object({
+                PromptId    : joi.string().optional(),
                 Name        : joi.string().optional(),
                 Description : joi.string().optional(),
                 
@@ -62,26 +65,45 @@ export class LlmPromptGroupValidator extends BaseValidator {
         }
     };
 
-    private getSearchFilters = (query): LlmPromptGroupSearchFilters => {
+    private getSearchFilters = (query: ParsedQs): LlmPromptGroupSearchFilters => {
 
         var filters = {};
+        var promptId = query.promptId ? query.promptId : null;
+        if (promptId != null) {
+            filters['PromptId'] = promptId;
+        }
     
         var Name = query.Name ? query.Name : null;
         if (Name != null) {
             filters['Name'] = Name;
         }
-        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
-        if (itemsPerPage != null) {
-            filters['ItemsPerPage'] = itemsPerPage;
+
+        var Id = query.Id ? query.Id : null;
+        if (Id != null) {
+            filters['id'] = Id;
         }
-        var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
-        if (orderBy != null) {
-            filters['OrderBy'] = orderBy;
-        }
-        var order = query.order ? query.order : 'ASC';
-        if (order != null) {
-            filters['Order'] = order;
-        }
+
+        // var usecasetype = query.usecasetype ? query.usecasetype : null;
+        // if (usecasetype != null) {
+        //     filters['UseCaseType'] = usecasetype;
+        // }
+
+        // var GroupName = query.GroupName ? query.GroupName : null;
+        // if (GroupName != null) {
+        //     filters['GroupName'] = GroupName;
+        // }
+        // var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
+        // if (itemsPerPage != null) {
+        //     filters['ItemsPerPage'] = itemsPerPage;
+        // }
+        // var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
+        // if (orderBy != null) {
+        //     filters['OrderBy'] = orderBy;
+        // }
+        // var order = query.order ? query.order : 'ASC';
+        // if (order != null) {
+        //     filters['Order'] = order;
+        // }
         return filters;
     };
 

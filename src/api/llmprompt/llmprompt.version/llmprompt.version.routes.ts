@@ -8,7 +8,9 @@ export const register = (app: express.Application): void => {
 
     router.get('/search', controller.search);
     router.get('/records', controller.getAll);
+    
     router.get('/:id', controller.getById);
+    router.get('/by-prompt-id/:promptId', controller.getByPromptId);
     router.post('/', controller.create);
     router.put('/:id', controller.update);
     router.delete('/:id', controller.delete);

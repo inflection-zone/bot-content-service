@@ -60,8 +60,11 @@ DeletedAt: Date;
     @JoinTable()
     LlmPromptGroups: LlmPromptGroup[];
 
-@OneToMany(() => LlmPromptVersion,
-    llm_prompt_versions => llm_prompt_versions.llm_prompts)
-        llm_prompt_versions: LlmPromptVersion[];
+@OneToMany(() => LlmPromptVersion, (llmpromptversion) => llmpromptversion.LlmPrompt)
+    LlmPromptVersion: LlmPromptVersion[];
+
+// @OneToMany(() => LlmPromptVersion,
+//     llm_prompt_versions => llm_prompt_versions.llm_prompts)
+//         llm_prompt_versions: LlmPromptVersion[];
 
 }

@@ -8,11 +8,11 @@ export class LlmPromptVersionMapper {
         if (llmpromptversion == null) {
             return null;
         }
-        const prompt = LlmPromptMapper.toResponseDto(llmpromptversion.llm_prompts);
+        const prompt = LlmPromptMapper.toResponseDto(llmpromptversion.LlmPrompt);
         const dto: LlmPromptVersionDto = {
             id            : llmpromptversion.id,
             VersionNumber : llmpromptversion.VersionNumber,
-            llm_prompts   : prompt,
+            LlmPrompt     : prompt,
             Prompt        : llmpromptversion.Prompt,
             Variables     : llmpromptversion.Variables,
             Score         : llmpromptversion.Score,

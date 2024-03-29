@@ -4,7 +4,7 @@ import { decimal, uuid } from "../miscellaneous/system.types";
 export interface  LlmPromptVersionDto {
     id              : uuid;
     VersionNumber   : string;
-    llm_prompts?:{
+    LlmPrompt?:{
         id  : uuid;
         Name             : string;
         Description      : string;
@@ -12,14 +12,7 @@ export interface  LlmPromptVersionDto {
         GroupName         : string;
         ModelName         : string;
         ModelVersion      : string;
-        UserId            : string;
-        Temperature       : decimal;
-        FrequencyPenality : decimal;
-        TopP              : decimal;
-        PresencePenalty   : decimal;
-        IsActive          : boolean;
     };
-    PromptId?       : uuid;
     Prompt          : string;
     Variables       : string;
     Score           : decimal;
@@ -27,21 +20,6 @@ export interface  LlmPromptVersionDto {
 }
 export interface  LlmPromptVersionCreateModel {
     VersionNumber   : string;
-    llm_prompts?:{
-        id  : uuid;
-        Name             : string;
-        Description      : string;
-        UseCaseType       : string;
-        GroupName         : string;
-        ModelName         : string;
-        ModelVersion      : string;
-        UserId            : string;
-        Temperature       : decimal;
-        FrequencyPenality : decimal;
-        TopP              : decimal;
-        PresencePenalty   : decimal;
-        IsActive          : boolean;
-    };
     PromptId        : uuid;
     Prompt          : string;
     Variables       : string;
@@ -50,7 +28,7 @@ export interface  LlmPromptVersionCreateModel {
 }
 export interface  LlmPromptVersionUpdateModel {
     VersionNumber?  : string;
-    PromptId        : uuid;
+    PromptId?        : uuid;
     Prompt?         : string;
     Variables?      : string;
     Score?          : decimal;

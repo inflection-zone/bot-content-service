@@ -40,24 +40,48 @@ export class LlmPromptVersionController {
             ResponseHandler.handleError(request, response, error);
         }
     };
-    
+
     getById = async (request: express.Request, response: express.Response) => {
         try {
+            // await this.authorize('Participant.GetById', request, response, false);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
-            if (record === null)
-            {
-                const message = ' Prompt version id cannot be found!';
-                ErrorHandler.throwNotFoundError(message);
-            }
-            else {
-                const message = 'LLm prompt version retrieved successfully!';
-                return ResponseHandler.success(request, response, message, 200, record);
-            }
+            const message = 'prompt version retrieved successfully!';
+            return ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
     };
+    
+    // getById = async (request: express.Request, response: express.Response) => {
+    //     try {
+    //         var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
+    //         const record = await this._service.getById(id);
+    //         if (record === null)
+    //         {
+    //             const message = ' Prompt version id cannot be found!';
+    //             ErrorHandler.throwNotFoundError(message);
+    //         }
+    //         else {
+    //             const message = 'LLm prompt version retrieved successfully!';
+    //             return ResponseHandler.success(request, response, message, 200, record);
+    //         }
+    //     } catch (error) {
+    //         ResponseHandler.handleError(request, response, error);
+    //     }
+    // };
+
+    getByPromptId = async (request: express.Request, response: express.Response) => {
+        try {
+            var promptId: uuid = await this._validator.validateParamAsUUID(request, 'promptId');
+            const records = await this._service.getByPromptId(promptId);
+            const message = 'Prompt  retrieved successfully!';
+            return ResponseHandler.success(request, response, message, 200, records);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
 
     getAll = async (request: express.Request, response: express.Response) => {
         try {
