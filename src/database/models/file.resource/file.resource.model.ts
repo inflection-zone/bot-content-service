@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { FileResourceMetadata } from "../../../domain.types/general/file.resource/file.resource.types";
+// import { FileResourceMetadata } from "../../../domain.types/general/file.resource/file.resource.types";
 import {
     Column,
     Entity,
@@ -9,6 +9,7 @@ import {
     DeleteDateColumn,
     OneToOne,
 } from 'typeorm';
+import { QnaDocument } from "../content/qna.document.model";
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -24,13 +25,9 @@ export class FileResource {
     @Column({ type: 'varchar', length: 1024, nullable: false })
     StorageKey : string;
 
-    @OneToOne(() => User)
+    @OneToOne(() => QnaDocument)
     @Column({ type: 'uuid', nullable: true })
-    OwnerUserId : string;
-
-    @OneToOne(() => User)
-    @Column({ type: 'uuid', nullable: true })
-    UploadedByUserId : string;
+    DocumentId : string;
 
     @Column({ type: 'varchar', length: 256, nullable: false })
     MimeType : string;
@@ -47,16 +44,16 @@ export class FileResource {
     @Column({ type: 'integer', nullable: false, default: 0 })
     DownloadCount : number;
 
-    @Column({ type: 'uuid', nullable: true })
-    UploadedBy : User;
+    // @Column({ type: 'uuid', nullable: true })
+    // UploadedBy : User;
 
-    @Column({ type: 'simple-json', nullable: true})
+    @Column({ type: 'simple-json', nullable: true })
     Tags : string[];
 
-    @Column({ type: 'uuid', nullable : true })
+    @Column({ type: 'uuid', nullable: true })
     DefaultVersionId: string;
 
-    @Column({ type: 'simple-json', nullable : true })
+    @Column({ type: 'simple-json', nullable: true })
     DefaultVersion: any;
 
     @CreateDateColumn()

@@ -13,6 +13,7 @@ import { LlmPromptVersion } from "./models/llm.prompt/llm.prompt.versions.model"
 import { LlmPromptGroup } from "./models/llm.prompt/llm.prompt.groups.model";
 import { LlmPrompt } from "./models/llm.prompt/llm.prompts.model";
 import { QnaDocumentLibrary } from "./models/content/qna.document.library.model";
+import { FileResource } from "./models/file.resource/file.resource.model";
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -51,6 +52,7 @@ class DatabaseConnector {
             LlmPrompt,
             LlmPromptVersion,
             QnaDocumentLibrary,
+            FileResource,
         ],
         migrations  : [],
         subscribers : [],

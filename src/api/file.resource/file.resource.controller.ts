@@ -1,21 +1,24 @@
+/* eslint-disable key-spacing */
+/* eslint-disable no-multiple-empty-lines */
+/* eslint-disable no-trailing-spaces */
 import express from 'express';
 import fs from 'fs';
 import { ResponseHandler } from '../../common/handlers/response.handler';
-import { FileResourceService } from '../../../database/services/general/file.resource.service';
+import { FileResourceService } from '../../database/services/file.resource/file.resource.service';
 import { BaseController } from '../base.controller';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { ApiError, ErrorHandler } from '../../common/handlers/error.handler';
 import BaseValidator from '../base.validator';
 import * as mime from 'mime-types';
-import { FileResourceCreateModel } from '../../../domain.types/general/file.resource.domain.types';
+import { FileResourceCreateModel } from '../../domain.types/general/file.resource.domain.types';
 import { FileUtils } from '../../common/utilities/file.utils';
 import { Loader } from '../../startup/loader';
-import { StorageService } from '../../../modules/storage/storage.service';
-import { FileResourceMetadata } from '../../../domain.types/general/file.resource/file.resource.types';
+import { StorageService } from '../../modules/storage/storage.service';
+import { FileResourceMetadata } from '../../domain.types/general/file.resource/file.resource.types';
 // import { Authenticator } from '../../../auth/authenticator';
 import path from 'path';
 import { Helper } from '../../common/helper';
-import { DownloadDisposition } from '../../../domain.types/general/file.resource/file.resource.types';
+import { DownloadDisposition } from '../../domain.types/general/file.resource/file.resource.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -24,17 +27,17 @@ export class FileResourceController extends BaseController {
     //#region member variables and constructors
     _service: FileResourceService = null;
 
-    _storageService: StorageService = Loader.Container.resolve(StorageService);
+    _storageService: StorageService = new StorageService();
 
     _validator: BaseValidator = new BaseValidator();
 
-    _authenticator: Authenticator = null;
+    // _authenticator: Authenticator = null;
 
 
     constructor() {
         super();
         this._service = new FileResourceService();
-        this._authenticator = Loader.Authenticator;
+        // this._authenticator = Loader.Authenticator;
 
     }
 
@@ -68,7 +71,7 @@ export class FileResourceController extends BaseController {
                 OriginalFilename : originalFilename,
                 Tags             : request.body.Tags ? request.body.Tags : [],
                 Size             : contentLength ? parseInt(contentLength) : null,
-                UserId           : request.currentUser ? request.currentUser.UserId : null,
+                // UserId           : request.currentUser ? request.currentUser.UserId : null,
             };
             var record = await this._service.create(model);
             if (record === null) {
@@ -81,19 +84,19 @@ export class FileResourceController extends BaseController {
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
     download = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
-            if (!record.Public) {
-                var verified = await Loader.Authenticator.verifyUser(request);
-                if (!verified) {
-                    ErrorHandler.throwUnauthorizedUserError('User is not authorized to download the resource!');
-                }
-                await this.authorize('FileResource.Download', request, response);
-            }
+            // if (!record.Public) {
+            //     // var verified = await Loader.Authenticator.verifyUser(request);
+            //     // if (!verified) {
+            //     //     ErrorHandler.throwUnauthorizedUserError('User is not authorized to download the resource!');
+            //     // }
+            //     // await this.authorize('FileResource.Download', request, response);
+            // }
             var disposition = request.query.disposition as string;
             if (!disposition) {
                 disposition = 'inline';
@@ -116,7 +119,7 @@ export class FileResourceController extends BaseController {
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
     getById = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
@@ -131,7 +134,7 @@ export class FileResourceController extends BaseController {
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
@@ -165,34 +168,34 @@ export class FileResourceController extends BaseController {
         }
     };
 
-    DownloadByVersion = async (request: express.Request, response: express.Response): Promise<void> => {
-        try {
-            request.context = 'FileResource.DownloadByVersion';
-            const metadata = await this._validator.getByVersionName(request);
-            var resource = await this._service.getById(metadata.ResourceId);
+    // DownloadByVersion = async (request: express.Request, response: express.Response): Promise<void> => {
+    //     try {
+    //         request.context = 'FileResource.DownloadByVersion';
+    //         const metadata = await this._validator.getByVersionName(request);
+    //         var resource = await this._service.getById(metadata.ResourceId);
 
-            if (resource.Public === false) {
+    //         if (resource.Public === false) {
 
-                //NOTE: Please note that this is deviation from regular pattern of
-                //authentication middleware pipeline. Here we are authenticating client
-                //and user only when the file resource is not public.
+    //             //NOTE: Please note that this is deviation from regular pattern of
+    //             //authentication middleware pipeline. Here we are authenticating client
+    //             //and user only when the file resource is not public.
 
-                await this._authenticator.checkAuthentication(request);
-                await this._authorizer.authorize(request, response);
-            }
+    //             // await this._authenticator.checkAuthentication(request);
+    //             // await this._authorizer.authorize(request, response);
+    //         }
 
-            console.log(`Download request for Resource Id:: ${metadata.ResourceId}
-                and Version:: ${metadata.Version}`);
-            const localDestination = await this._service.DownloadByVersion(
-                metadata.ResourceId,
-                metadata.Version);
+    //         // console.log(`Download request for Resource Id:: ${metadata.ResourceId}
+    //             // and Version:: ${metadata.Version}`);
+    //         // const localDestination = await this._service.DownloadByVersion(
+    //         //     metadata.ResourceId,
+    //         //     metadata.Version);
 
-            this.streamToResponse(localDestination, response, metadata);
+    //         // this.streamToResponse(localDestination, response, metadata);
 
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    };
+    //     } catch (error) {
+    //         ResponseHandler.handleError(request, response, error);
+    //     }
+    // };
 
     private streamToResponse(
         localDestination: string,
@@ -213,7 +216,7 @@ export class FileResourceController extends BaseController {
 
         var filestream = fs.createReadStream(localDestination);
         filestream.pipe(response);
-    };
+    }
 
     private setDownloadResponseHeaders(
         response: express.Response,
