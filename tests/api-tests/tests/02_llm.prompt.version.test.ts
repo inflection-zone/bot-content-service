@@ -150,13 +150,13 @@ describe('02 - Prompt version tests', function () {
     it('06:07 -> Negative - Search prompt version records', function(done) {
         loadNegativePromptVersionQueryString();
         agent
-            .get(`/api/v1/llmpromptversions/search/${loadNegativePromptVersionQueryString()}`)
+            .get(`/api/v1/llmpromptversions/search${loadNegativePromptVersionQueryString()}`)
             .set('Content-Type', 'application/json')
             .expect(response => {
                 expect(response.body).to.have.property('Status');
                 expect(response.body.Status).to.equal('failure');
             })
-            .expect(402, done);
+            .expect(422, done);
     });
 
     it('01:08 -> Negative - Delete prompt', function(done) {

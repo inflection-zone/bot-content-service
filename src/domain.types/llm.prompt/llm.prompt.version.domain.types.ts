@@ -14,7 +14,7 @@ export interface  LlmPromptVersionDto {
         ModelVersion      : string;
     };
     Prompt          : string;
-    Variables       : string;
+    Variables       : string[];
     Score           : decimal;
     PublishedAt     : Date;
 }
@@ -22,7 +22,7 @@ export interface  LlmPromptVersionCreateModel {
     VersionNumber   : string;
     PromptId        : uuid;
     Prompt          : string;
-    Variables       : string;
+    Variables       : string[];
     Score           : decimal;
     PublishedAt?     : Date;
 }
@@ -30,7 +30,7 @@ export interface  LlmPromptVersionUpdateModel {
     VersionNumber?  : string;
     PromptId?        : uuid;
     Prompt?         : string;
-    Variables?      : string;
+    Variables?      : string[];
     Score?          : decimal;
     PublishedAt?    : Date
 }
@@ -38,7 +38,7 @@ export interface LlmPromptVersionSearchFilters extends BaseSearchFilters {
     VersionNumber?  : string;
     PromptId?       :uuid;
     Prompt?         : string;
-    Variables?      : string;
+    Variables?      : string[];
     Score?          : decimal;
     PublishedAt?    : Date;
 }

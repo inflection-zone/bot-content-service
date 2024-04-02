@@ -231,13 +231,13 @@ describe('01 - Prompt tests', function () {
     it('06:07 -> Negative - Search prompt records', function(done) {
         loadNegativeLlmPromptQueryString();
         agent
-            .get(`/api/v1/llmprompts/search/${loadNegativeLlmPromptQueryString()}`)
+            .get(`/api/v1/llmprompts/search${loadNegativeLlmPromptQueryString()}`)
             .set('Content-Type', 'application/json')
             .expect(response => {
                 expect(response.body).to.have.property('Status');
                 expect(response.body.Status).to.equal('failure');
             })
-            .expect(402, done);
+            .expect(422, done);
     });
 
     it('01:08 -> Negative - Delete prompt', function(done) {

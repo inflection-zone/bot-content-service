@@ -160,13 +160,102 @@ export class LlmpromptGroupService extends BaseService {
     //         ErrorHandler.throwInternalServerError(error.message, 500);
     //     }
     // };
-    public search = async (filters: LlmPromptGroupSearchFilters)
-    : Promise<LlmPromptGroupSearchFilters> => {
-        try {
-            var search = this.getSearchModel(filters);
-            var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
-            const [list, count] = await this._llmPromptGroupRepository.findAndCount(search);
 
+    //     public search = async (filters: LlmPromptGroupSearchFilters)
+    //     : Promise<LlmPromptGroupSearchFilters> => {
+    //         try {
+    //             var search = this.getSearchModel(filters);
+    //             var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
+    //             const [list, count] = await this._llmPromptGroupRepository.findAndCount(search);
+
+    //             const searchResults = {
+    //                 TotalCount     : count,
+    //                 RetrievedCount : list.length,
+    //                 PageIndex      : pageIndex,
+    //                 ItemsPerPage   : limit,
+    //                 Order          : order === 'DESC' ? 'descending' : 'ascending',
+    //                 OrderedBy      : orderByColumn,
+    //                 Items          : list.map(x => LlmPromptGroupMapper.toResponseDto(x)),
+    //             };
+    //             return searchResults;
+    //         } catch (error) {
+    //             logger.error(error.message);
+    //             ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
+    //         }
+    //     };
+
+    //     private getSearchModel = (filters: LlmPromptGroupSearchFilters) => {
+
+    //         var search : FindManyOptions<LlmPromptGroup> = {
+    //             relations : {
+    
+    //             },
+    //             where : {
+    //             },
+    //             select : this._selectAll
+            
+    //         };
+    // if (filters.PromptId) {
+    //     search.relations['LlmPrompts'] = true;
+    //     search.where['LlmPrompts'] = {
+    //         id : filters.PromptId
+    //     };
+    // }
+
+    // if (filters.Name) {
+    //     search.where['Name'] = Like(`%${filters.Name}%`);
+    // }
+    //         return search;
+    //     };
+    search = async (filters: LlmPromptGroupSearchFilters): Promise<LlmPromptGroupSearchFilters> => {
+        try {
+
+            var search : FindManyOptions<LlmPromptGroup> = {
+                relations : {
+                },
+                where : {
+                },
+                select : this._selectAll
+            };
+
+            if (filters.PromptId) {
+                search.relations['LlmPrompts'] = true;
+                search.where['LlmPrompts'] = {
+                    id : filters.PromptId
+                };
+            }
+
+            if (filters.Name) {
+                search.where['Name'] = Like(`%${filters.Name}%`);
+            }
+
+            //Sorting
+            let orderByColumn = 'CreatedAt';
+            if (filters.OrderBy) {
+                orderByColumn = filters.OrderBy;
+            }
+            let order = 'ASC';
+            if (filters.Order === 'descending') {
+                order = 'DESC';
+            }
+            search['order'] = {};
+            search['order'][orderByColumn] = order;
+
+            //Pagination
+            let limit = 25;
+            if (filters.ItemsPerPage) {
+                limit = filters.ItemsPerPage;
+            }
+            let offset = 0;
+            let pageIndex = 0;
+            if (filters.PageIndex) {
+                pageIndex = filters.PageIndex < 0 ? 0 : filters.PageIndex;
+                offset = pageIndex * limit;
+            }
+            search['take'] = limit;
+            search['skip'] = offset;
+
+            const [list, count] = await this._llmPromptGroupRepository.findAndCount(search);
             const searchResults = {
                 TotalCount     : count,
                 RetrievedCount : list.length,
@@ -176,31 +265,12 @@ export class LlmpromptGroupService extends BaseService {
                 OrderedBy      : orderByColumn,
                 Items          : list.map(x => LlmPromptGroupMapper.toResponseDto(x)),
             };
+
             return searchResults;
+
         } catch (error) {
-            logger.error(error.message);
             ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
         }
-    };
-
-    private getSearchModel = (filters: LlmPromptGroupSearchFilters) => {
-
-        var search : FindManyOptions<LlmPromptGroup> = {
-            relations : {
-                // LlmPrompts : true,
-            },
-            where : {
-            },
-            select : {
-                id          : true,
-                Name        : true,
-                Description : true,
-            }
-        };
-        if (filters.Name) {
-            search.where['Name'] = Like(`%${filters.Name}%`);
-        }
-        return search;
     };
 
 }

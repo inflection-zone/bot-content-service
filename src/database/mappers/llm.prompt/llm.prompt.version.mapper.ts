@@ -8,13 +8,17 @@ export class LlmPromptVersionMapper {
         if (llmpromptversion == null) {
             return null;
         }
+        var variables = [];
+        if (llmpromptversion.Variables !== null && llmpromptversion.Variables !== undefined) {
+            variables = JSON.parse(llmpromptversion.Variables);
+        }
         const prompt = LlmPromptMapper.toResponseDto(llmpromptversion.LlmPrompt);
         const dto: LlmPromptVersionDto = {
             id            : llmpromptversion.id,
             VersionNumber : llmpromptversion.VersionNumber,
             LlmPrompt     : prompt,
             Prompt        : llmpromptversion.Prompt,
-            Variables     : llmpromptversion.Variables,
+            Variables     : variables,
             Score         : llmpromptversion.Score,
             PublishedAt   : llmpromptversion.PublishedAt,
         };

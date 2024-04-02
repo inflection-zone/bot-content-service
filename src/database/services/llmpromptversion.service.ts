@@ -122,7 +122,6 @@ export class LlmpromptVersionService extends BaseService {
         }
     };
 
-
     public getAll = async (): Promise<LlmPromptVersionDto[]> =>{
         try {
             const data = [];
@@ -201,7 +200,7 @@ export class LlmpromptVersionService extends BaseService {
             },
             select : {
                 id        : true,
-                LlmPrompt :{
+                LlmPrompt : {
                     id   : true,
                     Name : true,
 

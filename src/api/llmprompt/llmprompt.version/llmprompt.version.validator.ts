@@ -12,7 +12,7 @@ export class LlmPromptVersionValidator extends BaseValidator {
                 VersionNumber : joi.string().required(),
                 PromptId      : joi.string().required(),
                 Prompt        : joi.string().required(),
-                Variables     : joi.string().required(),
+                Variables     : joi.array().items(joi.string().required()),
                 Score         : joi.number(),
                 PublishedAt   : joi.date().optional(),
                
@@ -41,7 +41,7 @@ export class LlmPromptVersionValidator extends BaseValidator {
                 VersionNumber : joi.string().optional(),
                 PromptId      : joi.string().optional(),
                 Prompt        : joi.string().optional(),
-                Variables     : joi.string().optional(),
+                Variables     : joi.array().items(joi.string().optional()),
                 Score         : joi.number(),
                 PublishedAt   : joi.date().optional(),
             });

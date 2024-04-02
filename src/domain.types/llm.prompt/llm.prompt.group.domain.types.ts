@@ -6,7 +6,7 @@ export interface  LlmPromptGroupDto {
     id?         : uuid;
     Name?       : string;
     Description?: string;
-    LlmPrompt      ?: LlmPromptDto;
+    LlmPrompt      : LlmPromptDto;
 }
 
 export interface  LlmPromptGroupCreateModel {
@@ -28,12 +28,7 @@ export interface  LlmPromptGroupSearchModel {
 export interface LlmPromptGroupSearchFilters extends BaseSearchFilters {
         PromptId ?   : string;
         Name?              : string;
-        id?                : uuid;
-        // UseCaseType       : string;
-        // GroupName         : string;
-        // ModelName         : string;
-        // ModelVersion      : string;
-        // Name?              : string;
+        // id?                : uuid;
 
 }
 

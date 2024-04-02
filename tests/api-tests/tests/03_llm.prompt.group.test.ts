@@ -135,14 +135,14 @@ describe('03 - PromptGroup tests', function () {
     it('06:07 -> Negative - Search prompt group records', function(done) {
         loadNegativePromptGroupQueryString();
         agent
-            .get(`/api/v1/llmpromptgroups/search/${loadNegativePromptGroupQueryString()}`)
+            .get(`/api/v1/llmpromptgroups/search${loadNegativePromptGroupQueryString()}`)
             .set('Content-Type', 'application/json')
             .expect(response => {
-                expect(response.body).to.not.have.property('Status');
-                // expect(response.body).to.have.property('Status');
+                // expect(response.body).to.not.have.property('Status');
+                expect(response.body).to.have.property('Status');
                 expect(response.body.Status).to.equal('failure');
             })
-            .expect(402, done);
+            .expect(422, done);
     });
 
     it('01:08 -> Negative - Delete prompt', function(done) {

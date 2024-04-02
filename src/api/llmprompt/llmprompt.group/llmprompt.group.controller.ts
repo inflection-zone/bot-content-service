@@ -109,16 +109,28 @@ export class LlmPromptGroupController {
         }
     };
 
-    search = async (request: express.Request, response: express.Response) => {
-        try {
+    // search = async (request: express.Request, response: express.Response) => {
+    //     try {
            
+    //         var filters: LlmPromptGroupSearchFilters = await this._validator.validateSearchRequest(request);
+    //         const searchResults = await this._service.search(filters);
+    //         const message = 'Llm prompt group records retrieved successfully!';
+    //         ResponseHandler.success(request, response, message, 200, searchResults);
+    //     } catch (error) {
+    //         ResponseHandler.handleError(request, response, error);
+    //     }
+    // };
+    search = async (request: express.Request, response: express.Response): Promise <void> => {
+        try {
+            // await this.authorize('User.Search', request, response);
             var filters: LlmPromptGroupSearchFilters = await this._validator.validateSearchRequest(request);
-            const searchResults = await this._service.search(filters);
+            var searchResults: LlmPromptGroupSearchFilters = await this._service.search(filters);
             const message = 'Llm prompt group records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
     };
+
 
 }
