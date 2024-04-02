@@ -21,7 +21,7 @@ import { register as registerQnaDocumentLibrary } from '../api/content/qna.docum
 // import { register as registerSchemaInstanceRoutes } from '../api/engine/schema.instance/schema.instance.routes';
 // import { register as registerTypesRoutes } from '../api/types/types.routes';
 // import { register as registerFileResourceRoutes } from '../api/general/file.resource/file.resource.routes';
-
+import { register as registerFileResourceRoutes } from '../api/file.resource/file.resource.routes';
 ////////////////////////////////////////////////////////////////////////////////////
 
 export class Router {
@@ -51,7 +51,7 @@ export class Router {
                 registerQnaDocument(this._app);
                 registerQnaDocumentVersion(this._app);
                 registerQnaDocumentLibrary(this._app);// registerParticipantRoutes(this._app);
-                
+                registerFileResourceRoutes(this._app);
                 resolve(true);
 
             } catch (error) {
