@@ -12,7 +12,7 @@ export class LlmPromptVersionMapper {
         if (llmpromptversion.Variables !== null && llmpromptversion.Variables !== undefined) {
             variables = JSON.parse(llmpromptversion.Variables);
         }
-        const prompt = LlmPromptMapper.toResponseDto(llmpromptversion.LlmPrompt);
+        const prompt = LlmPromptMapper.toResponseDto(llmpromptversion.LlmPrompts);
         const dto: LlmPromptVersionDto = {
             id            : llmpromptversion.id,
             VersionNumber : llmpromptversion.VersionNumber,

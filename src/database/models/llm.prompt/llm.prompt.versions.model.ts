@@ -32,19 +32,8 @@ UpdatedAt: Date;
 @DeleteDateColumn()
 DeletedAt: Date;
 
-@ManyToOne(() => LlmPrompt, { nullable: true })
-    @JoinColumn()
-    LlmPrompt : LlmPrompt;
-
-// @ManyToOne(
-//     ()=>LlmPrompt,
-//     llm_prompts=> llm_prompts.llm_prompt_versions
-// )
-// @JoinColumn({
-//     name : 'PromptId'
-// })
-// llm_prompts: LlmPrompt;
-
-    // PromptId: string;
+@ManyToOne(() => LlmPrompt, { eager: true, nullable: true })
+@JoinColumn()
+LlmPrompts: LlmPrompt;
 
 }

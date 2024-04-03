@@ -28,7 +28,6 @@ export interface  LlmPromptGroupSearchModel {
 export interface LlmPromptGroupSearchFilters extends BaseSearchFilters {
         PromptId ?   : string;
         Name?              : string;
-        // id?                : uuid;
 
 }
 
