@@ -17,10 +17,10 @@ import { FileResourceMetadata } from '../../../domain.types/general/file.resourc
 import path from 'path';
 import { Helper } from '../../../common/helper';
 import { FileResourceUploadDomainModel } from '../../../domain.types/general/file.resource/file.resource.domain.model';
-import { ConfigurationManager } from '../../../config/configuration.manager';
-import { TimeUtils } from '../../../common/utilities/time.utils';
+// import { ConfigurationManager } from '../../../config/configuration.manager';
+// import { TimeUtils } from '../../../common/utilities/time.utils';
 import { StorageService } from '../../../modules/storage/storage.service';
-import { Loader } from '../../../startup/loader';
+// import { Loader } from '../../../startup/loader';
 import { QnaDocument } from '../../models/content/qna.document.model';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -76,6 +76,7 @@ export class FileResourceService {
                 where : {
                     id : id
                 },
+
                 /*relations : {
                     UploadedBy : true
                 },*/
@@ -90,6 +91,7 @@ export class FileResourceService {
                     Size             : true,
                     StorageKey       : true,
                     Tags             : true,
+
                     /*UploadedBy       : {
                         id     : true,
                         Client : {
@@ -243,8 +245,14 @@ export class FileResourceService {
                     id : id
                 }
             });
-            var result = await this._fileResourceRepository.remove(record);
-            return result != null;
+            if (!record) {
+                return false; // Record not found
+            }
+            record.DeletedAt = new Date(); // Soft delete
+            await this._fileResourceRepository.save(record);
+            return true; // Soft delete successful
+            // var result = await this._fileResourceRepository.remove(record);
+            // return result != null;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete file resource!', error);
         }
@@ -307,6 +315,7 @@ export class FileResourceService {
         return resource;
     };
 
+    // eslint-disable-next-line max-len
     // addVersion = async (metadata: FileResourceMetadata, makeDefaultVersion: boolean): Promise<FileResourceMetadata> => {
 
     //     var fileVersion = {

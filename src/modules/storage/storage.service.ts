@@ -1,4 +1,4 @@
-import { Loader } from '../../startup/loader';
+// import { Loader } from '../../startup/loader';
 import { IFileStorageService } from '../../modules/storage/interfaces/file.storage.service.interface';
 import { injectable } from 'tsyringe';
 import { CustomFileStorageService } from './providers/custom.file.storage.service';
@@ -13,6 +13,7 @@ export class StorageService {
 
     constructor () {
         this._storageService = new CustomFileStorageService();
+        
     }
 
     exists = async (storageKey: string): Promise<string> => {

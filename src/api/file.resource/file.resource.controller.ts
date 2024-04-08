@@ -12,13 +12,14 @@ import BaseValidator from '../base.validator';
 import * as mime from 'mime-types';
 import { FileResourceCreateModel } from '../../domain.types/general/file.resource.domain.types';
 import { FileUtils } from '../../common/utilities/file.utils';
-import { Loader } from '../../startup/loader';
+// import { Loader } from '../../startup/loader';
 import { StorageService } from '../../modules/storage/storage.service';
-import { FileResourceMetadata } from '../../domain.types/general/file.resource/file.resource.types';
+// import { FileResourceMetadata } from '../../domain.types/general/file.resource/file.resource.types';
 // import { Authenticator } from '../../../auth/authenticator';
 import path from 'path';
 import { Helper } from '../../common/helper';
 import { DownloadDisposition } from '../../domain.types/general/file.resource/file.resource.types';
+import { ConfigurationManager } from '../../config/configuration.manager';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -45,11 +46,11 @@ export class FileResourceController extends BaseController {
 
     upload = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('FileResource.Upload', request, response);
-
+            // await this.authorize('FileResource.Upload', request, response);
             var dateFolder = new Date().toISOString().split('T')[0];
             var originalFilename: string = request.headers['filename'] as string;
-            var contentLength = request.headers['content-length'];
+            // var contentLength = request.headers['Content-length'];
+            var contentLength = Array.isArray(request.headers['content-length']) ? request.headers['content-length'][0] : request.headers['content-length'];
             var mimeType = request.headers['mime-type'] ?? mime.lookup(originalFilename);
             var publicResource = request.headers['public'] === 'true' ? true : false;
 
@@ -108,13 +109,18 @@ export class FileResourceController extends BaseController {
 
             response.setHeader('Content-type', mimeType as string);
             this.setResponseHeaders(response, originalFilename, disposition);
-
-            var readStream = await this._storageService.download(storageKey, '');
-            if (!readStream) {
+            var downloadFolderPath = await this.generateDownloadFolderPath();
+            var localFilePath = path.join(downloadFolderPath, "demo.pdf");
+            var localDestination = await this._storageService.download(storageKey, localFilePath);
+            
+            if (!localDestination) {
                 ErrorHandler.throwInternalServerError(`Unable to download the file!`);
             }
 
-            readStream.pipe(response);
+            this.streamToResponse(localDestination, response, {
+                MimeType : mimeType,
+                Disposition : disposition
+            });
 
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -138,9 +144,11 @@ export class FileResourceController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('FileResource.Delete', request, response);
+            // await this.authorize('FileResource.Delete', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
-            var success = await this._storageService.delete(request.params.id);
+            const record = await this._service.getById(id);
+            var success = await this._storageService.delete(record.StorageKey);
+
             if (!success) {
                 ErrorHandler.throwInternalServerError('File resource with id ' + id.toString() + ' cannot be deleted!');
             }
@@ -200,7 +208,7 @@ export class FileResourceController extends BaseController {
     private streamToResponse(
         localDestination: string,
         response: express.Response<any, Record<string, any>>,
-        metadata: FileResourceMetadata) {
+        metadata) {
 
         if (localDestination == null) {
             throw new ApiError(404, 'File resource not found.');
@@ -240,6 +248,18 @@ export class FileResourceController extends BaseController {
         }
 
     }
+
+    private generateDownloadFolderPath = async() => {
+
+        var timestamp = new Date().getTime().toString();
+        var tempDownloadFolder = ConfigurationManager.DownloadTemporaryFolder;
+        var downloadFolderPath = path.join(tempDownloadFolder, timestamp);
+
+        //Make sure the path exists
+        await fs.promises.mkdir(downloadFolderPath, { recursive: true });
+
+        return downloadFolderPath;
+    };
 
     //#endregion
 

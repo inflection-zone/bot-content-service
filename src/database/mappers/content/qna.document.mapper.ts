@@ -21,6 +21,7 @@ export class QnaDocumentMapper {
             Splitter              : qnaDocument.Splitter,
             IsActive              : qnaDocument.IsActive,
             CreatedBy             : qnaDocument.CreatedBy,
+           
         };
         return dto;
     };
@@ -47,6 +48,7 @@ export class QnaDocumentMapper {
                 Splitter              : element.Splitter,
                 IsActive              : element.IsActive,
                 CreatedBy             : element.CreatedBy,
+                // ResourceId? :string;
             });
         });
         return dto;

@@ -7,9 +7,8 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     DeleteDateColumn,
-    OneToOne,
+   
 } from 'typeorm';
-import { QnaDocument } from "../content/qna.document.model";
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -25,9 +24,9 @@ export class FileResource {
     @Column({ type: 'varchar', length: 1024, nullable: false })
     StorageKey : string;
 
-    @OneToOne(() => QnaDocument)
-    @Column({ type: 'uuid', nullable: true })
-    DocumentId : string;
+    // @OneToOne(() => QnaDocument)
+    // @Column({ type: 'uuid', nullable: true })
+    // DocumentId : string;
 
     @Column({ type: 'varchar', length: 256, nullable: false })
     MimeType : string;

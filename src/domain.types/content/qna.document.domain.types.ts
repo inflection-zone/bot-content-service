@@ -18,6 +18,7 @@ export interface QnaDocumentCreateModel {
     Splitter: string;
     IsActive: boolean;
     CreatedBy: string;
+    ResourceId? :string;
 }
 
 export interface QnaDocumentUpdateModel {
@@ -33,6 +34,7 @@ export interface QnaDocumentUpdateModel {
     Splitter?: string;
     IsActive?: boolean;
     CreatedBy?: string;
+    ResourceId? :string;
 }
 
 export interface QnaDocumentResponseDto {
@@ -50,6 +52,7 @@ export interface QnaDocumentResponseDto {
     Splitter: string;
     IsActive: boolean;
     CreatedBy: string;
+    ResourceId? :string;
 }
 
 export interface QnaDocumentSearchFilters extends BaseSearchFilters {
@@ -66,6 +69,7 @@ export interface QnaDocumentSearchFilters extends BaseSearchFilters {
     Splitter?: string;
     IsActive?: boolean;
     CreatedBy?: string;
+    ResourceId? :string;
 }
 export interface QnaDocumentSearchResults extends BaseSearchResults {
     id?: uuid;

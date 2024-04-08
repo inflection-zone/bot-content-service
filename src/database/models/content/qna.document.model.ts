@@ -9,10 +9,12 @@ import {
     OneToMany,
     ManyToMany,
     JoinTable,
+    OneToOne,
 } from 'typeorm';
 import { ChunkingStrategy } from '../../../domain.types/chunking.strategy.domain.types';
 import { QnaDocumentVersion } from './qna.document.version.model';
 import { QnaDocumentGroup } from './qna.document.groups.model';
+import { FileResource } from '../file.resource/file.resource.model';
 
 @Entity({ name: 'qna_document' })
 export class QnaDocument extends BaseEntity {
@@ -72,5 +74,9 @@ export class QnaDocument extends BaseEntity {
     @ManyToMany(() => QnaDocumentGroup, (qnaDocumentGroup) => qnaDocumentGroup.QnaDocuments)
     @JoinTable()
     QnaDocumentGroups: QnaDocumentGroup[];
+    
+    @OneToOne(() => FileResource)
+    @Column({ type: 'uuid', nullable: true })
+    ResourceId : string;
     
 }
