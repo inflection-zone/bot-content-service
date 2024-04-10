@@ -119,16 +119,11 @@ export class FileResourceController extends BaseController {
                 ErrorHandler.throwInternalServerError(`Unable to download the file!`);
             }
 
-            // this.streamToResponse(localDestination, response, {
-            //     MimeType : mimeType,
-            //     Disposition : disposition
-            // });
-            var readStream = await this._storageService.download(storageKey, '');
-            if (!readStream) {
-                ErrorHandler.throwInternalServerError(`Unable to download the file!`);
-            }
+            this.streamToResponse(localDestination, response, {
+                MimeType : mimeType,
+                Disposition : disposition
+            });
 
-            readStream.pipe(response);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
@@ -215,7 +210,7 @@ export class FileResourceController extends BaseController {
     private streamToResponse(
         localDestination: string,
         response: express.Response<any, Record<string, any>>,
-        metadata: FileResourceMetadata) {
+        metadata) {
 
         if (localDestination == null) {
             throw new ApiError(404, 'File resource not found.');
