@@ -12,14 +12,12 @@ export class LlmPromptVersionValidator extends BaseValidator {
                 VersionNumber : joi.string().required(),
                 PromptId      : joi.string().required(),
                 Prompt        : joi.string().required(),
-                Variables     : joi.string().required(),
+                Variables     : joi.array().items(joi.string().required()),
                 Score         : joi.number(),
                 PublishedAt   : joi.date().optional(),
                
             });
             return await schema.validateAsync(request.body);
-            
-            //  return this.getValidUserCreateModel(request);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -32,7 +30,6 @@ export class LlmPromptVersionValidator extends BaseValidator {
               
             });
             return await schema.validateAsync(request.query);
-            // return this.getSearchFilters(request.query);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -44,13 +41,11 @@ export class LlmPromptVersionValidator extends BaseValidator {
                 VersionNumber : joi.string().optional(),
                 PromptId      : joi.string().optional(),
                 Prompt        : joi.string().optional(),
-                Variables     : joi.string().optional(),
+                Variables     : joi.array().items(joi.string().optional()),
                 Score         : joi.number(),
                 PublishedAt   : joi.date().optional(),
             });
             return await schema.validateAsync(request.body);
-            // const id = await this.validateParamAsUUID(request, 'id');
-            // return await this.getValidUserUpdateModel(id, request);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -82,10 +77,10 @@ export class LlmPromptVersionValidator extends BaseValidator {
         if (VersionNumber != null) {
             filters['VersionNumber'] = VersionNumber;
         }
-        // var PromptId  = query.PromptId  ? query.PromptId  : null;
-        // if (PromptId  != null) {
-        //     filters['PromptId '] = PromptId ;
-        // }
+        var PromptId  = query.PromptId  ? query.PromptId  : null;
+        if (PromptId  != null) {
+            filters['PromptId '] = PromptId ;
+        }
         var Prompt = query.Prompt ? query.Prompt : null;
         if (Prompt != null) {
             filters['Prompt'] = Prompt;

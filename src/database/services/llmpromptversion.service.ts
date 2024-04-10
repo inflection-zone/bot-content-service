@@ -19,7 +19,6 @@ export class LlmpromptVersionService extends BaseService {
 
     _llmPromptRepository: Repository<LlmPrompt> = Source.getRepository(LlmPrompt);
 
-    // create = async (request: express.Request, response: express.Response) => {
     public create = async (createModel: LlmPromptVersionCreateModel)
         : Promise<LlmPromptVersionDto> => {
         try {
@@ -33,7 +32,7 @@ export class LlmpromptVersionService extends BaseService {
             }
             const data = this. _llmPromptVersionRepository.create({
                 VersionNumber : createModel.VersionNumber,
-                llm_prompts   : pid,
+                LlmPrompts    : pid,
                 Prompt        : createModel.Prompt,
                 Variables     : JSON.stringify(createModel.Variables),
                 Score         : createModel.Score,
@@ -54,6 +53,9 @@ export class LlmpromptVersionService extends BaseService {
             const updateData = await this._llmPromptVersionRepository.findOne({
                 where : {
                     id : id
+                },
+                relations : {
+                    LlmPrompts : true,
                 }
             });
             if (!updateData) {
@@ -66,7 +68,7 @@ export class LlmpromptVersionService extends BaseService {
                 updateData.Prompt = model.Prompt;
             }
             if ( model.Variables != null) {
-                updateData.Variables  = JSON.stringify(model.Variables);
+                updateData.Variables = JSON.stringify(model.Variables);
             }
             if ( model.Score != null) {
                 updateData.Score = model.Score;
@@ -89,6 +91,9 @@ export class LlmpromptVersionService extends BaseService {
                 where : {
                     id : id
                 },
+                relations : {
+                    LlmPrompts : true,
+                }
             });
             return LlmPromptVersionMapper.toResponseDto(llmPromptVersionId);
         } catch (error) {
@@ -100,40 +105,32 @@ export class LlmpromptVersionService extends BaseService {
     public getAll = async (): Promise<LlmPromptVersionDto[]> =>{
         try {
             const data = [];
-            var prompts = await this._llmPromptVersionRepository.find();
+            var prompts = await this._llmPromptVersionRepository.find({
+                relations : {
+                    LlmPrompts : true
+                }
+            });
             for (var i of prompts) {
                 const record = LlmPromptVersionMapper.toResponseDto(i);
-                // const record = i;
                 data.push(record);
+                
             }
+            
             return data;
         } catch (error) {
             logger.error(error.message);
             ErrorHandler.throwDbAccessError('DB Error: Unable to get Llm prompt version record!', error);
         }
     };
-    
-    // public delete = async (id: uuid)=> {
-    //     try {
-    //         var record = await this._llmPromptVersionRepository.findOne({
-    //             where : {
-    //                 id : id
-    //             }
-    //         });
-    //         var result = await this._llmPromptVersionRepository.remove(record);
-    //         result != null;
-    //     } catch (error) {
-    //         logger.error(error.message);
-    //         ErrorHandler.throwInternalServerError(error.message, 500);
-    //     }
-    // };
 
     public delete = async (id: string): Promise<boolean> => {
         try {
-            // const record = await this._llmPromptRepository.findOne();
             var record = await this._llmPromptVersionRepository.findOne({
                             where : {
                                 id : id
+                            },
+                            relations : {
+                                LlmPrompts : true,
                             }
                         });
             if (!record) {
@@ -174,27 +171,19 @@ export class LlmpromptVersionService extends BaseService {
     private getSearchModel = (filters: LlmPromptVersionSearchFilters) => {
 
         var search : FindManyOptions<LlmPromptVersion> = {
-            relations : {
-            },
             where : {
             },
-            select : {
-                id            : true,
-                VersionNumber : true,
-                // PromptId      : true,
-                Prompt        : true,
-                Variables     : true,
-                Score         : true,
-                PublishedAt   : true,
-            }
+            relations : {
+            
+            },
+            select : {}
+            
         };
 
         if (filters.VersionNumber) {
             search.where['VersionNumber'] = Like(`%${filters.VersionNumber}%`);
         }
-        // if (filters.PromptId) {
-        //     search.where['PromptId'] = filters.PromptId;
-        // }
+
         if (filters.Prompt) {
             search.where['Prompt'] = filters.Prompt;
         }

@@ -11,8 +11,8 @@ export class LlmPromptGroupMapper {
             id          : llmpromptgroup.id,
             Name        : llmpromptgroup.Name,
             Description : llmpromptgroup.Description,
-            // eslint-disable-next-line max-len
-            LlmPrompt   : LlmPromptMapper.toResponseDto(llmpromptgroup.LlmPrompts?.length > 0 ? llmpromptgroup.LlmPrompts[0] : null),
+            LlmPrompt   : LlmPromptMapper.toResponseDto(
+                llmpromptgroup.LlmPrompts?.length > 0 ? llmpromptgroup.LlmPrompts[0] : null),
             
         };
         return dto;

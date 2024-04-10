@@ -8,16 +8,19 @@ export class LlmPromptVersionMapper {
         if (llmpromptversion == null) {
             return null;
         }
-        const prmpt = LlmPromptMapper.toResponseDto(llmpromptversion.llm_prompts);
+        var variables = [];
+        if (llmpromptversion.Variables !== null && llmpromptversion.Variables !== undefined) {
+            variables = JSON.parse(llmpromptversion.Variables);
+        }
+        const prompt = LlmPromptMapper.toResponseDto(llmpromptversion.LlmPrompts);
         const dto: LlmPromptVersionDto = {
             id            : llmpromptversion.id,
             VersionNumber : llmpromptversion.VersionNumber,
-            llm_prompts   : prmpt,
+            LlmPrompt     : prompt,
             Prompt        : llmpromptversion.Prompt,
-            Variables     : llmpromptversion.Variables,
+            Variables     : variables,
             Score         : llmpromptversion.Score,
             PublishedAt   : llmpromptversion.PublishedAt,
-            
         };
         return dto;
     };

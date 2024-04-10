@@ -47,14 +47,12 @@ export class LlmPromptGroupController {
     
     getById = async (request: express.Request, response: express.Response) => {
         try {
-            // await this.authorize('Badge.GetById', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
             if (record === null)
             {
                 const message = ' Prompt Group cannot be found!';
                 ErrorHandler.throwNotFoundError(message);
-                // return ResponseHandler.success(request, response, message, 200, record);
             }
             else {
                 const message = 'LLm prompt retrieved successfully!';
@@ -93,30 +91,12 @@ export class LlmPromptGroupController {
         }
     };
 
-    // getByName = async (request: express.Request, response: express.Response) => {
-    //     try {
-    //         var name = await this._validator.validateGetNameRequest(request);
-    //         const record = await this._service.getByName(name);
-    //         if (record === null)
-    //         {
-    //             const message = 'LLm prompt group record cannot be retrieved!';
-    //             ErrorHandler.throwNotFoundError(message);
-    //             // return ResponseHandler.success(request, response, message, 200, record);
-    //         }
-    //         else {
-    //             const message = 'LLm prompt group record retrieved successfully!';
-    //             return ResponseHandler.success(request, response, message, 200, record);
-    //         }
-    //     } catch (error) {
-    //         ResponseHandler.handleError(request, response, error);
-    //     }
-    // };
-    search = async (request: express.Request, response: express.Response) => {
+    search = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
-           
+            // await this.authorize('User.Search', request, response);
             var filters: LlmPromptGroupSearchFilters = await this._validator.validateSearchRequest(request);
-            const searchResults = await this._service.search(filters);
-            const message = 'Llm prompt records retrieved successfully!';
+            var searchResults: LlmPromptGroupSearchFilters = await this._service.search(filters);
+            const message = 'Llm prompt group records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
