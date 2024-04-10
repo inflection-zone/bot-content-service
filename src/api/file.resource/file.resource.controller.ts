@@ -18,8 +18,9 @@ import { StorageService } from '../../modules/storage/storage.service';
 // import { Authenticator } from '../../../auth/authenticator';
 import path from 'path';
 import { Helper } from '../../common/helper';
-import { DownloadDisposition } from '../../domain.types/general/file.resource/file.resource.types';
+import { DownloadDisposition, FileResourceMetadata } from '../../domain.types/general/file.resource/file.resource.types';
 import { ConfigurationManager } from '../../config/configuration.manager';
+import { Loader } from '../../startup/loader';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -28,7 +29,8 @@ export class FileResourceController extends BaseController {
     //#region member variables and constructors
     _service: FileResourceService = null;
 
-    _storageService: StorageService = new StorageService();
+    // _storageService: StorageService = new StorageService();
+    _storageService: StorageService =  Loader.Container.resolve(StorageService);
 
     _validator: BaseValidator = new BaseValidator();
 
@@ -110,18 +112,23 @@ export class FileResourceController extends BaseController {
             response.setHeader('Content-type', mimeType as string);
             this.setResponseHeaders(response, originalFilename, disposition);
             var downloadFolderPath = await this.generateDownloadFolderPath();
-            var localFilePath = path.join(downloadFolderPath, "demo.pdf");
+            var localFilePath = path.join(downloadFolderPath, originalFilename);
             var localDestination = await this._storageService.download(storageKey, localFilePath);
             
             if (!localDestination) {
                 ErrorHandler.throwInternalServerError(`Unable to download the file!`);
             }
 
-            this.streamToResponse(localDestination, response, {
-                MimeType : mimeType,
-                Disposition : disposition
-            });
+            // this.streamToResponse(localDestination, response, {
+            //     MimeType : mimeType,
+            //     Disposition : disposition
+            // });
+            var readStream = await this._storageService.download(storageKey, '');
+            if (!readStream) {
+                ErrorHandler.throwInternalServerError(`Unable to download the file!`);
+            }
 
+            readStream.pipe(response);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
@@ -129,7 +136,7 @@ export class FileResourceController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
-            await this.authorize('FileResource.GetById', request, response);
+            // await this.authorize('FileResource.GetById', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
             if (record === null) {
@@ -208,7 +215,7 @@ export class FileResourceController extends BaseController {
     private streamToResponse(
         localDestination: string,
         response: express.Response<any, Record<string, any>>,
-        metadata) {
+        metadata: FileResourceMetadata) {
 
         if (localDestination == null) {
             throw new ApiError(404, 'File resource not found.');

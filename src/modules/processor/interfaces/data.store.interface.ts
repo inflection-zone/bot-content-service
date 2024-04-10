@@ -4,15 +4,15 @@ import { DataStorageInputParams, OutputParams, ProcessorResult } from '../../../
 export interface IDataStore {
 
     storeData(
-        contextId: uuid, 
-        records:any[], 
-        inputParams: DataStorageInputParams, 
+        contextId: uuid,
+        records:any[],
+        inputParams: DataStorageInputParams,
         outputParams: OutputParams): Promise<ProcessorResult>;
 
     removeData(
-        contextId: uuid, 
-        records:any[], 
-        inputParams: DataStorageInputParams, 
+        contextId: uuid,
+        records:any[],
+        inputParams: DataStorageInputParams,
         outputParams: OutputParams): Promise<ProcessorResult>;
     
 }

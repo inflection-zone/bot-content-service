@@ -5,6 +5,7 @@ import { logger } from '../../../logger/logger';
 import { IFileStorageService } from '../interfaces/file.storage.service.interface';
 import { FileUtils } from '../../../common/utilities/file.utils';
 import { UploadedFile } from 'express-fileupload';
+import { Stream } from 'stream';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -27,6 +28,26 @@ export class CustomFileStorageService implements IFileStorageService {
             logger.error(JSON.stringify(error, null, 2));
             return null;
         }
+    };
+
+    uploadStream = async (storageKey: string, stream: Stream): Promise<string> => {
+        return new Promise( (resolve, reject) => {
+            try {
+                const location = path.join(this._storagePath, storageKey);
+                const directory = path.dirname(location);
+                fs.mkdirSync(directory, { recursive: true });
+                const writeStream = fs.createWriteStream(location);
+                stream.pipe(writeStream);
+                writeStream.on('finish', async () => {
+                    writeStream.end();
+                    resolve(storageKey);
+                });
+            }
+            catch (error) {
+                logger.error(JSON.stringify(error, null, 2));
+                reject(error.message);
+            }
+        });
     };
 
     upload = async (storageKey: string, inputStream: any): Promise<string|null|undefined> => {

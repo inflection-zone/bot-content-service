@@ -22,6 +22,7 @@ import { FileResourceUploadDomainModel } from '../../../domain.types/general/fil
 import { StorageService } from '../../../modules/storage/storage.service';
 // import { Loader } from '../../../startup/loader';
 import { QnaDocument } from '../../models/content/qna.document.model';
+import { Loader } from '../../../startup/loader';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -36,7 +37,8 @@ export class FileResourceService {
     _documentRepository : Repository<QnaDocument> = Source.getRepository(QnaDocument);
 
     constructor() {
-        this._storageService = new StorageService();
+        // this._storageService = new StorageService();
+        this._storageService = Loader.Container.resolve(StorageService);
     }
 
     //#endregion
@@ -274,7 +276,7 @@ export class FileResourceService {
             storageKey = existingStorageKey;
         }
         else {
-            storageKey = await this._storageService.uploadLocally(storageKey, sourceLocation);
+            // storageKey = await this._storageService.uploadLocally(storageKey, sourceLocation);
         }
 
         if (!storageKey) {
