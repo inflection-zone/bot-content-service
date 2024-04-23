@@ -30,11 +30,12 @@ export class QnaDocumentService extends BaseService {
                 ParentDocument        : createModel.ParentDocument,
                 ParentDocumentVersion : createModel.ParentDocumentVersion,
                 ChunkingStrategy      : createModel.ChunkingStrategy,
-                ChunkingLenght        : createModel.ChunkingLenght,
+                ChunkingLength        : createModel.ChunkingLength,
                 ChunkOverlap          : createModel.ChunkOverlap,
                 Splitter              : createModel.Splitter,
                 IsActive              : createModel.IsActive,
                 CreatedBy             : createModel.CreatedBy,
+                ResourceId            : createModel.ResourceId
             });
             var record = await this._qnaDocumentRepository.save(document);
             return QnaDocumentMapper.toResponseDto(record);
@@ -76,8 +77,8 @@ export class QnaDocumentService extends BaseService {
             if (model.ChunkingStrategy != null) {
                 document.ChunkingStrategy = model.ChunkingStrategy;
             }
-            if (model.ChunkingLenght != null) {
-                document.ChunkingLenght = model.ChunkingLenght;
+            if (model.ChunkingLength != null) {
+                document.ChunkingLength = model.ChunkingLength;
             }
             if (model.ChunkOverlap != null) {
                 document.ChunkOverlap = model.ChunkOverlap;
@@ -90,6 +91,9 @@ export class QnaDocumentService extends BaseService {
             }
             if (model.CreatedBy != null) {
                 document.CreatedBy = model.CreatedBy;
+            }
+            if (model.ResourceId != null) {
+                document.ResourceId = model.ResourceId;
             }
             var record = await this._qnaDocumentRepository.save(document);
             return QnaDocumentMapper.toResponseDto(record);
@@ -181,11 +185,12 @@ export class QnaDocumentService extends BaseService {
                 ParentDocument        : true,
                 ParentDocumentVersion : true,
                 ChunkingStrategy      : true,
-                ChunkingLenght        : true,
+                ChunkingLength        : true,
                 ChunkOverlap          : true,
                 Splitter              : true,
                 IsActive              : true,
                 CreatedBy             : true,
+                ResourceId            : true
             },
         };
 
@@ -210,8 +215,8 @@ export class QnaDocumentService extends BaseService {
         if (filters.ChunkingStrategy) {
             search.where['ChunkingStrategy'] = filters.ChunkingStrategy;
         }
-        if (filters.ChunkingLenght) {
-            search.where['ChunkingLenght'] = filters.ChunkingLenght;
+        if (filters.ChunkingLength) {
+            search.where['ChunkingLength'] = filters.ChunkingLength;
         }
         if (filters.ChunkOverlap) {
             search.where['ChunkOverlap'] = filters.ChunkOverlap;

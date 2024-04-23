@@ -16,12 +16,12 @@ export class QnaDocumentMapper {
             ParentDocument        : qnaDocument.ParentDocument,
             ParentDocumentVersion : qnaDocument.ParentDocumentVersion,
             ChunkingStrategy      : qnaDocument.ChunkingStrategy,
-            ChunkingLenght        : qnaDocument.ChunkingLenght,
+            ChunkingLength        : qnaDocument.ChunkingLength,
             ChunkOverlap          : qnaDocument.ChunkOverlap,
             Splitter              : qnaDocument.Splitter,
             IsActive              : qnaDocument.IsActive,
             CreatedBy             : qnaDocument.CreatedBy,
-           
+            ResourceId            : qnaDocument.ResourceId
         };
         return dto;
     };
@@ -43,12 +43,12 @@ export class QnaDocumentMapper {
                 ParentDocument        : element.ParentDocument,
                 ParentDocumentVersion : element.ParentDocumentVersion,
                 ChunkingStrategy      : element.ChunkingStrategy,
-                ChunkingLenght        : element.ChunkingLenght,
+                ChunkingLength        : element.ChunkingLength,
                 ChunkOverlap          : element.ChunkOverlap,
                 Splitter              : element.Splitter,
                 IsActive              : element.IsActive,
                 CreatedBy             : element.CreatedBy,
-                // ResourceId? :string;
+                ResourceId            : element.ResourceId
             });
         });
         return dto;

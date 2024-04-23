@@ -1,7 +1,5 @@
-/* eslint-disable indent */
 import { BaseService } from './base.service';
 import { logger } from '../../logger/logger';
-// import express from 'express';
 import { ErrorHandler } from '../../common/handlers/error.handler';
 import { Source } from '../database.connector';
 import { Repository } from 'typeorm/repository/Repository';
@@ -27,8 +25,19 @@ export class LlmpromptGroupService extends BaseService {
         CreatedAt   : true,
         UpdatedAt   : true,
         LlmPrompts  : {
-            id   : true,
-            Name : true,
+            id                : true,
+            Name              : true,
+            Description       : true,
+            UseCaseType       : true,
+            GroupName         : true,
+            ModelName         : true,
+            ModelVersion      : true,
+            UserId            : true,
+            Temperature       : true,
+            FrequencyPenality : true,
+            TopP              : true,
+            PresencePenalty   : true,
+            IsActive          : true,
         }
     };
 
@@ -53,29 +62,15 @@ export class LlmpromptGroupService extends BaseService {
         }
     };
 
- // create = async (request: express.Request, response: express.Response) => {
-    // public create = async (createModel: LlmPromptGroupCreateModel)
-    //     : Promise<LlmPromptGroupDto> => {
-    //     try {
-    //         const data = this._llmPromptGroupRepository.create({
-    //             Name        : createModel.Name,
-    //             Description : createModel.Description,
-    //         });
-    //         var record = await this._llmPromptGroupRepository.save(data);
-    //         return LlmPromptGroupMapper.toResponseDto(record);
-    //     }
-    //     catch (error) {
-    //         logger.error(error.message);
-    //         ErrorHandler.throwInternalServerError(error.message, 500);
-    //     }
-    // };
-    
     public update = async (id: uuid, model: LlmPromptGroupUpdateModel)
     : Promise<LlmPromptGroupDto> => {
         try {
             const updateData = await this._llmPromptGroupRepository.findOne({
                 where : {
                     id : id
+                },
+                relations : {
+                    LlmPrompts : true,
                 }
             });
             if (!updateData) {
@@ -101,6 +96,9 @@ export class LlmpromptGroupService extends BaseService {
                 where : {
                     id : id
                 },
+                relations : {
+                    LlmPrompts : true,
+                }
             });
             return LlmPromptGroupMapper.toResponseDto(llmPromptGroupId);
         } catch (error) {
@@ -112,7 +110,11 @@ export class LlmpromptGroupService extends BaseService {
     public getAll = async (): Promise<LlmPromptGroupDto[]> =>{
         try {
             const data = [];
-            var prompts = await this._llmPromptGroupRepository.find();
+            var prompts = await this._llmPromptGroupRepository.find({
+                relations : {
+                    LlmPrompts : true,
+                }
+            });
             for (var i of prompts) {
                 const record = LlmPromptGroupMapper.toResponseDto(i);
                 // const record = i;
@@ -125,29 +127,16 @@ export class LlmpromptGroupService extends BaseService {
         }
     };
     
-    // public delete = async (id: uuid)=> {
-    //     try {
-    //         var record = await this._llmPromptGroupRepository.findOne({
-    //             where : {
-    //                 id : id
-    //             }
-    //         });
-    //         var result = await this._llmPromptGroupRepository.remove(record);
-    //         result != null;
-    //     } catch (error) {
-    //         logger.error(error.message);
-    //         ErrorHandler.throwInternalServerError(error.message, 500);
-    //     }
-    // };
-
     public delete = async (id: string): Promise<boolean> => {
         try {
-            // const record = await this._llmPromptRepository.findOne();
             var record = await this._llmPromptGroupRepository.findOne({
-                            where : {
-                                id : id
-                            }
-                        });
+                where : {
+                    id : id
+                },
+                relations : {
+                    LlmPrompts : true,
+                }
+            });
             if (!record) {
                 return false; // Record not found
             }
@@ -160,34 +149,55 @@ export class LlmpromptGroupService extends BaseService {
         }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // public getByName = async (name:string)=> {
-    //     try {
-    //         const group = [];
-    //         var data = await this._llmPromptGroupRepository.find({
-    //             where : {
-    //                 Name : name
-    //             },
-    //         });
-    //         for (var i of data) {
-    //             // const record = LlmPromptGroupMapper.toResponseDto(i);
-    //             // const record = (i);
-    //             // const record = i;
-    //             group.push(i);
-    //         }
-    //         return group;
-    //     } catch (error) {
-    //         logger.error(error.message);
-    //         ErrorHandler.throwInternalServerError(error.message, 500);
-    //     }
-    // };
-    public search = async (filters: LlmPromptGroupSearchFilters)
-    : Promise<LlmPromptGroupSearchFilters> => {
+    search = async (filters: LlmPromptGroupSearchFilters): Promise<LlmPromptGroupSearchFilters> => {
         try {
-            var search = this.getSearchModel(filters);
-            var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
-            const [list, count] = await this._llmPromptGroupRepository.findAndCount(search);
 
+            var search : FindManyOptions<LlmPromptGroup> = {
+                relations :
+                ['LlmPrompts'],
+                where  : {} as any,
+                select : this._selectAll
+            };
+            
+            if (filters.PromptId) {
+                search.where = {
+                    LlmPrompts : {
+                        id : filters.PromptId
+                    }
+                };
+            }
+
+            if (filters.Name) {
+                search.where['Name'] = Like(`%${filters.Name}%`);
+            }
+
+            //Sorting
+            let orderByColumn = 'CreatedAt';
+            if (filters.OrderBy) {
+                orderByColumn = filters.OrderBy;
+            }
+            let order = 'ASC';
+            if (filters.Order === 'descending') {
+                order = 'DESC';
+            }
+            search['order'] = {};
+            search['order'][orderByColumn] = order;
+
+            //Pagination
+            let limit = 25;
+            if (filters.ItemsPerPage) {
+                limit = filters.ItemsPerPage;
+            }
+            let offset = 0;
+            let pageIndex = 0;
+            if (filters.PageIndex) {
+                pageIndex = filters.PageIndex < 0 ? 0 : filters.PageIndex;
+                offset = pageIndex * limit;
+            }
+            search['take'] = limit;
+            search['skip'] = offset;
+
+            const [list, count] = await this._llmPromptGroupRepository.findAndCount(search);
             const searchResults = {
                 TotalCount     : count,
                 RetrievedCount : list.length,
@@ -197,30 +207,12 @@ export class LlmpromptGroupService extends BaseService {
                 OrderedBy      : orderByColumn,
                 Items          : list.map(x => LlmPromptGroupMapper.toResponseDto(x)),
             };
+
             return searchResults;
+
         } catch (error) {
-            logger.error(error.message);
             ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
         }
-    };
-
-    private getSearchModel = (filters: LlmPromptGroupSearchFilters) => {
-
-        var search : FindManyOptions<LlmPromptGroup> = {
-            relations : {
-            },
-            where : {
-            },
-            select : {
-                id          : true,
-                Name        : true,
-                Description : true,
-            }
-        };
-        if (filters.Name) {
-            search.where['Name'] = Like(`%${filters.Name}%`);
-        }
-        return search;
     };
 
 }

@@ -11,7 +11,7 @@ import { ChunkingStrategy } from '../../../domain.types/chunking.strategy.domain
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class QnaDocumentValidator extends BaseValidator {
-    
+
     public validateCreateRequest = async (request: express.Request) => {
         try {
             const schema = joi.object({
@@ -25,11 +25,12 @@ export class QnaDocumentValidator extends BaseValidator {
                     .string()
                     .valid(...Object.values(ChunkingStrategy))
                     .required(),
-                ChunkingLenght : joi.number().required(),
+                ChunkingLength : joi.number().required(),
                 ChunkOverlap   : joi.number().required(),
                 Splitter       : joi.string().required(),
                 IsActive       : joi.boolean().required(),
                 CreatedBy      : joi.string().required(),
+                ResourceId     : joi.string().uuid().required()
             });
             return await schema.validateAsync(request.body);
         } catch (error) {
@@ -66,6 +67,7 @@ export class QnaDocumentValidator extends BaseValidator {
                 Splitter       : joi.string().optional(),
                 IsActive       : joi.boolean().optional(),
                 CreatedBy      : joi.string().optional(),
+                ResourceId     : joi.string().uuid().optional()
             });
             return await schema.validateAsync(request.body);
         } catch (error) {

@@ -53,6 +53,7 @@ export class FileResourceController extends BaseController {
             var originalFilename: string = request.headers['filename'] as string;
             // var contentLength = request.headers['Content-length'];
             var contentLength = Array.isArray(request.headers['content-length']) ? request.headers['content-length'][0] : request.headers['content-length'];
+
             var mimeType = request.headers['mime-type'] ?? mime.lookup(originalFilename);
             var publicResource = request.headers['public'] === 'true' ? true : false;
 
@@ -75,7 +76,7 @@ export class FileResourceController extends BaseController {
                 Tags             : request.body.Tags ? request.body.Tags : [],
                 Size             : contentLength ? parseInt(contentLength) : null,
                 // UserId           : request.currentUser ? request.currentUser.UserId : null,
-            };
+            }; 
             var record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to create file resource!', 400);

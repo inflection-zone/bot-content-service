@@ -62,7 +62,7 @@ DeletedAt: Date;
     LlmPromptGroups: LlmPromptGroup[];
 
 @OneToMany(() => LlmPromptVersion,
-    llm_prompt_versions => llm_prompt_versions.llm_prompts)
+    llm_prompt_versions => llm_prompt_versions.LlmPrompts)
         llm_prompt_versions: LlmPromptVersion[];
 
 }

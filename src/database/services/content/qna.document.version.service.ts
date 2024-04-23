@@ -39,7 +39,8 @@ export class QnaDocumentVersionService extends BaseService {
                 DownloadUrl    : createModel.DownloadUrl,
                 FileResourceId : createModel.FileResourceId,
                 Keywords       : JSON.stringify(createModel.Keywords),
-                Qna_Documents  : document,
+
+                Qna_Documents : document,
             });
             var record = await this._qnaDocumentVersionRepository.save(version);
             return QnaDocumentVersionMapper.toResponseDto(record);
@@ -151,7 +152,6 @@ export class QnaDocumentVersionService extends BaseService {
             var search = this.getSearchModel(filters);
             var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
             const [list, count] = await this._qnaDocumentVersionRepository.findAndCount(search);
-
             const searchResults = {
                 TotalCount     : count,
                 RetrievedCount : list.length,
@@ -172,18 +172,7 @@ export class QnaDocumentVersionService extends BaseService {
         var search: FindManyOptions<QnaDocumentVersion> = {
             relations : {},
             where     : {},
-            select    : {
-                id             : true,
-                VersionNumber  : true,
-                StorageUrl     : true,
-                DownloadUrl    : true,
-                FileResourceId : true,
-                Keywords       : true,
-                Qna_Documents  : {
-                    id   : true,
-                    Name : true,
-                },
-            },
+            select    : {},
         };
 
         if (filters.VersionNumber) {
@@ -202,10 +191,12 @@ export class QnaDocumentVersionService extends BaseService {
             search.where['FileResourceId'] = filters.FileResourceId;
         }
 
-        if (filters.Keywords) {
-            search.where['Keywords'] = filters.Keywords;
+        if (filters.keywords) {
+            search.where['Keywords'] = filters.keywords;
         }
+        // search.relations = ['Qna_Documents'];
+
         return search;
     };
-    
+
 }

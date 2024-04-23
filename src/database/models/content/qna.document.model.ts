@@ -48,7 +48,7 @@ export class QnaDocument extends BaseEntity {
     ChunkingStrategy: string;
 
     @Column()
-    ChunkingLenght: number;
+    ChunkingLength: number;
 
     @Column()
     ChunkOverlap: number;

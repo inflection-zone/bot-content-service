@@ -75,7 +75,6 @@ export class CustomFileStorageService implements IFileStorageService {
                 //     }
                 //     resolve(storageKey);
                 // });
-
                 uploadedFile.mv(fileLocation, (err) => {
                     if (err) {
                         console.error('Error moving file:', err);
