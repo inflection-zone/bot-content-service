@@ -15,5 +15,5 @@ export const register = (app: express.Application): void => {
     router.put('/:id', controller.update);
     router.delete('/:id', controller.delete);
 
-    app.use('/api/v1/documentgroups', router);
+    app.use('/api/v1/document-groups', router);
 };

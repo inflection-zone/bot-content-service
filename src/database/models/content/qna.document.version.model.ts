@@ -7,6 +7,7 @@ import {
     UpdateDateColumn,
     DeleteDateColumn,
     ManyToOne,
+    JoinColumn,
     
 } from 'typeorm';
 import { QnaDocument } from './qna.document.model';
@@ -29,7 +30,7 @@ export class QnaDocumentVersion extends BaseEntity {
     @Column({ type: 'varchar', length: 256, nullable: false })
     FileResourceId: string;
 
-    @Column({nullable: false})
+    @Column({ nullable: false })
     Keywords: string;
 
     @CreateDateColumn()
@@ -44,10 +45,10 @@ export class QnaDocumentVersion extends BaseEntity {
     @ManyToOne(
         ()=>QnaDocument,
         Qna_Documents=> Qna_Documents.Qna_Document_versions,
-        { cascade: true , eager: true})
-    // @JoinColumn({
-    //     name : 'QnaDocumentId'
-    // })
+        { cascade: true , eager: true })
+    @JoinColumn({
+        name : 'QnaDocumentId'
+    })
     Qna_Documents: QnaDocument;
     
 }

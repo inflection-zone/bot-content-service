@@ -60,11 +60,11 @@ export class QnaDocumentVersionValidator extends BaseValidator {
     public validateSearchRequest = async (request: express.Request): Promise<QnaDocumentVersionSearchFilters> => {
         try {
             const schema = joi.object({
-                VersionNumber  : joi.string().optional(),
-                QnaDocumentId  : joi.string().uuid().optional(),
-                StorageUrl     : joi.string().optional(),
-                DownloadUrl    : joi.string().optional(),
-                FileResourceId : joi.string().optional(),
+                versionNumber  : joi.string().optional(),
+                qnaDocumentId  : joi.string().uuid().optional(),
+                storageUrl     : joi.string().optional(),
+                downloadUrl    : joi.string().optional(),
+                fileResourceId : joi.string().optional(),
                 keywords       : joi.string().optional(),
             });
 
@@ -79,30 +79,30 @@ export class QnaDocumentVersionValidator extends BaseValidator {
     private getSearchFilters = (query): QnaDocumentVersionSearchFilters => {
         var filters = {};
 
-        var VersionNumber = query.VersionNumber ? query.VersionNumber : null;
-        if (VersionNumber != null) {
-            filters['VersionNumber'] = VersionNumber;
+        var versionNumber = query.versionNumber ? query.versionNumber : null;
+        if (versionNumber != null) {
+            filters['versionNumber'] = versionNumber;
         }
         // var QnaDocumentId = query.QnaDocumentId ? query.QnaDocumentId : null;
         // if (QnaDocumentId != null) {
         //     filters['QnaDocumentId'] = QnaDocumentId;
         // }
-        var StorageUrl = query.StorageUrl ? query.StorageUrl : null;
-        if (StorageUrl != null) {
-            filters['StorageUrl'] = StorageUrl;
+        var storageUrl = query.storageUrl ? query.storageUrl : null;
+        if (storageUrl != null) {
+            filters['storageUrl'] = storageUrl;
         }
-        var DownloadUrl = query.DownloadUrl ? query.DownloadUrl : null;
-        if (DownloadUrl != null) {
-            filters['DownloadUrl'] = DownloadUrl;
+        var downloadUrl = query.downloadUrl ? query.downloadUrl : null;
+        if (downloadUrl != null) {
+            filters['downloadUrl'] = downloadUrl;
         }
-        var FileResourceId = query.FileResourceId ? query.FileResourceId : null;
-        if (FileResourceId != null) {
-            filters['FileResourceId'] = FileResourceId;
+        var fileResourceId = query.fileResourceId ? query.fileResourceId : null;
+        if (fileResourceId != null) {
+            filters['fileResourceId'] = fileResourceId;
         }
 
         var keywords = query.keywords ? query.keywords : null;
         if (keywords != null) {
-            filters['Keywords'] = keywords;
+            filters['keywords'] = keywords;
         }
 
         var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;

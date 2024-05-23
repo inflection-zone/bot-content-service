@@ -52,23 +52,23 @@ export interface QnaDocumentResponseDto {
     Splitter: string;
     IsActive: boolean;
     CreatedBy: string;
-    ResourceId? :string;
+    ResourceId? : any;
 }
 
 export interface QnaDocumentSearchFilters extends BaseSearchFilters {
     id?: uuid;
-    Name?: string;
-    Description?: string;
-    FileName?: string;
-    Source?: string;
-    ParentDocument?: string;
-    ParentDocumentVersion?: string;
-    ChunkingStrategy?: string;
-    ChunkingLength?: decimal;
-    ChunkOverlap?: decimal;
-    Splitter?: string;
-    IsActive?: boolean;
-    CreatedBy?: string;
+    name?: string;
+    description?: string;
+    fileName?: string;
+    source?: string;
+    parentDocument?: string;
+    parentDocumentVersion?: string;
+    chunkingStrategy?: string;
+    chunkingLength?: decimal;
+    chunkOverlap?: decimal;
+    splitter?: string;
+    isActive?: boolean;
+    createdBy?: string;
 }
 export interface QnaDocumentSearchResults extends BaseSearchResults {
     id?: uuid;

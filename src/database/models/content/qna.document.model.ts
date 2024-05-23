@@ -10,6 +10,7 @@ import {
     ManyToMany,
     JoinTable,
     OneToOne,
+    JoinColumn,
 } from 'typeorm';
 import { ChunkingStrategy } from '../../../domain.types/chunking.strategy.domain.types';
 import { QnaDocumentVersion } from './qna.document.version.model';
@@ -74,9 +75,14 @@ export class QnaDocument extends BaseEntity {
     @ManyToMany(() => QnaDocumentGroup, (qnaDocumentGroup) => qnaDocumentGroup.QnaDocuments)
     @JoinTable()
     QnaDocumentGroups: QnaDocumentGroup[];
-    
-    @OneToOne(() => FileResource)
-    @Column({ type: 'uuid', nullable: true })
-    ResourceId : string;
+
+    // @OneToOne(() => FileResource)
+    @OneToOne(() => FileResource, (fileResource) => fileResource.qna_document) // specify inverse side as a second parameter
+    @JoinColumn({ name: 'ResourceId' })
+    ResourceId: FileResource;
+
+    // @OneToOne(() => FileResource, (fileResource) => fileResource.qna_document) // specify inverse side as a second parameter
+    // @JoinColumn()
+    // ResourceId: FileResource;
     
 }

@@ -155,8 +155,8 @@ export class QnaDocumentGroupsService extends BaseService {
                 select    : this._selectAll,
             };
 
-            if (filters.Name) {
-                search.where['Name'] = filters.Name;
+            if (filters.name) {
+                search.where['Name'] = filters.name;
             }
 
             //Sorting

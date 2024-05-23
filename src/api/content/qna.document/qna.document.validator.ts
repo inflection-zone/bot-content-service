@@ -30,7 +30,7 @@ export class QnaDocumentValidator extends BaseValidator {
                 Splitter       : joi.string().required(),
                 IsActive       : joi.boolean().required(),
                 CreatedBy      : joi.string().required(),
-                ResourceId     : joi.string().uuid().required()
+                ResourceId     : joi.string().uuid().required(),
             });
             return await schema.validateAsync(request.body);
         } catch (error) {
@@ -67,7 +67,7 @@ export class QnaDocumentValidator extends BaseValidator {
                 Splitter       : joi.string().optional(),
                 IsActive       : joi.boolean().optional(),
                 CreatedBy      : joi.string().optional(),
-                ResourceId     : joi.string().uuid().optional()
+                ResourceId     : joi.string().uuid().optional(),
             });
             return await schema.validateAsync(request.body);
         } catch (error) {
@@ -78,21 +78,21 @@ export class QnaDocumentValidator extends BaseValidator {
     public validateSearchRequest = async (request: express.Request): Promise<QnaDocumentSearchFilters> => {
         try {
             const schema = joi.object({
-                Name                  : joi.string().optional(),
-                Description           : joi.string().optional(),
-                FileName              : joi.string().optional(),
-                Source                : joi.string().optional(),
-                ParentDocument        : joi.string().optional(),
-                ParentDocumentVersion : joi.string().optional(),
-                ChunkingStrategy      : joi
+                name                  : joi.string().optional(),
+                description           : joi.string().optional(),
+                fileName              : joi.string().optional(),
+                source                : joi.string().optional(),
+                parentDocument        : joi.string().optional(),
+                parentDocumentVersion : joi.string().optional(),
+                chunkingStrategy      : joi
                     .string()
                     .valid(...Object.values(ChunkingStrategy))
                     .optional(),
-                ChunkingLength : joi.number().optional(),
-                ChunkOverlap   : joi.number().optional(),
-                Splitter       : joi.number().optional(),
-                IsActive       : joi.boolean().optional(),
-                CreatedBy      : joi.string().optional(),
+                chunkingLength : joi.number().optional(),
+                chunkOverlap   : joi.number().optional(),
+                splitter       : joi.number().optional(),
+                isActive       : joi.boolean().optional(),
+                createdBy      : joi.string().optional(),
             });
 
             await schema.validateAsync(request.query);
@@ -106,53 +106,53 @@ export class QnaDocumentValidator extends BaseValidator {
     private getSearchFilters = (query): QnaDocumentSearchFilters => {
         var filters = {};
 
-        var Name = query.Name ? query.Name : null;
-        if (Name != null) {
-            filters['Name'] = Name;
+        var name = query.name ? query.name : null;
+        if (name != null) {
+            filters['name'] = name;
         }
-        var Description = query.Description ? query.Description : null;
-        if (Description != null) {
-            filters['Description'] = Description;
+        var description = query.description ? query.description : null;
+        if (description != null) {
+            filters['description'] = description;
         }
-        var FileName = query.FileName ? query.FileName : null;
-        if (FileName != null) {
-            filters['FileName'] = FileName;
+        var fileName = query.fileName ? query.fileName : null;
+        if (fileName != null) {
+            filters['fileName'] = fileName;
         }
-        var Source = query.Source ? query.Source : null;
-        if (Source != null) {
-            filters['Source'] = Source;
+        var source = query.source ? query.source : null;
+        if (source != null) {
+            filters['source'] = source;
         }
-        var ParentDocument = query.ParentDocument ? query.ParentDocument : null;
-        if (ParentDocument != null) {
-            filters['ParentDocument'] = ParentDocument;
+        var parentDocument = query.parentDocument ? query.parentDocument : null;
+        if (parentDocument != null) {
+            filters['parentDocument'] = parentDocument;
         }
-        var ParentDocumentVersion = query.ParentDocumentVersion ? query.ParentDocumentVersion : null;
-        if (ParentDocumentVersion != null) {
-            filters['ParentDocumentVersion'] = ParentDocumentVersion;
+        var parentDocumentVersion = query.parentDocumentVersion ? query.parentDocumentVersion : null;
+        if (parentDocumentVersion != null) {
+            filters['parentDocumentVersion'] = parentDocumentVersion;
         }
-        var ChunkingStrategy = query.ChunkingStrategy ? query.ChunkingStrategy : null;
-        if (ChunkingStrategy != null) {
-            filters['ChunkingStrategy'] = ChunkingStrategy;
+        var chunkingStrategy = query.chunkingStrategy ? query.chunkingStrategy : null;
+        if (chunkingStrategy != null) {
+            filters['chunkingStrategy'] = chunkingStrategy;
         }
-        var ChunkingLength = query.ChunkingLength ? query.ChunkingLength : null;
-        if (ChunkingLength != null) {
-            filters['ChunkingLength'] = ChunkingLength;
+        var chunkingLength = query.chunkingLength ? query.chunkingLength : null;
+        if (chunkingLength != null) {
+            filters['chunkingLength'] = chunkingLength;
         }
-        var ChunkOverlap = query.ChunkOverlap ? query.ChunkOverlap : null;
-        if (ChunkOverlap != null) {
-            filters['ChunkOverlap'] = ChunkOverlap;
+        var chunkOverlap = query.chunkOverlap ? query.chunkOverlap : null;
+        if (chunkOverlap != null) {
+            filters['chunkOverlap'] = chunkOverlap;
         }
-        var Splitter = query.Splitter ? query.Splitter : null;
-        if (Splitter != null) {
-            filters['Splitter'] = Splitter;
+        var splitter = query.splitter ? query.splitter : null;
+        if (splitter != null) {
+            filters['splitter'] = splitter;
         }
-        var IsActive = query.IsActive ? query.IsActive : null;
-        if (IsActive != null) {
-            filters['IsActive'] = IsActive;
+        var isActive = query.isActive ? query.isActive : null;
+        if (isActive != null) {
+            filters['isActive'] = isActive;
         }
-        var CreatedBy = query.CreatedBy ? query.CreatedBy : null;
-        if (CreatedBy != null) {
-            filters['CreatedBy'] = CreatedBy;
+        var createdBy = query.createdBy ? query.createdBy : null;
+        if (createdBy != null) {
+            filters['createdBy'] = createdBy;
         }
         var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
         if (itemsPerPage != null) {

@@ -48,12 +48,12 @@ export interface QnaDocumentVersionResponseDto {
 }
 
 export interface QnaDocumentVersionSearchFilters extends BaseSearchFilters {
-    VersionNumber?: string;
-    StorageUrl?: string;
-    DownloadUrl?: string;
-    FileResourceId?: string;
+    versionNumber?: string;
+    storageUrl?: string;
+    downloadUrl?: string;
+    fileResourceId?: string;
     keywords?: string[];
-    QnaDocumentId?: string;
+    qnaDocumentId?: string;
 }
 
 export interface QnaDocumentVersionSearchResults extends BaseSearchResults {
