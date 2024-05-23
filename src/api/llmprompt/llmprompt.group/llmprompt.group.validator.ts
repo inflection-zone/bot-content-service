@@ -70,8 +70,8 @@ export class LlmPromptGroupValidator extends BaseValidator {
     public validateSearchRequest = async (request: express.Request): Promise<LlmPromptGroupSearchFilters> => {
         try {
             const schema = joi.object({
-                Name        : joi.string().optional(),
-                Description : joi.string().optional(),
+                name        : joi.string().valid(...Object.values(PromptGroup)).optional(),
+                description : joi.string().optional(),
                 
             });
                

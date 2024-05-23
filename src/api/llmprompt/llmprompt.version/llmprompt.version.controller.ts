@@ -73,6 +73,38 @@ export class LlmPromptVersionController {
         }
     };
 
+    // getByPrompt = async (request: express.Request, response: express.Response) => {
+    //     try {
+    //         // await this.authorize('Badge.GetById', request, response);
+    //         var prompt: string = await this._validator.validateGetRequest(request);
+    //         const record = await this._service.getByPrompt(prompt);
+    //         if (record === null)
+    //         {
+    //             const message = '  version prompt cannot be found!';
+    //             ErrorHandler.throwNotFoundError(message);
+    //             // return ResponseHandler.success(request, response, message, 200, record);
+    //         }
+    //         else {
+    //             const message = 'LLm prompt version retrieved successfully!';
+    //             return ResponseHandler.success(request, response, message, 200, record);
+    //         }
+    //     } catch (error) {
+    //         ResponseHandler.handleError(request, response, error);
+    //     }
+    // };
+
+    getByPrompt = async (request: express.Request, response: express.Response) => {
+        try {
+            const prompt: string = request.params.prompt;
+            const records = await this._service.getByPrompt(prompt);
+            const message = 'LlmPrompt By status retrieved successfully!';
+            return ResponseHandler.success(request, response, message, 200, records);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+    
+    
     delete = async (request: express.Request, response: express.Response) => {
         try {
             const id = await this._validator.validateParamAsUUID(request, 'id');

@@ -19,6 +19,7 @@ export class LlmPromptVersionMapper {
             LlmPrompt     : prompt,
             Prompt        : llmpromptversion.Prompt,
             Variables     : variables,
+            // Variables     : NodeType,
             Score         : llmpromptversion.Score,
             PublishedAt   : llmpromptversion.PublishedAt,
         };

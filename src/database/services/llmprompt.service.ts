@@ -226,7 +226,7 @@ export class LlmpromptService extends BaseService {
         };
 
         if (filters.Name) {
-            search.where['Name'] = Like(`%${filters.Name}%`);
+            search.where['name'] = Like(`%${filters.Name}%`);
         }
         if (filters.UseCaseType) {
             search.where['UseCaseType'] = filters.UseCaseType;

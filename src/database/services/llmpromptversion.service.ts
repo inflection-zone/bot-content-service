@@ -123,6 +123,23 @@ export class LlmpromptVersionService extends BaseService {
         }
     };
 
+    public getByPrompt = async (prompt: string): Promise<LlmPromptVersionDto> => {
+        try {
+            var llmPrompt = await this._llmPromptVersionRepository.findOne({
+                where : {
+                    Prompt : prompt
+                },
+                relations : {
+                    LlmPrompts : true,
+                }
+            });
+            return LlmPromptVersionMapper.toResponseDto(llmPrompt);
+        } catch (error) {
+            logger.error(error.message);
+            ErrorHandler.throwInternalServerError(error.message, 500);
+        }
+    };
+
     public delete = async (id: string): Promise<boolean> => {
         try {
             var record = await this._llmPromptVersionRepository.findOne({
@@ -183,12 +200,10 @@ export class LlmpromptVersionService extends BaseService {
         if (filters.VersionNumber) {
             search.where['VersionNumber'] = Like(`%${filters.VersionNumber}%`);
         }
-
-        if (filters.Prompt) {
-            search.where['Prompt'] = filters.Prompt;
-        }
+        
         if (filters.Variables) {
-            search.where['Variables'] = filters.Variables;
+            // search.where['Variables'] = filters.Variables;
+            search.where['Variables'] = Like(`%${filters.Variables}%`);
         }
         if (filters.Score) {
             search.where['Score'] = filters.Score;

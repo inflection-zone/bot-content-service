@@ -17,5 +17,5 @@ export const register = (app: express.Application): void => {
     router.delete('/:id', controller.delete);
     
     // router.get('/records', controller.getAll);
-    app.use('/api/v1/llmprompts', router);
+    app.use('/api/v1/llm-prompts', router);
 };

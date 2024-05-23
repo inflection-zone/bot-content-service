@@ -3,6 +3,7 @@ import joi from 'joi';
 import { ErrorHandler } from '../../../common/handlers/error.handler';
 import BaseValidator from '../../base.validator';
 import { LlmPromptVersionSearchFilters } from '../../../domain.types/llm.prompt/llm.prompt.version.domain.types';
+import { NodeType } from '../../../domain.types/engine/engine.types';
 
 export class LlmPromptVersionValidator extends BaseValidator {
 
@@ -13,6 +14,7 @@ export class LlmPromptVersionValidator extends BaseValidator {
                 PromptId      : joi.string().required(),
                 Prompt        : joi.string().required(),
                 Variables     : joi.array().items(joi.string().required()),
+                // Variables     : joi.string().valid(...Object.values(NodeType)).required(),
                 Score         : joi.number(),
                 PublishedAt   : joi.date().optional(),
                
@@ -42,6 +44,7 @@ export class LlmPromptVersionValidator extends BaseValidator {
                 PromptId      : joi.string().optional(),
                 Prompt        : joi.string().optional(),
                 Variables     : joi.array().items(joi.string().optional()),
+                // Variables     : joi.string().valid(...Object.values(NodeType)).optional(),
                 Score         : joi.number(),
                 PublishedAt   : joi.date().optional(),
             });
@@ -54,12 +57,12 @@ export class LlmPromptVersionValidator extends BaseValidator {
     public validateSearchRequest = async (request: express.Request): Promise<LlmPromptVersionSearchFilters> => {
         try {
             const schema = joi.object({
-                VersionNumber : joi.string().optional(),
-                PromptId      : joi.string().optional(),
-                Prompt        : joi.string().optional(),
-                Variables     : joi.string().optional(),
-                Score         : joi.string().optional(),
-                PublishedAt   : joi.date().optional(),
+                versionNumber : joi.string().optional(),
+                promptId      : joi.string().optional(),
+                prompt        : joi.string().optional(),
+                variables     : joi.string().optional(),
+                score         : joi.string().optional(),
+                publishedAt   : joi.date().optional(),
             });
             await schema.validateAsync(request.query);
             const filters = this.getSearchFilters(request.query);
@@ -79,16 +82,20 @@ export class LlmPromptVersionValidator extends BaseValidator {
         }
         var PromptId  = query.PromptId  ? query.PromptId  : null;
         if (PromptId  != null) {
-            filters['PromptId '] = PromptId ;
+            filters['promptId '] = PromptId ;
         }
         var Prompt = query.Prompt ? query.Prompt : null;
         if (Prompt != null) {
-            filters['Prompt'] = Prompt;
+            filters['prompt'] = Prompt;
         }
-        var Variables = query.Variables ? query.Variables : null;
+        var Variables = query.variables ? query.variables : null;
         if (Variables != null) {
             filters['Variables'] = Variables;
         }
+    //     var Variables = query.Variables ? query.Variables : null;
+    // if (Variables != null && Array.isArray(Variables)) {
+    //     filters['variables'] = Variables;
+    // }
         var Score = query.Score ? query.Score : null;
         if (Score != null) {
             filters['Score'] = Score;

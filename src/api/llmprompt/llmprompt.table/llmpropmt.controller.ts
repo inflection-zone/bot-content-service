@@ -101,24 +101,6 @@ export class LlmPromptController {
         }
     };
 
-    // delete = async (request: express.Request, response: express.Response) => {
-    //     try {
-    //         const id = await this._validator.validateParamAsUUID(request, 'id');
-    //         const record: LlmPromptDto = await this._service.getById(id);
-    //         if (record == null) {
-    //             ErrorHandler.throwNotFoundError('Prompt with id ' + id.toString() + ' cannot be found!');
-    //         }
-    //         const userDeleted: boolean = await this._service.delete(id);
-    //         const result = {
-    //             Deleted : userDeleted
-    //         };
-    //         const message = 'Prompt deleted successfully!';
-    //         ResponseHandler.success(request, response, message, 200, result);
-    //     } catch (error) {
-    //         ResponseHandler.handleError(request, response, error);
-    //     }
-    // };
-
     search = async (request: express.Request, response: express.Response) => {
         try {
            

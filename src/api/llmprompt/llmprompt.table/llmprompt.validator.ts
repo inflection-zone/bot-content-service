@@ -76,18 +76,18 @@ export class LlmPromptValidator extends BaseValidator {
     public validateSearchRequest = async (request: express.Request): Promise<LlmPromptSearchFilters> => {
         try {
             const schema = joi.object({
-                Name              : joi.string().optional(),
-                Description       : joi.string().optional(),
-                UseCaseType       : joi.string().valid(...Object.values(PromptUsecase)).optional(),
-                GroupName         : joi.string().valid(...Object.values(PromptGroup)).optional(),
-                ModelName         : joi.string().optional(),
-                ModelVersion      : joi.string().optional(),
-                UserId            : joi.string().optional(),
-                Temperature       : joi.number().optional(),
-                FrequencyPenality : joi.number().optional(),
-                TopP              : joi.number().optional(),
-                PresencePenalty   : joi.number().optional(),
-                IsActive          : joi.boolean().optional(),
+                name              : joi.string().optional(),
+                description       : joi.string().optional(),
+                useCaseType       : joi.string().valid(...Object.values(PromptUsecase)).optional(),
+                groupName         : joi.string().valid(...Object.values(PromptGroup)).optional(),
+                modelName         : joi.string().optional(),
+                modelVersion      : joi.string().optional(),
+                userId            : joi.string().optional(),
+                temperature       : joi.number().optional(),
+                frequencyPenality : joi.number().optional(),
+                topP              : joi.number().optional(),
+                presencePenalty   : joi.number().optional(),
+                isActive          : joi.boolean().optional(),
             });
                
             await schema.validateAsync(request.query);

@@ -9,10 +9,13 @@ export const register = (app: express.Application): void => {
 
     router.get('/search', controller.search);
     router.get('/records', controller.getAll);
+    
     router.get('/:id', controller.getById);
+    // router.get('/prompt', controller.getByPrompt);
+    router.get('/search-by-prompt/:prompt', controller.getByPrompt);
     router.post('/', controller.create);
     router.put('/:id', controller.update);
     router.delete('/:id', controller.delete);
     
-    app.use('/api/v1/llmpromptversions', router);
+    app.use('/api/v1/llm-prompt-versions', router);
 };
