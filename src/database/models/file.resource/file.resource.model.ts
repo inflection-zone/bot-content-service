@@ -26,9 +26,6 @@ export class FileResource {
     @Column({ type: 'varchar', length: 1024, nullable: false })
     StorageKey: string;
 
-    // @OneToOne(() => QnaDocument)
-    // @Column({ type: 'uuid', nullable: true })
-    // DocumentId : string;
 
     @OneToOne(() => QnaDocument, (qna_document) => qna_document.ResourceId) // specify inverse side as a second parameter
     qna_document: QnaDocument;
