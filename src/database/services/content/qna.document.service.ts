@@ -13,6 +13,7 @@ import {
 } from '../../../domain.types/content/qna.document.domain.types';
 import { QnaDocumentResponseDto } from '../../../domain.types/content/qna.document.domain.types';
 import { QnaDocumentMapper } from '../../mappers/content/qna.document.mapper';
+import { FileResource } from '../../models/file.resource/file.resource.model';
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -20,8 +21,16 @@ export class QnaDocumentService extends BaseService {
 
     _qnaDocumentRepository: Repository<QnaDocument> = Source.getRepository(QnaDocument);
 
+    _fileResourceRepository : Repository<FileResource> = Source.getRepository(FileResource);
+
     public create = async (createModel: QnaDocumentCreateModel): Promise<QnaDocumentResponseDto> => {
         try {
+            const fileResource = await this._fileResourceRepository.findOne({
+                where : { id: createModel.ResourceId },
+            });
+            if (!fileResource) {
+                ErrorHandler.throwNotFoundError('File ResourceId cannot be found');
+            }
             const document = this._qnaDocumentRepository.create({
                 Name                  : createModel.Name,
                 Description           : createModel.Description,
@@ -35,7 +44,7 @@ export class QnaDocumentService extends BaseService {
                 Splitter              : createModel.Splitter,
                 IsActive              : createModel.IsActive,
                 CreatedBy             : createModel.CreatedBy,
-                ResourceId            : createModel.ResourceId
+                ResourceId            : fileResource
             });
             var record = await this._qnaDocumentRepository.save(document);
             return QnaDocumentMapper.toResponseDto(record);
@@ -92,9 +101,9 @@ export class QnaDocumentService extends BaseService {
             if (model.CreatedBy != null) {
                 document.CreatedBy = model.CreatedBy;
             }
-            if (model.ResourceId != null) {
-                document.ResourceId = model.ResourceId;
-            }
+            // if (model.ResourceId != null) {
+            //     document.ResourceId = model.ResourceId;
+            // }
             var record = await this._qnaDocumentRepository.save(document);
             return QnaDocumentMapper.toResponseDto(record);
         } catch (error) {
@@ -190,45 +199,45 @@ export class QnaDocumentService extends BaseService {
                 Splitter              : true,
                 IsActive              : true,
                 CreatedBy             : true,
-                ResourceId            : true
+                
             },
         };
 
-        if (filters.Name) {
-            search.where['Name'] = Like(`%${filters.Name}%`);
+        if (filters.name) {
+            search.where['Name'] = Like(`%${filters.name}%`);
         }
-        if (filters.Description) {
-            search.where['Description'] = filters.Description;
+        if (filters.description) {
+            search.where['Description'] = filters.description;
         }
-        if (filters.FileName) {
-            search.where['FileName'] = filters.FileName;
+        if (filters.fileName) {
+            search.where['FileName'] = filters.fileName;
         }
-        if (filters.Source) {
-            search.where['Source'] = filters.Source;
+        if (filters.source) {
+            search.where['Source'] = filters.source;
         }
-        if (filters.ParentDocument) {
-            search.where['ParentDocument'] = filters.ParentDocument;
+        if (filters.parentDocument) {
+            search.where['ParentDocument'] = filters.parentDocument;
         }
-        if (filters.ParentDocumentVersion) {
-            search.where['ParentDocumentVersion'] = filters.ParentDocumentVersion;
+        if (filters.parentDocumentVersion) {
+            search.where['ParentDocumentVersion'] = filters.parentDocumentVersion;
         }
-        if (filters.ChunkingStrategy) {
-            search.where['ChunkingStrategy'] = filters.ChunkingStrategy;
+        if (filters.chunkingStrategy) {
+            search.where['ChunkingStrategy'] = filters.chunkingStrategy;
         }
-        if (filters.ChunkingLength) {
-            search.where['ChunkingLength'] = filters.ChunkingLength;
+        if (filters.chunkingLength) {
+            search.where['ChunkingLength'] = filters.chunkingLength;
         }
-        if (filters.ChunkOverlap) {
-            search.where['ChunkOverlap'] = filters.ChunkOverlap;
+        if (filters.chunkOverlap) {
+            search.where['ChunkOverlap'] = filters.chunkOverlap;
         }
-        if (filters.Splitter) {
-            search.where['Splitter'] = filters.Splitter;
+        if (filters.splitter) {
+            search.where['Splitter'] = filters.splitter;
         }
-        if (filters.IsActive) {
-            search.where['IsActive'] = filters.IsActive;
+        if (filters.isActive) {
+            search.where['IsActive'] = filters.isActive;
         }
-        if (filters.CreatedBy) {
-            search.where['CreatedBy'] = filters.CreatedBy;
+        if (filters.createdBy) {
+            search.where['CreatedBy'] = filters.createdBy;
         }
         return search;
     };

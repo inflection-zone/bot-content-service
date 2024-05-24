@@ -175,24 +175,25 @@ export class QnaDocumentVersionService extends BaseService {
             select    : {},
         };
 
-        if (filters.VersionNumber) {
-            search.where['VersionNumber'] = Like(`${filters.VersionNumber}`);
+        if (filters.versionNumber) {
+            search.where['VersionNumber'] = Like(`${filters.versionNumber}`);
         }
         // if (filters.QnaDocumentId) {
         //     search.where['QnaDocumentId'] = filters.QnaDocumentId;
         // }
-        if (filters.StorageUrl) {
-            search.where['StorageUrl'] = filters.StorageUrl;
+        if (filters.storageUrl) {
+            search.where['StorageUrl'] = filters.storageUrl;
         }
-        if (filters.DownloadUrl) {
-            search.where['DownloadUrl'] = filters.DownloadUrl;
+        if (filters.downloadUrl) {
+            search.where['DownloadUrl'] = filters.downloadUrl;
         }
-        if (filters.FileResourceId) {
-            search.where['FileResourceId'] = filters.FileResourceId;
+        if (filters.fileResourceId) {
+            search.where['FileResourceId'] = filters.fileResourceId;
         }
 
         if (filters.keywords) {
-            search.where['Keywords'] = filters.keywords;
+            // search.where['Keywords'] = filters.keywords;
+            search.where['Keywords'] = Like(`%${filters.keywords}%`);
         }
         // search.relations = ['Qna_Documents'];
 

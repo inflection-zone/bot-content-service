@@ -37,7 +37,7 @@ export interface QnaDocumentGroupResponseDto {
 }
 
 export interface QnaDocumentGroupSearchFilters extends BaseSearchFilters {
-    Name?: string;
+    name?: string;
 }
 
 export interface QnaDocumentGroupSearchResults extends BaseSearchResults {

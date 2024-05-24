@@ -53,7 +53,7 @@ export class QnaDocumentGroupsValidator extends BaseValidator {
     public validateSearchRequest = async (request: express.Request): Promise<QnaDocumentGroupSearchFilters> => {
         try {
             const schema = joi.object({
-                Name : joi.string().optional(),
+                name : joi.string().optional(),
             });
 
             await schema.validateAsync(request.query);
@@ -68,9 +68,9 @@ export class QnaDocumentGroupsValidator extends BaseValidator {
     private getSearchFilters = (query): QnaDocumentGroupSearchFilters => {
         var filters = {};
 
-        var Name = query.Name ? query.Name : null;
-        if (Name != null) {
-            filters['Name'] = Name;
+        var name = query.name ? query.name : null;
+        if (name != null) {
+            filters['name'] = name;
         }
         var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
         if (itemsPerPage != null) {
