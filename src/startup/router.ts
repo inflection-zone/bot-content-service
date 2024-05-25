@@ -46,11 +46,10 @@ export class Router {
                 registerLlmPromptRoutes(this._app);
                 registerLlmPromptVersionRoutes(this._app);
                 registerLlmPromptGroupRoutes(this._app);
-                // qna code
                 registerQnaDocumentGroup(this._app);
                 registerQnaDocument(this._app);
                 registerQnaDocumentVersion(this._app);
-                registerQnaDocumentLibrary(this._app);// registerParticipantRoutes(this._app);
+                registerQnaDocumentLibrary(this._app);
                 registerFileResourceRoutes(this._app);
                 resolve(true);
 

@@ -26,14 +26,6 @@ logger.info(`db host     : ${Config.host}`);
 
 class DatabaseConnector {
 
-    // static _basePath = path.join(process.cwd(), 'src/database/models').replace(/\\/g, '/');
-
-    // static _folders = this.getFoldersRecursively(this._basePath)
-    //     .map(y => y.replace(/\\/g, '/'))
-    //     .map(x => '"' + x + '/*.js"');
-
-    //static _entities = this;
-
     static _source = new DataSource({
         name        : Config.dialect,
         type        : Config.dialect,
@@ -43,7 +35,6 @@ class DatabaseConnector {
         password    : Config.password,
         database    : Config.database,
         synchronize : true,
-        //entities    : [this._basePath + '/**/**{.model.ts}'],
         entities    : [
             QnaDocumentGroup,
             QnaDocumentVersion,
@@ -56,7 +47,6 @@ class DatabaseConnector {
         ],
         migrations  : [],
         subscribers : [],
-        //logger      : 'advanced-console', //Use console for the typeorm logging
         logger      : new DBLogger(),
         logging     : true,
         poolSize    : Config.pool.max,

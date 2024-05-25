@@ -1,10 +1,6 @@
-/* eslint-disable indent */
-/* eslint-disable padded-blocks */
-/* eslint-disable max-len */
 import express from 'express';
 import joi from 'joi';
 import { ErrorHandler } from '../../../common/handlers/error.handler';
-// import { LlmPromptsCreateModel } from "../../domain.types/llm.prompt/llm.prompts.domain.types";
 import { PromptUsecase } from '../../../domain.types/usecase.domain.types';
 import BaseValidator from '../../base.validator';
 import { LlmPromptSearchFilters } from '../../../domain.types/llm.prompt/llm.prompt.domain.types';
@@ -30,7 +26,6 @@ export class LlmPromptValidator extends BaseValidator {
             });
             return await schema.validateAsync(request.body);
             
-            //  return this.getValidUserCreateModel(request);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -42,8 +37,7 @@ export class LlmPromptValidator extends BaseValidator {
                 id : joi.string().required(),
               
             });
-           return await schema.validateAsync(request.query);
-            // return this.getSearchFilters(request.query);
+            return await schema.validateAsync(request.query);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -65,9 +59,7 @@ export class LlmPromptValidator extends BaseValidator {
                 PresencePenalty   : joi.number().optional(),
                 IsActive          : joi.boolean().optional(),
             });
-           return await schema.validateAsync(request.body);
-            // const id = await this.validateParamAsUUID(request, 'id');
-            // return await this.getValidUserUpdateModel(id, request);
+            return await schema.validateAsync(request.body);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }

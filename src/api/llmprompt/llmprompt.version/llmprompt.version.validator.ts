@@ -3,7 +3,6 @@ import joi from 'joi';
 import { ErrorHandler } from '../../../common/handlers/error.handler';
 import BaseValidator from '../../base.validator';
 import { LlmPromptVersionSearchFilters } from '../../../domain.types/llm.prompt/llm.prompt.version.domain.types';
-import { NodeType } from '../../../domain.types/engine/engine.types';
 
 export class LlmPromptVersionValidator extends BaseValidator {
 
@@ -14,7 +13,6 @@ export class LlmPromptVersionValidator extends BaseValidator {
                 PromptId      : joi.string().required(),
                 Prompt        : joi.string().required(),
                 Variables     : joi.array().items(joi.string().required()),
-                // Variables     : joi.string().valid(...Object.values(NodeType)).required(),
                 Score         : joi.number(),
                 PublishedAt   : joi.date().optional(),
                
@@ -44,7 +42,6 @@ export class LlmPromptVersionValidator extends BaseValidator {
                 PromptId      : joi.string().optional(),
                 Prompt        : joi.string().optional(),
                 Variables     : joi.array().items(joi.string().optional()),
-                // Variables     : joi.string().valid(...Object.values(NodeType)).optional(),
                 Score         : joi.number(),
                 PublishedAt   : joi.date().optional(),
             });
@@ -92,10 +89,6 @@ export class LlmPromptVersionValidator extends BaseValidator {
         if (Variables != null) {
             filters['Variables'] = Variables;
         }
-    //     var Variables = query.Variables ? query.Variables : null;
-    // if (Variables != null && Array.isArray(Variables)) {
-    //     filters['variables'] = Variables;
-    // }
         var Score = query.Score ? query.Score : null;
         if (Score != null) {
             filters['Score'] = Score;

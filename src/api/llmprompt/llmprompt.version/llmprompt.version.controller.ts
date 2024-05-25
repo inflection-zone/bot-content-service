@@ -17,7 +17,6 @@ export class LlmPromptVersionController {
 
     create = async (request: express.Request, response: express.Response) => {
         try {
-            // await this.authorize('Badge.Create', request, response);
             var model: LlmPromptVersionCreateModel = await this._validator.validateCreateRequest(request);
             const record = await this._service.create(model);
             if (record === null) {
@@ -45,14 +44,12 @@ export class LlmPromptVersionController {
     
     getById = async (request: express.Request, response: express.Response) => {
         try {
-            // await this.authorize('Badge.GetById', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
             if (record === null)
             {
                 const message = ' Prompt version id cannot be found!';
                 ErrorHandler.throwNotFoundError(message);
-                // return ResponseHandler.success(request, response, message, 200, record);
             }
             else {
                 const message = 'LLm prompt version retrieved successfully!';
@@ -73,26 +70,6 @@ export class LlmPromptVersionController {
         }
     };
 
-    // getByPrompt = async (request: express.Request, response: express.Response) => {
-    //     try {
-    //         // await this.authorize('Badge.GetById', request, response);
-    //         var prompt: string = await this._validator.validateGetRequest(request);
-    //         const record = await this._service.getByPrompt(prompt);
-    //         if (record === null)
-    //         {
-    //             const message = '  version prompt cannot be found!';
-    //             ErrorHandler.throwNotFoundError(message);
-    //             // return ResponseHandler.success(request, response, message, 200, record);
-    //         }
-    //         else {
-    //             const message = 'LLm prompt version retrieved successfully!';
-    //             return ResponseHandler.success(request, response, message, 200, record);
-    //         }
-    //     } catch (error) {
-    //         ResponseHandler.handleError(request, response, error);
-    //     }
-    // };
-
     getByPrompt = async (request: express.Request, response: express.Response) => {
         try {
             const prompt: string = request.params.prompt;
@@ -103,7 +80,6 @@ export class LlmPromptVersionController {
             ResponseHandler.handleError(request, response, error);
         }
     };
-    
     
     delete = async (request: express.Request, response: express.Response) => {
         try {

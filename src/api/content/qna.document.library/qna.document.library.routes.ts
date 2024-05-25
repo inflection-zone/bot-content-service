@@ -5,7 +5,6 @@ import { QnaDocumentLibraryController } from './qna.document.library.controller'
 
 export const register = (app: express.Application): void => {
     const router = express.Router();
-
     const controller = new QnaDocumentLibraryController();
 
     router.post('/', controller.create);

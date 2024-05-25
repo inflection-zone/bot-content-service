@@ -16,7 +16,6 @@ export class LlmPromptController {
 
     create = async (request: express.Request, response: express.Response) => {
         try {
-            // await this.authorize('Badge.Create', request, response);
             var model: LlmPromptCreateModel = await this._validator.validateCreateRequest(request);
             const record = await this._service.create(model);
             if (record === null) {
@@ -44,14 +43,12 @@ export class LlmPromptController {
     
     getById = async (request: express.Request, response: express.Response) => {
         try {
-            // await this.authorize('Badge.GetById', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
             if (record === null)
             {
                 const message = 'LLm prompt id cannot be found!';
                 ErrorHandler.throwNotFoundError(message);
-                // return ResponseHandler.success(request, response, message, 200, record);
             }
             else {
                 const message = 'LLm prompt retrieved successfully!';

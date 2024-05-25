@@ -1,6 +1,3 @@
-/* eslint-disable key-spacing */
-/* eslint-disable no-multiple-empty-lines */
-/* eslint-disable no-trailing-spaces */
 import express from 'express';
 import fs from 'fs';
 import { ResponseHandler } from '../../common/handlers/response.handler';
@@ -12,13 +9,10 @@ import BaseValidator from '../base.validator';
 import * as mime from 'mime-types';
 import { FileResourceCreateModel } from '../../domain.types/general/file.resource.domain.types';
 import { FileUtils } from '../../common/utilities/file.utils';
-// import { Loader } from '../../startup/loader';
 import { StorageService } from '../../modules/storage/storage.service';
-// import { FileResourceMetadata } from '../../domain.types/general/file.resource/file.resource.types';
-// import { Authenticator } from '../../../auth/authenticator';
 import path from 'path';
 import { Helper } from '../../common/helper';
-import { DownloadDisposition, FileResourceMetadata } from '../../domain.types/general/file.resource/file.resource.types';
+import { DownloadDisposition } from '../../domain.types/general/file.resource/file.resource.types';
 import { ConfigurationManager } from '../../config/configuration.manager';
 import { Loader } from '../../startup/loader';
 
@@ -29,29 +23,21 @@ export class FileResourceController extends BaseController {
     //#region member variables and constructors
     _service: FileResourceService = null;
 
-    // _storageService: StorageService = new StorageService();
     _storageService: StorageService =  Loader.Container.resolve(StorageService);
 
     _validator: BaseValidator = new BaseValidator();
 
-    // _authenticator: Authenticator = null;
-
-
     constructor() {
         super();
         this._service = new FileResourceService();
-        // this._authenticator = Loader.Authenticator;
-
     }
 
     //#endregion
 
     upload = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('FileResource.Upload', request, response);
             var dateFolder = new Date().toISOString().split('T')[0];
             var originalFilename: string = request.headers['filename'] as string;
-            // var contentLength = request.headers['Content-length'];
             var contentLength = Array.isArray(request.headers['content-length']) ? request.headers['content-length'][0] : request.headers['content-length'];
 
             var mimeType = request.headers['mime-type'] ?? mime.lookup(originalFilename);
@@ -75,12 +61,11 @@ export class FileResourceController extends BaseController {
                 OriginalFilename : originalFilename,
                 Tags             : request.body.Tags ? request.body.Tags : [],
                 Size             : contentLength ? parseInt(contentLength) : null,
-                // UserId           : request.currentUser ? request.currentUser.UserId : null,
-            }; 
+            };
             var record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to create file resource!', 400);
-            }            
+            }
 
             const message = 'File resource uploaded successfully!';
             ResponseHandler.success(request, response, message, 201, record);
@@ -94,13 +79,6 @@ export class FileResourceController extends BaseController {
         try {
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
-            // if (!record.Public) {
-            //     // var verified = await Loader.Authenticator.verifyUser(request);
-            //     // if (!verified) {
-            //     //     ErrorHandler.throwUnauthorizedUserError('User is not authorized to download the resource!');
-            //     // }
-            //     // await this.authorize('FileResource.Download', request, response);
-            // }
             var disposition = request.query.disposition as string;
             if (!disposition) {
                 disposition = 'inline';
@@ -121,7 +99,7 @@ export class FileResourceController extends BaseController {
             }
 
             this.streamToResponse(localDestination, response, {
-                MimeType : mimeType,
+                MimeType    : mimeType,
                 Disposition : disposition
             });
 
@@ -132,7 +110,6 @@ export class FileResourceController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
-            // await this.authorize('FileResource.GetById', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
             if (record === null) {
@@ -147,7 +124,6 @@ export class FileResourceController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('FileResource.Delete', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
             var success = await this._storageService.delete(record.StorageKey);
@@ -161,7 +137,7 @@ export class FileResourceController extends BaseController {
             }
             const message = 'File resource deleted successfully!';
             ResponseHandler.success(request, response, message, 200, {
-                Deleted: success
+                Deleted : success
             });
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -178,35 +154,6 @@ export class FileResourceController extends BaseController {
             response.setHeader('Content-disposition', 'attachment;filename=' + filename);
         }
     };
-
-    // DownloadByVersion = async (request: express.Request, response: express.Response): Promise<void> => {
-    //     try {
-    //         request.context = 'FileResource.DownloadByVersion';
-    //         const metadata = await this._validator.getByVersionName(request);
-    //         var resource = await this._service.getById(metadata.ResourceId);
-
-    //         if (resource.Public === false) {
-
-    //             //NOTE: Please note that this is deviation from regular pattern of
-    //             //authentication middleware pipeline. Here we are authenticating client
-    //             //and user only when the file resource is not public.
-
-    //             // await this._authenticator.checkAuthentication(request);
-    //             // await this._authorizer.authorize(request, response);
-    //         }
-
-    //         // console.log(`Download request for Resource Id:: ${metadata.ResourceId}
-    //             // and Version:: ${metadata.Version}`);
-    //         // const localDestination = await this._service.DownloadByVersion(
-    //         //     metadata.ResourceId,
-    //         //     metadata.Version);
-
-    //         // this.streamToResponse(localDestination, response, metadata);
-
-    //     } catch (error) {
-    //         ResponseHandler.handleError(request, response, error);
-    //     }
-    // };
 
     private streamToResponse(
         localDestination: string,

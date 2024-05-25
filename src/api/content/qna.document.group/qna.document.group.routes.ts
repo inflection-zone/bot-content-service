@@ -5,7 +5,6 @@ import { QnaDocumentsGroupController } from './qna.document.group.controller';
 
 export const register = (app: express.Application): void => {
     const router = express.Router();
-
     const controller = new QnaDocumentsGroupController();
 
     router.get('/search', controller.search);

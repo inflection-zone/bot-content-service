@@ -5,7 +5,6 @@ import { QnaDocumentVersionController } from './qna.document.version.controller'
 
 export const register = (app: express.Application): void => {
     const router = express.Router();
-
     const controller = new QnaDocumentVersionController();
 
     router.get('/search', controller.search);

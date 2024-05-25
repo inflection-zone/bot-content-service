@@ -178,9 +178,6 @@ export class QnaDocumentVersionService extends BaseService {
         if (filters.versionNumber) {
             search.where['VersionNumber'] = Like(`${filters.versionNumber}`);
         }
-        // if (filters.QnaDocumentId) {
-        //     search.where['QnaDocumentId'] = filters.QnaDocumentId;
-        // }
         if (filters.storageUrl) {
             search.where['StorageUrl'] = filters.storageUrl;
         }
@@ -192,10 +189,8 @@ export class QnaDocumentVersionService extends BaseService {
         }
 
         if (filters.keywords) {
-            // search.where['Keywords'] = filters.keywords;
             search.where['Keywords'] = Like(`%${filters.keywords}%`);
         }
-        // search.relations = ['Qna_Documents'];
 
         return search;
     };

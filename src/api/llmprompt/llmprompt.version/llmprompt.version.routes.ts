@@ -4,14 +4,12 @@ import { LlmPromptVersionController  } from './././llmprompt.version.controller'
 export const register = (app: express.Application): void => {
 
     const router = express.Router();
-    // const authenticator = Loader.Authenticator;
     const controller = new LlmPromptVersionController();
 
     router.get('/search', controller.search);
     router.get('/records', controller.getAll);
     
     router.get('/:id', controller.getById);
-    // router.get('/prompt', controller.getByPrompt);
     router.get('/search-by-prompt/:prompt', controller.getByPrompt);
     router.post('/', controller.create);
     router.put('/:id', controller.update);

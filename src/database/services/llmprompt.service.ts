@@ -1,6 +1,3 @@
-/* eslint-disable indent */
-
-// import express from 'express';
 import { BaseService } from './base.service';
 import { LlmPrompt } from '../models/llm.prompt/llm.prompts.model';
 import { LlmPromptMapper } from '../mappers/llm.prompt/llm.prompt.mapper';
@@ -16,7 +13,6 @@ export class LlmpromptService extends BaseService {
 
     _llmPromptRepository: Repository<LlmPrompt> = Source.getRepository(LlmPrompt);
 
-    // create = async (request: express.Request, response: express.Response) => {
     public create = async (createModel: LlmPromptCreateModel)
         : Promise<LlmPromptDto> => {
         try {
@@ -143,35 +139,19 @@ export class LlmpromptService extends BaseService {
         }
     };
     
-    // public delete = async (id: uuid)=> {
-    //     try {
-    //         var record = await this._llmPromptRepository.findOne({
-    //             where : {
-    //                 id : id
-    //             }
-    //         });
-    //         var result = await this._llmPromptRepository.remove(record);
-    //         result != null;
-    //     } catch (error) {
-    //         logger.error(error.message);
-    //         ErrorHandler.throwInternalServerError(error.message, 500);
-    //     }
-    // };
-
     public delete = async (id: string): Promise<boolean> => {
         try {
-            // const record = await this._llmPromptRepository.findOne();
             var record = await this._llmPromptRepository.findOne({
-                            where : {
-                                id : id
-                            }
-                        });
+                where : {
+                    id : id
+                }
+            });
             if (!record) {
-                return false; // Record not found
+                return false;
             }
-            record.DeletedAt = new Date(); // Soft delete
+            record.DeletedAt = new Date();
             await this._llmPromptRepository.save(record);
-            return true; // Soft delete successful
+            return true;
         } catch (error) {
             logger.error(error.message);
             throw new Error('Unable to delete prompt.');

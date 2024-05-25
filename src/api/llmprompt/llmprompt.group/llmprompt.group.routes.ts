@@ -4,7 +4,6 @@ import { LlmPromptGroupController } from './llmprompt.group.controller';
 export const register = (app: express.Application): void => {
 
     const router = express.Router();
-    // const authenticator = Loader.Authenticator;
     const controller = new LlmPromptGroupController();
 
     router.get('/search', controller.search);

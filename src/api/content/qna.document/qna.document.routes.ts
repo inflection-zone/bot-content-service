@@ -5,7 +5,6 @@ import { QnaDocumentController } from './qna.document.controller';
 
 export const register = (app: express.Application): void => {
     const router = express.Router();
-
     const controller = new QnaDocumentController();
 
     router.get('/search', controller.search);

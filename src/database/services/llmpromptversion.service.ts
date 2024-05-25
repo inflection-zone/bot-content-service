@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { BaseService } from './base.service';
 import { logger } from '../../logger/logger';
 import { ErrorHandler } from '../../common/handlers/error.handler';
@@ -143,13 +142,13 @@ export class LlmpromptVersionService extends BaseService {
     public delete = async (id: string): Promise<boolean> => {
         try {
             var record = await this._llmPromptVersionRepository.findOne({
-                            where : {
-                                id : id
-                            },
-                            relations : {
-                                LlmPrompts : true,
-                            }
-                        });
+                where : {
+                    id : id
+                },
+                relations : {
+                    LlmPrompts : true,
+                }
+            });
             if (!record) {
                 return false; // Record not found
             }
