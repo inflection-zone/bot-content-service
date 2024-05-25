@@ -1,11 +1,11 @@
 {
-    "SystemIdentifier": "Awards Service",
+    "SystemIdentifier": "Bot Content Service",
     "Auth" : {
         "Authentication": "Custom",
         "Authorization": "Custom"
     },
     "FileStorage" : {
-        "Provider": "Custom"
+        "Provider": "AWS-S3"
     },
     "Processor" : {
         "Provider": "Custom"
