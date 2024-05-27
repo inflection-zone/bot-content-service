@@ -118,6 +118,9 @@ export class QnaDocumentService extends BaseService {
                 where : {
                     id : id,
                 },
+                relations : {
+                    ResourceId : true
+                },
             });
             return QnaDocumentMapper.toResponseDto(document);
         } catch (error) {
