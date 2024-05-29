@@ -1,7 +1,6 @@
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import * as aws from "@aws-sdk/client-s3";
 import fs from 'fs';
-// import { IFileStorageService } from '../interfaces/file.storage.service.interface';
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { Readable } from "stream";
 import { logger } from '../../../logger/logger';

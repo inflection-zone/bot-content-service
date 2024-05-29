@@ -78,16 +78,6 @@ export class LlmPromptVersionController {
         }
     };
 
-    // getAll = async (request: express.Request, response: express.Response) => {
-    //     try {
-    //         const record = await this._service.getAll();
-    //         const message = 'LLm prompt version retrieved successfully!';
-    //         return ResponseHandler.success(request, response, message, 200, record);
-    //     } catch (error) {
-    //         ResponseHandler.handleError(request, response, error);
-    //     }
-    // };
-
     getLatestPromptVersionByPromptId = async (request: express.Request, response: express.Response) => {
         try {
             const promptId: string = request.params.promptId;

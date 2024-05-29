@@ -18,34 +18,6 @@ export class LlmpromptVersionService extends BaseService {
 
     _llmPromptRepository: Repository<LlmPrompt> = Source.getRepository(LlmPrompt);
 
-    // public create = async (createModel: LlmPromptVersionCreateModel)
-    //     : Promise<LlmPromptVersionDto> => {
-    //     try {
-    //         const pid = await this._llmPromptRepository.findOne({
-    //             where : {
-    //                 id : createModel.PromptId
-    //             }
-    //         });
-    //         if (!pid) {
-    //             ErrorHandler.throwNotFoundError('PromptId cannot be found');
-    //         }
-    //         const data = this. _llmPromptVersionRepository.create({
-    //             VersionNumber : createModel.VersionNumber,
-    //             LlmPrompts    : pid,
-    //             Prompt        : createModel.Prompt,
-    //             Variables     : JSON.stringify(createModel.Variables),
-    //             Score         : createModel.Score,
-    //             PublishedAt   : createModel.PublishedAt,
-    //         });
-    //         var record = await this._llmPromptVersionRepository.save(data);
-    //         return LlmPromptVersionMapper.toResponseDto(record);
-    //     }
-    //     catch (error) {
-    //         logger.error(error.message);
-    //         ErrorHandler.throwInternalServerError(error.message, 500);
-    //     }
-    // };
-
     public create = async (createModel: LlmPromptVersionCreateModel)
         : Promise<LlmPromptVersionDto> => {
         try {
@@ -166,27 +138,6 @@ export class LlmpromptVersionService extends BaseService {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
     };
-
-    // public getAll = async (): Promise<LlmPromptVersionDto[]> =>{
-    //     try {
-    //         const data = [];
-    //         var prompts = await this._llmPromptVersionRepository.find({
-    //             relations : {
-    //                 LlmPrompts : true
-    //             }
-    //         });
-    //         for (var i of prompts) {
-    //             const record = LlmPromptVersionMapper.toResponseDto(i);
-    //             data.push(record);
-                
-    //         }
-            
-    //         return data;
-    //     } catch (error) {
-    //         logger.error(error.message);
-    //         ErrorHandler.throwDbAccessError('DB Error: Unable to get Llm prompt version record!', error);
-    //     }
-    // };
 
     public getLatestPromptVersionByPromptId = async (promptId: string): Promise<LlmPromptVersionDto> => {
         try {

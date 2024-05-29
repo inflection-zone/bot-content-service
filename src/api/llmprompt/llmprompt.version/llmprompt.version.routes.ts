@@ -7,10 +7,9 @@ export const register = (app: express.Application): void => {
     const controller = new LlmPromptVersionController();
 
     router.get('/search', controller.search);
-    router.get('/records', controller.getAll);
     
     router.get('/:id', controller.getById);
-    router.get('/search-by-prompt/:prompt', controller.getByPrompt);
+    router.get('/latest/:promptId', controller.getLatestPromptVersionByPromptId);
     router.post('/', controller.create);
     router.put('/:id', controller.update);
     router.delete('/:id', controller.delete);
