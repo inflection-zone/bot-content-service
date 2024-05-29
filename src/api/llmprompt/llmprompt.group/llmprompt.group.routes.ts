@@ -7,7 +7,6 @@ export const register = (app: express.Application): void => {
     const controller = new LlmPromptGroupController();
 
     router.get('/search', controller.search);
-    router.get('/records', controller.getAll);
     router.get('/:id', controller.getById);
     router.post('/', controller.create);
     router.put('/:id', controller.update);

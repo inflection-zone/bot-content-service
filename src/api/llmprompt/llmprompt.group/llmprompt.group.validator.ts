@@ -2,20 +2,18 @@ import express from 'express';
 import joi from 'joi';
 import { ErrorHandler } from '../../../common/handlers/error.handler';
 import BaseValidator from '../../base.validator';
-import { LlmPromptGroupSearchFilters } from '../../../domain.types/llm.prompt/llm.prompt.group.domain.types';
-import { PromptGroup } from '../../../domain.types/promptgroup.domain.types';
+import { LlmPromptGroupCreateModel, LlmPromptGroupSearchFilters } from '../../../domain.types/llm.prompt/llm.prompt.group.domain.types';
 
 export class LlmPromptGroupValidator extends BaseValidator {
 
     public validateCreateRequest = async (request: express.Request) => {
         try {
             const schema = joi.object({
-                Name        : joi.string().valid(...Object.values(PromptGroup)).optional(),
+                Name        : joi.string(),
                 Description : joi.string().optional(),
-                PromptId    : joi.string().uuid().required(),
             });
-            return await schema.validateAsync(request.body);
-            
+            await schema.validateAsync(request.body);
+            return this.getLlmPromptGroupCreateModel(request);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -40,7 +38,8 @@ export class LlmPromptGroupValidator extends BaseValidator {
                 Description : joi.string().optional(),
                
             });
-            return await schema.validateAsync(request.body);
+            await schema.validateAsync(request.body);
+            return this.getLlmPromptGroupUpdateModel(request);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -49,9 +48,7 @@ export class LlmPromptGroupValidator extends BaseValidator {
     public validateSearchRequest = async (request: express.Request): Promise<LlmPromptGroupSearchFilters> => {
         try {
             const schema = joi.object({
-                name        : joi.string().valid(...Object.values(PromptGroup)).optional(),
-                description : joi.string().optional(),
-                
+                name : joi.string().optional(),
             });
                
             await schema.validateAsync(request.query);
@@ -64,25 +61,29 @@ export class LlmPromptGroupValidator extends BaseValidator {
 
     private getSearchFilters = (query): LlmPromptGroupSearchFilters => {
 
-        var filters = {};
+        const filters = {};
     
-        var Name = query.Name ? query.Name : null;
-        if (Name != null) {
-            filters['Name'] = Name;
-        }
-        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
-        if (itemsPerPage != null) {
-            filters['ItemsPerPage'] = itemsPerPage;
-        }
-        var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
-        if (orderBy != null) {
-            filters['OrderBy'] = orderBy;
-        }
-        var order = query.order ? query.order : 'ASC';
-        if (order != null) {
-            filters['Order'] = order;
+        const name = query.name ? query.name : null;
+        if (name) {
+            filters['Name'] = name;
         }
         return filters;
     };
+
+    private getLlmPromptGroupCreateModel(request: express.Request): LlmPromptGroupCreateModel {
+        const model: LlmPromptGroupCreateModel = {
+            Name        : request.body.Name,
+            Description : request.body.Description ? request.body.Description : null,
+        };
+        return model;
+    }
+
+    private getLlmPromptGroupUpdateModel(request: express.Request): LlmPromptGroupCreateModel {
+        const model: LlmPromptGroupCreateModel = {
+            Name        : request.body.Name ? request.body.Name : null,
+            Description : request.body.Description ? request.body.Description : null,
+        };
+        return model;
+    }
 
 }

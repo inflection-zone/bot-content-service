@@ -1,16 +1,16 @@
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 import { uuid } from "../miscellaneous/system.types";
-import { LlmPromptDto } from "./llm.prompt.domain.types";
 
 export interface  LlmPromptGroupDto {
     id?         : uuid;
     Name?       : string;
     Description?: string;
-    LlmPrompt      : LlmPromptDto;
+    CreatedAt?  : Date,
+    UpdatedAt?  : Date,
+    DeletedAt?  : Date
 }
 
 export interface  LlmPromptGroupCreateModel {
-    PromptId    : string;
     Name        : string;
     Description?: string;
 }
@@ -26,8 +26,7 @@ export interface  LlmPromptGroupSearchModel {
 }
 
 export interface LlmPromptGroupSearchFilters extends BaseSearchFilters {
-        PromptId ?   : string;
-        Name?              : string;
+        Name?       : string;
 
 }
 
