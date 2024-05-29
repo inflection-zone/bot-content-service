@@ -17,18 +17,19 @@ export class LlmpromptService extends BaseService {
         : Promise<LlmPromptDto> => {
         try {
             const data = this._llmPromptRepository.create({
-                Name              : createModel.Name,
-                Description       : createModel.Description,
-                UseCaseType       : createModel.UseCaseType,
-                GroupName         : createModel.GroupName,
-                ModelName         : createModel.ModelName,
-                ModelVersion      : createModel.ModelVersion,
-                UserId            : createModel.UserId,
-                Temperature       : createModel.Temperature,
-                FrequencyPenality : createModel.FrequencyPenality,
-                TopP              : createModel.TopP,
-                PresencePenalty   : createModel.PresencePenalty,
-                IsActive          : createModel.IsActive,
+                Name             : createModel.Name,
+                Description      : createModel.Description ?? null,
+                UseCaseType      : createModel.UseCaseType,
+                Group            : createModel.Group,
+                Model            : createModel.Model,
+                Prompt           : createModel.Prompt,
+                Variables        : createModel.Variables,
+                CreatedByUserId  : createModel.CreatedByUserId,
+                Temperature      : createModel.Temperature,
+                FrequencyPenalty : createModel.FrequencyPenalty,
+                TopP             : createModel.TopP,
+                PresencePenalty  : createModel.PresencePenalty,
+                IsActive         : createModel.IsActive,
             });
             var record = await this._llmPromptRepository.save(data);
             return LlmPromptMapper.toResponseDto(record);
@@ -50,40 +51,43 @@ export class LlmpromptService extends BaseService {
             if (!updateData) {
                 ErrorHandler.throwNotFoundError('LLm prompt not found!');
             }
-            if (model.Name != null) {
+            if (model.Name) {
                 updateData.Name = model.Name;
             }
-            if ( model.Description != null) {
+            if ( model.Description) {
                 updateData.Description = model.Description;
             }
-            if ( model.UseCaseType != null) {
+            if ( model.UseCaseType) {
                 updateData.UseCaseType = model.UseCaseType;
             }
-            if ( model.GroupName != null) {
-                updateData.GroupName = model.GroupName;
+            if ( model.Group) {
+                updateData.Group = model.Group;
             }
-            if ( model.ModelName != null) {
-                updateData.ModelName = model.ModelName;
+            if ( model.Model) {
+                updateData.Model = model.Model;
             }
-            if ( model.ModelVersion != null) {
-                updateData.ModelVersion = model.ModelVersion;
+            if ( model.Prompt) {
+                updateData.Prompt = model.Prompt;
             }
-            if (  model.UserId != null) {
-                updateData.UserId = model.UserId;
+            if (model.Variables) {
+                updateData.Variables = model.Variables;
             }
-            if ( model.Temperature != null) {
+            if (  model.CreatedByUserId) {
+                updateData.CreatedByUserId = model.CreatedByUserId;
+            }
+            if ( model.Temperature) {
                 updateData.Temperature = model.Temperature;
             }
-            if ( model.FrequencyPenality != null) {
-                updateData.FrequencyPenality = model.FrequencyPenality;
+            if ( model.FrequencyPenalty) {
+                updateData.FrequencyPenalty = model.FrequencyPenalty;
             }
-            if ( model.TopP != null) {
+            if ( model.TopP) {
                 updateData.TopP = model.TopP;
             }
-            if ( model.PresencePenalty != null) {
+            if ( model.PresencePenalty) {
                 updateData.PresencePenalty  = model.PresencePenalty;
             }
-            if ( model.IsActive != null) {
+            if ( model.IsActive) {
                 updateData.IsActive = model.IsActive;
             }
          
@@ -189,45 +193,49 @@ export class LlmpromptService extends BaseService {
             where : {
             },
             select : {
-                id                : true,
-                Name              : true,
-                Description       : true,
-                UseCaseType       : true,
-                GroupName         : true,
-                ModelName         : true,
-                ModelVersion      : true,
-                UserId            : true,
-                Temperature       : true,
-                FrequencyPenality : true,
-                TopP              : true,
-                PresencePenalty   : true,
-                IsActive          : true,
+                id               : true,
+                Name             : true,
+                Description      : true,
+                UseCaseType      : true,
+                Group            : true,
+                Model            : true,
+                Prompt           : true,
+                Variables        : true,
+                CreatedByUserId  : true,
+                Temperature      : true,
+                FrequencyPenalty : true,
+                TopP             : true,
+                PresencePenalty  : true,
+                IsActive         : true,
             }
         };
 
         if (filters.Name) {
-            search.where['name'] = Like(`%${filters.Name}%`);
+            search.where['Name'] = Like(`%${filters.Name}%`);
         }
         if (filters.UseCaseType) {
             search.where['UseCaseType'] = filters.UseCaseType;
         }
-        if (filters.GroupName) {
-            search.where['GroupName'] = filters.GroupName;
+        if (filters.Group) {
+            search.where['Group'] = filters.Group;
         }
-        if (filters.ModelName) {
-            search.where['ModelName'] = filters.ModelName;
+        if (filters.Model) {
+            search.where['Model'] = filters.Model;
         }
-        if (filters.ModelVersion) {
-            search.where['ModelVersion'] = filters.ModelVersion;
+        if (filters.Prompt) {
+            search.where['Prompt'] = filters.Prompt;
         }
-        if (filters.UserId) {
-            search.where['UserId'] = filters.UserId;
+        if (filters.Variables) {
+            search.where['Variables'] = filters.Variables;
+        }
+        if (filters.CreatedByUserId) {
+            search.where['CreatedByUserId'] = filters.CreatedByUserId;
         }
         if (filters.Temperature) {
             search.where['Temperature'] = filters.Temperature;
         }
-        if (filters.FrequencyPenality) {
-            search.where['FrequencyPenality'] = filters.FrequencyPenality;
+        if (filters.FrequencyPenalty) {
+            search.where['FrequencyPenalty'] = filters.FrequencyPenalty;
         }
         if (filters.TopP) {
             search.where['TopP'] = filters.TopP;
