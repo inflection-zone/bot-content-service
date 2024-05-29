@@ -1,6 +1,5 @@
 import { LlmPromptVersionDto } from "../../../domain.types/llm.prompt/llm.prompt.version.domain.types";
 import { LlmPromptVersion } from "../../models/llm.prompt/llm.prompt.versions.model";
-import { LlmPromptMapper } from "./llm.prompt.mapper";
 
 export class LlmPromptVersionMapper {
 
@@ -8,19 +7,23 @@ export class LlmPromptVersionMapper {
         if (llmpromptversion == null) {
             return null;
         }
-        var variables = [];
-        if (llmpromptversion.Variables !== null && llmpromptversion.Variables !== undefined) {
-            variables = JSON.parse(llmpromptversion.Variables);
-        }
-        const prompt = LlmPromptMapper.toResponseDto(llmpromptversion.LlmPrompts);
         const dto: LlmPromptVersionDto = {
-            id            : llmpromptversion.id,
-            VersionNumber : llmpromptversion.VersionNumber,
-            LlmPrompt     : prompt,
-            Prompt        : llmpromptversion.Prompt,
-            Variables     : variables,
-            Score         : llmpromptversion.Score,
-            PublishedAt   : llmpromptversion.PublishedAt,
+            id               : llmpromptversion.id,
+            PromptId         : llmpromptversion.LlmPrompt.id,
+            Version          : llmpromptversion.Version,
+            Name             : llmpromptversion.Name,
+            Description      : llmpromptversion.Description,
+            UseCaseType      : llmpromptversion.UseCaseType,
+            Group            : llmpromptversion.Group,
+            Model            : llmpromptversion.Model,
+            Prompt           : llmpromptversion.Prompt,
+            Variables        : llmpromptversion.Variables,
+            CreatedByUserId  : llmpromptversion.CreatedByUserId,
+            Temperature      : llmpromptversion.Temperature,
+            FrequencyPenalty : llmpromptversion.FrequencyPenalty,
+            TopP             : llmpromptversion.TopP,
+            PresencePenalty  : llmpromptversion.PresencePenalty,
+            IsActive         : llmpromptversion.IsActive
         };
         return dto;
     };

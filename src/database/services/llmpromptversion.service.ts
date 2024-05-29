@@ -18,24 +18,63 @@ export class LlmpromptVersionService extends BaseService {
 
     _llmPromptRepository: Repository<LlmPrompt> = Source.getRepository(LlmPrompt);
 
+    // public create = async (createModel: LlmPromptVersionCreateModel)
+    //     : Promise<LlmPromptVersionDto> => {
+    //     try {
+    //         const pid = await this._llmPromptRepository.findOne({
+    //             where : {
+    //                 id : createModel.PromptId
+    //             }
+    //         });
+    //         if (!pid) {
+    //             ErrorHandler.throwNotFoundError('PromptId cannot be found');
+    //         }
+    //         const data = this. _llmPromptVersionRepository.create({
+    //             VersionNumber : createModel.VersionNumber,
+    //             LlmPrompts    : pid,
+    //             Prompt        : createModel.Prompt,
+    //             Variables     : JSON.stringify(createModel.Variables),
+    //             Score         : createModel.Score,
+    //             PublishedAt   : createModel.PublishedAt,
+    //         });
+    //         var record = await this._llmPromptVersionRepository.save(data);
+    //         return LlmPromptVersionMapper.toResponseDto(record);
+    //     }
+    //     catch (error) {
+    //         logger.error(error.message);
+    //         ErrorHandler.throwInternalServerError(error.message, 500);
+    //     }
+    // };
+
     public create = async (createModel: LlmPromptVersionCreateModel)
         : Promise<LlmPromptVersionDto> => {
         try {
-            const pid = await this._llmPromptRepository.findOne({
+            const promptRecord = await this._llmPromptRepository.findOne({
                 where : {
                     id : createModel.PromptId
                 }
             });
-            if (!pid) {
+            if (!promptRecord) {
                 ErrorHandler.throwNotFoundError('PromptId cannot be found');
             }
+
             const data = this. _llmPromptVersionRepository.create({
-                VersionNumber : createModel.VersionNumber,
-                LlmPrompts    : pid,
-                Prompt        : createModel.Prompt,
-                Variables     : JSON.stringify(createModel.Variables),
-                Score         : createModel.Score,
-                PublishedAt   : createModel.PublishedAt,
+                Version          : createModel.Version,
+                LlmPrompt        : promptRecord,
+                Score            : createModel.Score,
+                Name             : createModel.Name,
+                Description      : createModel.Description ?? null,
+                UseCaseType      : createModel.UseCaseType,
+                Group            : createModel.Group,
+                Model            : createModel.Model,
+                Prompt           : createModel.Prompt,
+                Variables        : createModel.Variables,
+                CreatedByUserId  : createModel.CreatedByUserId,
+                Temperature      : createModel.Temperature,
+                FrequencyPenalty : createModel.FrequencyPenalty,
+                TopP             : createModel.TopP,
+                PresencePenalty  : createModel.PresencePenalty,
+                IsActive         : createModel.IsActive,
             });
             var record = await this._llmPromptVersionRepository.save(data);
             return LlmPromptVersionMapper.toResponseDto(record);
@@ -54,25 +93,52 @@ export class LlmpromptVersionService extends BaseService {
                     id : id
                 },
                 relations : {
-                    LlmPrompts : true,
+                    LlmPrompt : true,
                 }
             });
             if (!updateData) {
                 ErrorHandler.throwNotFoundError('LLm prompt version not found!');
             }
-            if (model.VersionNumber != null) {
-                updateData.VersionNumber = model.VersionNumber;
+            if (model.Name) {
+                updateData.Name = model.Name;
             }
-            if ( model.Prompt != null) {
+            if ( model.Description) {
+                updateData.Description = model.Description;
+            }
+            if ( model.UseCaseType) {
+                updateData.UseCaseType = model.UseCaseType;
+            }
+            if ( model.Group) {
+                updateData.Group = model.Group;
+            }
+            if ( model.Model) {
+                updateData.Model = model.Model;
+            }
+            if ( model.Prompt) {
                 updateData.Prompt = model.Prompt;
             }
-            if ( model.Variables != null) {
-                updateData.Variables = JSON.stringify(model.Variables);
+            if (model.Variables) {
+                updateData.Variables = model.Variables;
             }
-            if ( model.Score != null) {
+            if ( model.Temperature) {
+                updateData.Temperature = model.Temperature;
+            }
+            if ( model.FrequencyPenalty) {
+                updateData.FrequencyPenalty = model.FrequencyPenalty;
+            }
+            if ( model.TopP) {
+                updateData.TopP = model.TopP;
+            }
+            if ( model.PresencePenalty) {
+                updateData.PresencePenalty  = model.PresencePenalty;
+            }
+            if ( model.IsActive) {
+                updateData.IsActive = model.IsActive;
+            }
+            if ( model.Score) {
                 updateData.Score = model.Score;
             }
-            if ( model.PublishedAt != null) {
+            if ( model.PublishedAt) {
                 updateData.PublishedAt = model.PublishedAt;
             }
                   
@@ -91,7 +157,7 @@ export class LlmpromptVersionService extends BaseService {
                     id : id
                 },
                 relations : {
-                    LlmPrompts : true,
+                    LlmPrompt : true,
                 }
             });
             return LlmPromptVersionMapper.toResponseDto(llmPromptVersionId);
@@ -101,35 +167,37 @@ export class LlmpromptVersionService extends BaseService {
         }
     };
 
-    public getAll = async (): Promise<LlmPromptVersionDto[]> =>{
-        try {
-            const data = [];
-            var prompts = await this._llmPromptVersionRepository.find({
-                relations : {
-                    LlmPrompts : true
-                }
-            });
-            for (var i of prompts) {
-                const record = LlmPromptVersionMapper.toResponseDto(i);
-                data.push(record);
+    // public getAll = async (): Promise<LlmPromptVersionDto[]> =>{
+    //     try {
+    //         const data = [];
+    //         var prompts = await this._llmPromptVersionRepository.find({
+    //             relations : {
+    //                 LlmPrompts : true
+    //             }
+    //         });
+    //         for (var i of prompts) {
+    //             const record = LlmPromptVersionMapper.toResponseDto(i);
+    //             data.push(record);
                 
-            }
+    //         }
             
-            return data;
-        } catch (error) {
-            logger.error(error.message);
-            ErrorHandler.throwDbAccessError('DB Error: Unable to get Llm prompt version record!', error);
-        }
-    };
+    //         return data;
+    //     } catch (error) {
+    //         logger.error(error.message);
+    //         ErrorHandler.throwDbAccessError('DB Error: Unable to get Llm prompt version record!', error);
+    //     }
+    // };
 
-    public getByPrompt = async (prompt: string): Promise<LlmPromptVersionDto> => {
+    public getLatestPromptVersionByPromptId = async (promptId: string): Promise<LlmPromptVersionDto> => {
         try {
             var llmPrompt = await this._llmPromptVersionRepository.findOne({
                 where : {
-                    Prompt : prompt
+                    LlmPrompt : {
+                        id : promptId
+                    }
                 },
-                relations : {
-                    LlmPrompts : true,
+                order : {
+                    Version : 'DESC'
                 }
             });
             return LlmPromptVersionMapper.toResponseDto(llmPrompt);
@@ -146,7 +214,7 @@ export class LlmpromptVersionService extends BaseService {
                     id : id
                 },
                 relations : {
-                    LlmPrompts : true,
+                    LlmPrompt : true,
                 }
             });
             if (!record) {
@@ -196,19 +264,58 @@ export class LlmpromptVersionService extends BaseService {
             
         };
 
-        if (filters.VersionNumber) {
-            search.where['VersionNumber'] = Like(`%${filters.VersionNumber}%`);
+        if (filters.Name) {
+            search.where['Name'] = Like(`%${filters.Name}%`);
         }
-        
+        if (filters.UseCaseType) {
+            search.where['UseCaseType'] = filters.UseCaseType;
+        }
+        if (filters.Group) {
+            search.where['Group'] = filters.Group;
+        }
+        if (filters.Model) {
+            search.where['Model'] = filters.Model;
+        }
+        if (filters.Prompt) {
+            search.where['Prompt'] = filters.Prompt;
+        }
         if (filters.Variables) {
-            // search.where['Variables'] = filters.Variables;
-            search.where['Variables'] = Like(`%${filters.Variables}%`);
+            search.where['Variables'] = filters.Variables;
+        }
+        if (filters.CreatedByUserId) {
+            search.where['CreatedByUserId'] = filters.CreatedByUserId;
+        }
+        if (filters.Temperature) {
+            search.where['Temperature'] = filters.Temperature;
+        }
+        if (filters.FrequencyPenalty) {
+            search.where['FrequencyPenalty'] = filters.FrequencyPenalty;
+        }
+        if (filters.TopP) {
+            search.where['TopP'] = filters.TopP;
+        }
+        if (filters.PresencePenalty ) {
+            search.where['PresencePenalty'] = filters.PresencePenalty ;
+        }
+        if (filters.IsActive ) {
+            search.where['IsActive'] = filters.IsActive ;
+        }
+        if (filters.Version) {
+            search.where['Version'] = Like(`%${filters.Version}%`);
+        }
+        if (filters.Variables) {
+            search.where['Variables'] = filters.Variables;
         }
         if (filters.Score) {
             search.where['Score'] = filters.Score;
         }
         if (filters.PublishedAt) {
             search.where['PublishedAt'] = filters.PublishedAt;
+        }
+        if (filters.PromptId) {
+            search.where['LlmPrompt'] = {
+                id : filters.PromptId
+            };
         }
         return search;
     };
