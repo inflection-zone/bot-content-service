@@ -1,7 +1,7 @@
 // import fs from "fs";
 // import path from "path";
 import { logger } from "../logger/logger";
-// import * as RolePrivilegesList from '../../seed.data/role.privileges.json';
+import PromptGroupList from '../../seed.data/default.prompt.group.json';
 // import * as seedHowToEarnBadgeContent from '../../seed.data/how.to.earn.badge.content.seed..json';
 // import { UserService } from '../database/services/user/user.service';
 // import { UserCreateModel } from "../domain.types/user/user.domain.types";
@@ -17,6 +17,7 @@ import { FileUtils } from "../common/utilities/file.utils";
 // import { BadgeStockImageService } from "../database/services/badge.stock.images/badge.stock.image.service";
 // import { ClientService } from "../database/services/client/client.service";
 import { Loader } from "./loader";
+import { LlmpromptGroupService } from "../database/services/llmprompt.group.service";
 // import { BadgeService } from "../database/services/awards/badge.service";
 // import { BadgeUpdateModel } from "../domain.types/awards/badge.domain.types";
 
@@ -24,7 +25,7 @@ import { Loader } from "./loader";
 
 export class Seeder {
 
-    // _clientService: ClientService = new ClientService();
+    _llmPromptGroupService: LlmpromptGroupService = new LlmpromptGroupService();
 
     // _userService: UserService = new UserService();
 
@@ -47,6 +48,7 @@ export class Seeder {
     public seed = async (): Promise<void> => {
         try {
             await this.createTempFolders();
+            await this.seedPromptDefaultGroup();
             // await this.seedDefaultRoles();
             // const clients = await this.seedInternalClients();
             // await this.seedRolePrivileges();
@@ -63,33 +65,32 @@ export class Seeder {
         await FileUtils.createTempUploadFolder();
     };
 
-    // private seedRolePrivileges = async () => {
-    //     try {
-    //         const arr = RolePrivilegesList['default'];
-    //         for (let i = 0; i < arr.length; i++) {
-    //             const rp = arr[i];
-    //             const roleName = rp['Role'];
-    //             const privileges = rp['Privileges'];
+    private seedPromptDefaultGroup = async () => {
+        try {
+            const array = PromptGroupList.default;
+            const availablePromptGroups = [];
 
-    //             const role = await this._roleService.getByRoleName(roleName);
-    //             if (role == null) {
-    //                 continue;
-    //             }
-    //             for (const privilege of privileges) {
-    //                 var privilegeDto = await this._privilegeService.getByPrivilegeName(privilege);
-    //                 if (!privilegeDto) {
-    //                     privilegeDto = await this._privilegeService.create({
-    //                         Name : privilege,
-    //                     });
-    //                 }
-    //                 await this._privilegeService.addToRole(privilegeDto.id, role.id);
-    //             }
-    //         }
-    //     } catch (error) {
-    //         logger.info('Error occurred while seeding role-privileges!');
-    //     }
-    //     logger.info('Seeded role-privileges successfully!');
-    // };
+            const promptGroupSearchResult = await this._llmPromptGroupService.search({});
+
+            if (promptGroupSearchResult.TotalCount) {
+                promptGroupSearchResult.Items.forEach(item => availablePromptGroups.push(item.Name));
+            }
+
+            for (let i = 0; i < array.length; i++) {
+                const promptGroupName = array[i];
+                if (availablePromptGroups.includes(promptGroupName)) {
+                    continue;
+                }
+                await this._llmPromptGroupService.create({
+                    Name : promptGroupName
+                });
+                availablePromptGroups.push(promptGroupName);
+            }
+            logger.info('Seeded llm prompt groups successfully!');
+        } catch (error) {
+            logger.info('Error occurred while seeding llm prompt default groups!');
+        }
+    };
 
     // private seedDefaultUsers = async (clients: ClientResponseDto[]) => {
 

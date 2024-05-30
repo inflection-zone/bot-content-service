@@ -10,6 +10,7 @@ import { DbClient } from './database/db.clients/db.client';
 import { DBConnector } from "./database/database.connector";
 import { HttpLogger } from "./logger/HttpLogger";
 import { Loader } from './startup/loader';
+import { Seeder } from './startup/seeder';
 
 /////////////////////////////////////////////////////////////////////////
 
@@ -49,7 +50,9 @@ export default class Application {
             await this.setupMiddlewares();
 
             await this._router.init();
-            
+          
+            const seeder = new Seeder();
+            await seeder.seed();
         }
         catch (error) {
             logger.error('An error occurred while warming up.' + error.message);

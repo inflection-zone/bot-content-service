@@ -15,6 +15,7 @@ import { Helper } from '../../common/helper';
 import { DownloadDisposition } from '../../domain.types/general/file.resource/file.resource.types';
 import { ConfigurationManager } from '../../config/configuration.manager';
 import { Loader } from '../../startup/loader';
+import { FileResourceValidator } from './file.resource.validator';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -25,7 +26,7 @@ export class FileResourceController extends BaseController {
 
     _storageService: StorageService =  Loader.Container.resolve(StorageService);
 
-    _validator: BaseValidator = new BaseValidator();
+    _validator: FileResourceValidator = new FileResourceValidator();
 
     constructor() {
         super();
@@ -36,6 +37,7 @@ export class FileResourceController extends BaseController {
 
     upload = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
+            await this._validator.upload(request);
             var dateFolder = new Date().toISOString().split('T')[0];
             var originalFilename: string = request.headers['filename'] as string;
             var contentLength = Array.isArray(request.headers['content-length']) ? request.headers['content-length'][0] : request.headers['content-length'];
@@ -79,6 +81,9 @@ export class FileResourceController extends BaseController {
         try {
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
+            if (!record) {
+                ErrorHandler.throwNotFoundError('File resource cannot be found!');
+            }
             var disposition = request.query.disposition as string;
             if (!disposition) {
                 disposition = 'inline';
@@ -126,6 +131,9 @@ export class FileResourceController extends BaseController {
         try {
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
+            if (!record) {
+                ErrorHandler.throwNotFoundError('File resource cannot be found!');
+            }
             var success = await this._storageService.delete(record.StorageKey);
 
             if (!success) {
