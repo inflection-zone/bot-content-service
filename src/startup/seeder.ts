@@ -2,6 +2,7 @@
 // import path from "path";
 import { logger } from "../logger/logger";
 import PromptGroupList from '../../seed.data/default.prompt.group.json';
+import DocumentGroupList from '../../seed.data/default.document.group.json';
 // import * as seedHowToEarnBadgeContent from '../../seed.data/how.to.earn.badge.content.seed..json';
 // import { UserService } from '../database/services/user/user.service';
 // import { UserCreateModel } from "../domain.types/user/user.domain.types";
@@ -18,6 +19,7 @@ import { FileUtils } from "../common/utilities/file.utils";
 // import { ClientService } from "../database/services/client/client.service";
 import { Loader } from "./loader";
 import { LlmpromptGroupService } from "../database/services/llmprompt.group.service";
+import { QnaDocumentGroupService } from "../database/services/content/qna.document.group.service";
 // import { BadgeService } from "../database/services/awards/badge.service";
 // import { BadgeUpdateModel } from "../domain.types/awards/badge.domain.types";
 
@@ -26,6 +28,8 @@ import { LlmpromptGroupService } from "../database/services/llmprompt.group.serv
 export class Seeder {
 
     _llmPromptGroupService: LlmpromptGroupService = new LlmpromptGroupService();
+
+    _qnaDocumentGroupService: QnaDocumentGroupService = new QnaDocumentGroupService();
 
     // _userService: UserService = new UserService();
 
@@ -49,6 +53,7 @@ export class Seeder {
         try {
             await this.createTempFolders();
             await this.seedPromptDefaultGroup();
+            await this.seedDocumentDefaultGroup();
             // await this.seedDefaultRoles();
             // const clients = await this.seedInternalClients();
             // await this.seedRolePrivileges();
@@ -89,6 +94,33 @@ export class Seeder {
             logger.info('Seeded llm prompt groups successfully!');
         } catch (error) {
             logger.info('Error occurred while seeding llm prompt default groups!');
+        }
+    };
+
+    private seedDocumentDefaultGroup = async () => {
+        try {
+            const array = DocumentGroupList.default;
+            const availableDocumentGroups = [];
+
+            const documentGroupSearchResult = await this._qnaDocumentGroupService.search({});
+
+            if (documentGroupSearchResult.TotalCount) {
+                documentGroupSearchResult.Items.forEach(item => availableDocumentGroups.push(item.Name));
+            }
+
+            for (let i = 0; i < array.length; i++) {
+                const documentGroupName = array[i];
+                if (availableDocumentGroups.includes(documentGroupName)) {
+                    continue;
+                }
+                await this._qnaDocumentGroupService.create({
+                    Name : documentGroupName
+                });
+                availableDocumentGroups.push(documentGroupName);
+            }
+            logger.info('Seeded qna document groups successfully!');
+        } catch (error) {
+            logger.info('Error occurred while seeding qna document default groups!');
         }
     };
 

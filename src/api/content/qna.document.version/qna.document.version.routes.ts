@@ -8,9 +8,8 @@ export const register = (app: express.Application): void => {
     const controller = new QnaDocumentVersionController();
 
     router.get('/search', controller.search);
-
+    router.get('/latest/:documentId', controller.getLatestDocumentVersionByDocumentId);
     router.post('/', controller.create);
-    router.get('/all', controller.getAll);
     router.get('/:id', controller.getById);
     router.put('/:id', controller.update);
     router.delete('/:id', controller.delete);

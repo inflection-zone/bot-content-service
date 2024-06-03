@@ -26,9 +26,8 @@ export class FileResource {
     @Column({ type: 'varchar', length: 1024, nullable: false })
     StorageKey: string;
 
-
-    @OneToOne(() => QnaDocument, (qna_document) => qna_document.ResourceId) // specify inverse side as a second parameter
-    qna_document: QnaDocument;
+    @OneToOne(() => QnaDocument, (qna_document) => qna_document.FileResource) // specify inverse side as a second parameter
+    QnaDocument: QnaDocument;
 
     @Column({ type: 'varchar', length: 256, nullable: false })
     MimeType: string;
@@ -65,4 +64,5 @@ export class FileResource {
 
     @DeleteDateColumn()
     DeletedAt: Date;
+
 }
