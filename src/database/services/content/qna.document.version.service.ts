@@ -174,9 +174,11 @@ export class QnaDocumentVersionService extends BaseService {
 
     private getSearchModel = (filters: QnaDocumentVersionSearchFilters) => {
         var search: FindManyOptions<QnaDocumentVersion> = {
-            relations : {},
-            where     : {},
-            select    : {},
+            relations : {
+                QnaDocument : true
+            },
+            where  : {},
+            select : {},
         };
 
         if (filters.Name) {
