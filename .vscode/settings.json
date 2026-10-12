@@ -1,0 +1,18 @@
+{
+    "cSpell.words": [
+        "apikey",
+        "Dattatraya",
+        "documentversion",
+        "fileupload",
+        "hstore",
+        "librarys",
+        "Londhe",
+        "pino",
+        "presigner",
+        "prettystream",
+        "readdirp",
+        "tsyringe",
+        "typeorm"
+    ],
+    "js/ts.tsdk.path": "node_modules\\typescript\\lib"
+}

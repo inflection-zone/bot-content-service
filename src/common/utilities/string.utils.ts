@@ -84,6 +84,24 @@ export class StringUtils {
         return identifier;
     };
 
+    public static generateQnaCode = (): string => {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let code = '';
+        for (let i = 0; i < 8; i++) {
+            code += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return 'QNA-' + code.slice(0, 4) + '-' + code.slice(4, 8);
+    };
+
+    public static generatePromptCode = (): string => {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let code = '';
+        for (let i = 0; i < 8; i++) {
+            code += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return 'PRM-' + code.slice(0, 4) + '-' + code.slice(4, 8);
+    };
+
     public static generateDisplayCode_RandomChars = (prefix = null) => {
         const code = genpass.generate({
             length    : 24,

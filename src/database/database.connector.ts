@@ -5,14 +5,16 @@ import { logger } from '../logger/logger';
 import { DataSource } from "typeorm";
 import path from "path";
 import fs from 'fs';
-import { QnaDocumentGroup } from "./models/qna.documents/qna.document.groups.model";
-import { QnaDocument } from "./models/qna.documents/qna.documents.model";
-import { QnaDocumentVersion } from "./models/qna.documents/qna.document.versions.model";
+import { QnaDocumentGroup } from "./models/content/qna.document.groups.model";
+import { QnaDocument } from "./models/content/qna.document.model";
+import { QnaDocumentVersion } from "./models/content/qna.document.version.model";
 import { DBLogger } from "./database.logger";
 import { LlmPromptVersion } from "./models/llm.prompt/llm.prompt.versions.model";
+import { LlmPromptTemplates } from "./models/llm.prompt/llm.prompt.templates.model";
 import { LlmPromptGroup } from "./models/llm.prompt/llm.prompt.groups.model";
 import { LlmPrompt } from "./models/llm.prompt/llm.prompts.model";
-import { QnaLibrary } from "./models/qna.documents/qna.library.model";
+import { QnaDocumentLibrary } from "./models/content/qna.document.library.model";
+import { FileResource } from "./models/file.resource/file.resource.model";
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -25,14 +27,6 @@ logger.info(`db host     : ${Config.host}`);
 
 class DatabaseConnector {
 
-    // static _basePath = path.join(process.cwd(), 'src/database/models').replace(/\\/g, '/');
-
-    // static _folders = this.getFoldersRecursively(this._basePath)
-    //     .map(y => y.replace(/\\/g, '/'))
-    //     .map(x => '"' + x + '/*.js"');
-
-    //static _entities = this;
-
     static _source = new DataSource({
         name        : Config.dialect,
         type        : Config.dialect,
@@ -41,20 +35,20 @@ class DatabaseConnector {
         username    : Config.username,
         password    : Config.password,
         database    : Config.database,
-        synchronize : true,
-        //entities    : [this._basePath + '/**/**{.model.ts}'],
+        synchronize : process.env.DB_SYNCHRONIZE === 'true',
         entities    : [
             QnaDocumentGroup,
             QnaDocumentVersion,
             QnaDocument,
             LlmPromptGroup,
             LlmPrompt,
+            LlmPromptTemplates,
             LlmPromptVersion,
-            QnaLibrary,
+            QnaDocumentLibrary,
+            FileResource,
         ],
         migrations  : [],
         subscribers : [],
-        //logger      : 'advanced-console', //Use console for the typeorm logging
         logger      : new DBLogger(),
         logging     : true,
         poolSize    : Config.pool.max,
